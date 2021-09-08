@@ -188,16 +188,6 @@ class ChatViewController: UIViewController {
         }
     }
     
-    @IBAction func logOutPressed(_ sender: UIBarButtonItem) {
-        
-        do {
-            self.performSegue(withIdentifier: "unwindToWelcomeScreen", sender: self)
-            try Auth.auth().signOut()
-        } catch let signOutError as NSError {
-            print(signOutError.localizedDescription)
-        }
-    }
-    
     @IBAction func pressCamera(_ sender: UIButton) {
         let alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
 

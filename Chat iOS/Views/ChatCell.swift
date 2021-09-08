@@ -1,9 +1,9 @@
 //
 //  ChatCell.swift
-//  Flash Chat iOS13
+//  Chat iOS
 //
-//  Created by Sebastian Morado on 8/31/21.
-//  Copyright © 2021 Angela Yu. All rights reserved.
+//  Created by Sebastian Morado on 8/28/21.
+//  Copyright © 2021 Sebastian Morado. All rights reserved.
 //
 
 import UIKit

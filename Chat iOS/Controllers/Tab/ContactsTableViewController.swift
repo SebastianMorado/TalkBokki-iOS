@@ -12,6 +12,8 @@ class ContactsTableViewController: UITableViewController {
     
     let db = Firestore.firestore()
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     var contactDictionary = [String: [Contact]]()
     var contactLetters = [String]()
 
@@ -88,4 +90,10 @@ class ContactsTableViewController: UITableViewController {
         return cell
     }
 
+}
+
+//MARK: - Search Bar Delegate
+
+extension ContactsTableViewController: UISearchBarDelegate {
+    
 }

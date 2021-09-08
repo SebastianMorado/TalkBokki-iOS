@@ -22,6 +22,8 @@ class MessagesTableViewController: UITableViewController {
     
     let db = Firestore.firestore()
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     private var chats = [String: Contact]()
     private var chatsMostRecent = [String]()
     var selectedContactEmail : String = ""
@@ -175,4 +177,10 @@ class MessagesTableViewController: UITableViewController {
     }
     
 
+}
+
+//MARK: - Search bar delegate
+
+extension MessagesTableViewController: UISearchBarDelegate {
+    
 }
