@@ -17,6 +17,7 @@ class CreateProfileViewController: UIViewController {
     @IBOutlet weak var nameLabel: UITextField!
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var phoneLabel: UITextField!
     
     let db = Firestore.firestore()
     
@@ -32,15 +33,20 @@ class CreateProfileViewController: UIViewController {
 
     @IBAction func confirmPressed(_ sender: UIButton) {
         if let name = nameLabel.text,
-           let userImage = imageView.image {
+           nameLabel.text != "",
+           let userImage = imageView.image,
+           let phone = phoneLabel.text,
+           phoneLabel.text != "" {
             
             Auth.auth().createUser(withEmail: userEmail, password: userPassword) { authResult, error in
                 if let e = error {
                     self.presentAlert(message: e.localizedDescription)
                 } else {
-                    self.uploadImagePic(image: userImage, name: name)
+                    self.uploadImagePic(image: userImage, name: name, phone: phone)
                 }
             }
+        } else {
+            presentAlert(message: "Please fill out all fields")
         }
     }
     
@@ -59,7 +65,7 @@ class CreateProfileViewController: UIViewController {
     }
     
     //uploads profile picture to firebase storage server
-    func uploadImagePic(image: UIImage, name: String) {
+    func uploadImagePic(image: UIImage, name: String, phone: String) {
         guard let imageData: Data = image.jpegData(compressionQuality: 0.1) else {
             print("failed to process image")
             return
@@ -81,18 +87,21 @@ class CreateProfileViewController: UIViewController {
                 if let error = error {
                     print(error.localizedDescription)
                 }
-                self.createNewUserEntry(image_url: url!.absoluteString, name: name)
+                self.createNewUserEntry(image_url: url!.absoluteString, name: name, phone: phone)
                 print(url!.absoluteString) // <- Download URL
             })
         }
     }
     
     //creates a firestore data entry for the new user
-    func createNewUserEntry(image_url: String, name: String){
+    func createNewUserEntry(image_url: String, name: String, phone: String){
         if let newUserEmail = Auth.auth().currentUser?.email {
             db.collection("users")
                 .document(newUserEmail)
-                .setData(["name": name, "profile_picture": image_url], completion: { error in
+                .setData([
+                            "name": name,
+                            "profile_picture": image_url,
+                            "phone_number": phone], completion: { error in
                     if let e = error {
                         self.presentAlert(message: e.localizedDescription)
                     } else {
@@ -105,8 +114,8 @@ class CreateProfileViewController: UIViewController {
         
     }
     
-    func presentAlert(message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+    func presentAlert(message: String, title: String = "Error") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default) { (action) in
         }
         alert.addAction(ok)

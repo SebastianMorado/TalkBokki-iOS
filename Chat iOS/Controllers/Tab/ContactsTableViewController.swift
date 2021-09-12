@@ -7,6 +7,8 @@
 
 import UIKit
 import Firebase
+import Kingfisher
+import Peppermint
 
 class ContactsTableViewController: UITableViewController {
     
@@ -16,6 +18,8 @@ class ContactsTableViewController: UITableViewController {
     
     var contactDictionary = [String: [Contact]]()
     var contactLetters = [String]()
+    
+    private let emailPredicate = EmailPredicate()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,14 +27,130 @@ class ContactsTableViewController: UITableViewController {
         // Uncomment the following line to preserve selection between presentations
         self.clearsSelectionOnViewWillAppear = false
         title = "Contacts"
-
-        self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         loadContacts()
     }
     
+    @IBAction func addNewContact(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Find a Friend", message: nil, preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(title: "Add Friend", style: .default, handler: { _ in
+            self.addFriend() }))
+
+        alert.addAction(UIAlertAction(title: "Check Friend Requests", style: .default, handler: { action in
+            self.performSegue(withIdentifier: "goToFriendRequests", sender: self)
+        }))
+
+        alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func addFriend() {
+        var textField = UITextField()
+        let alert = UIAlertController(title: "Add Friend", message: "", preferredStyle: .alert)
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        
+        let action = UIAlertAction(title: "Add", style: .default) { (action) in
+            if let text = textField.text, self.emailPredicate.evaluate(with: text), text != Auth.auth().currentUser?.email {
+                self.getPersonalData(email: text)
+            } else {
+                self.presentAlert(message: "Please input valid email")
+            }
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Email"
+            textField = alertTextField
+        }
+        
+        alert.addAction(cancel)
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func getPersonalData(email: String) {
+        if let myEmail = Auth.auth().currentUser?.email {
+            db.collection(K.FStore.usersCollection)
+                .document(myEmail)
+                .getDocument { document, error in
+                    if let e = error {
+                        print(e.localizedDescription)
+                    } else {
+                        if let data = document?.data()! {
+                            let imageURL = data["profile_picture"] as! String
+                            let name = data["name"] as! String
+                            let number = data["phone_number"] as! String
+                            self.checkIfUserExists(email: email, imgURL: imageURL, name: name, number: number)
+                        }
+                    }
+                }
+        }
+    }
+    
+    private func checkIfUserExists(email: String, imgURL: String, name: String, number: String) {
+        db.collection(K.FStore.usersCollection)
+            .document(email)
+            .getDocument { document, error in
+                if let doc = document, doc.exists {
+                    self.checkIfYouAreAlreadyFriends(email: email, imgURL: imgURL, name: name, number: number)
+                } else if let e = error {
+                    self.presentAlert(message: e.localizedDescription)
+                } else {
+                    self.presentAlert(message: "There is no account registered under \(email)")
+                }
+            }
+    }
+    
+    private func checkIfYouAreAlreadyFriends(email: String, imgURL: String, name: String, number: String) {
+        db.collection(K.FStore.usersCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .collection(K.FStore.contactsCollection)
+            .document(email)
+            .getDocument { document, error in
+                if let doc = document, doc.exists {
+                    self.presentAlert(message: "You are already friends!")
+                } else if let e = error {
+                    self.presentAlert(message: e.localizedDescription)
+                } else {
+                    self.sendFriendRequest(email: email, imgURL: imgURL, name: name, number: number)
+                }
+            }
+    }
+    
+    private func sendFriendRequest(email: String, imgURL: String, name: String, number: String) {
+        let currentTimestamp = Timestamp.init(date: Date())
+        
+        if let myEmail = Auth.auth().currentUser?.email {
+            //save it to current users database
+            db.collection(K.FStore.usersCollection)
+                .document(email)
+                .collection(K.FStore.friendRequestCollection)
+                .document(myEmail)
+                .setData([
+                            "name": name,
+                            K.FStore.dateField: currentTimestamp,
+                            "phone_number": number,
+                            "profile_picture": imgURL],
+                         merge: true
+                ) { (error) in
+                if let e = error {
+                    self.presentAlert(message: e.localizedDescription)
+                } else {
+                    self.presentAlert(message: "Friend Request Sent!", title: "Success!")
+                }
+                    
+            }
+        }
+    }
+    
     private func loadContacts() {
-        db.collection(K.FStore.usersCollection).document(Auth.auth().currentUser!.email!).collection(K.FStore.contactsCollection).order(by: "name")
+        db.collection(K.FStore.usersCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .collection(K.FStore.contactsCollection)
+            .order(by: "name")
             .addSnapshotListener { querySnapshot, error in
                 self.contactDictionary = [String: [Contact]]()
                 self.contactLetters = [String]()
@@ -47,8 +167,8 @@ class ContactsTableViewController: UITableViewController {
                         let contactName = data["name"] as! String
                         newContact.name = contactName
                         newContact.email = doc.documentID
-                        newContact.profilePicture = data["profile_picture"] as? String
-                        
+                        newContact.profilePicture = data["profile_picture"] as! String
+                        self.checkForUpdates(email: doc.documentID, old_profile_picture_url: newContact.profilePicture)
                         //
                         let firstLetter = String(contactName.first!).uppercased()
                         if !self.contactLetters.contains(firstLetter) {
@@ -67,6 +187,45 @@ class ContactsTableViewController: UITableViewController {
                 }
             }
     }
+    
+    private func checkForUpdates(email: String, old_profile_picture_url: String) {
+        db.collection(K.FStore.usersCollection)
+            .document(email)
+            .getDocument { document, error in
+                if let e = error {
+                    print(e.localizedDescription)
+                } else {
+                    if let data = document?.data()! {
+                        let imageURL = data["profile_picture"] as! String
+                        if imageURL != old_profile_picture_url {
+                            self.updateImageURL(email: email, new_URL: imageURL)
+                        }
+                        
+                    }
+                }
+            }
+    }
+    
+    private func updateImageURL(email: String, new_URL: String) {
+        db.collection(K.FStore.usersCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .collection(K.FStore.contactsCollection)
+            .document(email)
+            .getDocument { document, error in
+                if let e = error {
+                    print(e.localizedDescription)
+                } else {
+                    document?.reference.updateData(["profile_picture" : new_URL])
+                }
+            }
+    }
+    
+    private func presentAlert(message: String, title: String = "Error") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(ok)
+        self.present(alert, animated: true, completion: nil)
+    }
 
     // MARK: - Table view data source
     
@@ -84,10 +243,23 @@ class ContactsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "contactsCell", for: indexPath)
-        cell.textLabel?.text = contactDictionary[contactLetters[indexPath.section]]![indexPath.row].name
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "contactsCell", for: indexPath) as! ContactsCell
+        cell.cellLabel.text = contactDictionary[contactLetters[indexPath.section]]![indexPath.row].name
+        let url = URL(string: contactDictionary[contactLetters[indexPath.section]]![indexPath.row].profilePicture)
+        let processor = DownsamplingImageProcessor(size: cell.cellImage.bounds.size)
+        cell.cellImage.kf.setImage(
+            with: url,
+            options: [
+                .processor(processor),
+                .scaleFactor(UIScreen.main.scale),
+                .transition(.fade(1))
+            ])
+        cell.setRoundedImage()
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
 }

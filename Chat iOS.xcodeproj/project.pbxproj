@@ -18,6 +18,9 @@
 		0B628191235DF01B00E35CAF /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B628190235DF01B00E35CAF /* ChatViewController.swift */; };
 		6412F88326E20945002015F7 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6412F88126E20945002015F7 /* ImageTableViewCell.swift */; };
 		6412F88426E20945002015F7 /* ImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6412F88226E20945002015F7 /* ImageTableViewCell.xib */; };
+		642A83AC26EB3DBB00FE8C2B /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642A83AB26EB3DBB00FE8C2B /* ContactsCell.swift */; };
+		642A83B126EB4E3100FE8C2B /* FriendRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642A83B026EB4E3100FE8C2B /* FriendRequestCell.swift */; };
+		642A83B326EB725B00FE8C2B /* FriendRequestsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642A83B226EB725B00FE8C2B /* FriendRequestsTableViewController.swift */; };
 		642B1B6826E8BAC200977827 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642B1B6726E8BAC200977827 /* SettingsViewController.swift */; };
 		642B1B6C26E9004A00977827 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 642B1B6B26E9004900977827 /* GoogleService-Info.plist */; };
 		642DD2A426DFC99600258B68 /* CreateProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642DD2A326DFC99600258B68 /* CreateProfileViewController.swift */; };
@@ -26,6 +29,7 @@
 		643F85142634120E00DDF338 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 643F85132634120E00DDF338 /* IQKeyboardManagerSwift */; };
 		6471614E26E758890060664A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 6471614D26E758890060664A /* Kingfisher */; };
 		6471615026E78BDE0060664A /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6471614F26E78BDE0060664A /* ImageDetailViewController.swift */; };
+		64827A5A26EC847B002C6F3D /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64827A5926EC847B002C6F3D /* FriendRequest.swift */; };
 		64C840A526DE24D700F46A78 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C840A426DE24D700F46A78 /* ChatCell.swift */; };
 		64C840A626DE2C4200F46A78 /* ChatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64C840A126DE15F200F46A78 /* ChatCell.xib */; };
 		64DD09E22632FF6B00B43274 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD09E12632FF6B00B43274 /* Constants.swift */; };
@@ -52,11 +56,15 @@
 		0B628190235DF01B00E35CAF /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		6412F88126E20945002015F7 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		6412F88226E20945002015F7 /* ImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageTableViewCell.xib; sourceTree = "<group>"; };
+		642A83AB26EB3DBB00FE8C2B /* ContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
+		642A83B026EB4E3100FE8C2B /* FriendRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestCell.swift; sourceTree = "<group>"; };
+		642A83B226EB725B00FE8C2B /* FriendRequestsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestsTableViewController.swift; sourceTree = "<group>"; };
 		642B1B6726E8BAC200977827 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		642B1B6B26E9004900977827 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		642DD2A326DFC99600258B68 /* CreateProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileViewController.swift; sourceTree = "<group>"; };
 		643758ED26D8F02500845166 /* Tab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Tab.storyboard; sourceTree = "<group>"; };
 		6471614F26E78BDE0060664A /* ImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
+		64827A5926EC847B002C6F3D /* FriendRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		64C840A126DE15F200F46A78 /* ChatCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatCell.xib; sourceTree = "<group>"; };
 		64C840A426DE24D700F46A78 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		64DD09E12632FF6B00B43274 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -141,15 +149,9 @@
 		0B628193235DF03400E35CAF /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0B628181235DEE8400E35CAF /* LaunchScreen.storyboard */,
-				0B62817C235DEE8100E35CAF /* Main.storyboard */,
-				64DD09E72633252E00B43274 /* MessageCell.swift */,
-				64DD09E82633252E00B43274 /* MessageCell.xib */,
-				64C840A126DE15F200F46A78 /* ChatCell.xib */,
-				64C840A426DE24D700F46A78 /* ChatCell.swift */,
-				643758ED26D8F02500845166 /* Tab.storyboard */,
-				6412F88126E20945002015F7 /* ImageTableViewCell.swift */,
-				6412F88226E20945002015F7 /* ImageTableViewCell.xib */,
+				642A83AF26EB4DE600FE8C2B /* Custom Cells */,
+				642A83AE26EB4DD800FE8C2B /* Xibs */,
+				642A83AD26EB4DC100FE8C2B /* Storyboards */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -159,8 +161,41 @@
 			children = (
 				64DD09E426330EE000B43274 /* Message.swift */,
 				64F5786A26DA428A0051DAFF /* Contact.swift */,
+				64827A5926EC847B002C6F3D /* FriendRequest.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		642A83AD26EB4DC100FE8C2B /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				643758ED26D8F02500845166 /* Tab.storyboard */,
+				0B62817C235DEE8100E35CAF /* Main.storyboard */,
+				0B628181235DEE8400E35CAF /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		642A83AE26EB4DD800FE8C2B /* Xibs */ = {
+			isa = PBXGroup;
+			children = (
+				64DD09E72633252E00B43274 /* MessageCell.swift */,
+				64DD09E82633252E00B43274 /* MessageCell.xib */,
+				64C840A126DE15F200F46A78 /* ChatCell.xib */,
+				64C840A426DE24D700F46A78 /* ChatCell.swift */,
+				6412F88126E20945002015F7 /* ImageTableViewCell.swift */,
+				6412F88226E20945002015F7 /* ImageTableViewCell.xib */,
+			);
+			path = Xibs;
+			sourceTree = "<group>";
+		};
+		642A83AF26EB4DE600FE8C2B /* Custom Cells */ = {
+			isa = PBXGroup;
+			children = (
+				642A83AB26EB3DBB00FE8C2B /* ContactsCell.swift */,
+				642A83B026EB4E3100FE8C2B /* FriendRequestCell.swift */,
+			);
+			path = "Custom Cells";
 			sourceTree = "<group>";
 		};
 		64F5786426DA3CE90051DAFF /* Main */ = {
@@ -182,6 +217,7 @@
 				64F5786826DA3D8C0051DAFF /* ContactsTableViewController.swift */,
 				6471614F26E78BDE0060664A /* ImageDetailViewController.swift */,
 				642B1B6726E8BAC200977827 /* SettingsViewController.swift */,
+				642A83B226EB725B00FE8C2B /* FriendRequestsTableViewController.swift */,
 			);
 			path = Tab;
 			sourceTree = "<group>";
@@ -330,14 +366,18 @@
 				64F5786926DA3D8C0051DAFF /* ContactsTableViewController.swift in Sources */,
 				0B628177235DEE8100E35CAF /* AppDelegate.swift in Sources */,
 				64F5786726DA3D5D0051DAFF /* MessagesTableViewController.swift in Sources */,
+				642A83B126EB4E3100FE8C2B /* FriendRequestCell.swift in Sources */,
 				64DD09E526330EE000B43274 /* Message.swift in Sources */,
 				0B628179235DEE8100E35CAF /* SceneDelegate.swift in Sources */,
 				6412F88326E20945002015F7 /* ImageTableViewCell.swift in Sources */,
 				0B62818F235DF01000E35CAF /* LoginViewController.swift in Sources */,
+				64827A5A26EC847B002C6F3D /* FriendRequest.swift in Sources */,
 				0B628191235DF01B00E35CAF /* ChatViewController.swift in Sources */,
 				64C840A526DE24D700F46A78 /* ChatCell.swift in Sources */,
+				642A83B326EB725B00FE8C2B /* FriendRequestsTableViewController.swift in Sources */,
 				642B1B6826E8BAC200977827 /* SettingsViewController.swift in Sources */,
 				0B62818D235DF00B00E35CAF /* RegisterViewController.swift in Sources */,
+				642A83AC26EB3DBB00FE8C2B /* ContactsCell.swift in Sources */,
 				6471615026E78BDE0060664A /* ImageDetailViewController.swift in Sources */,
 				642DD2A426DFC99600258B68 /* CreateProfileViewController.swift in Sources */,
 				64DD09E22632FF6B00B43274 /* Constants.swift in Sources */,

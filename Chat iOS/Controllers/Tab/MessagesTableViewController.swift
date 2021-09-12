@@ -45,13 +45,17 @@ class MessagesTableViewController: UITableViewController {
         tableView.register(UINib(nibName: K.cellNibName2, bundle: nil), forCellReuseIdentifier: K.cellIdentifier2)
         
         //add refresh control
-        refresh.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
+        refresh.addTarget(self, action: #selector(refreshTableData(_:)), for: .valueChanged)
         tableView.refreshControl = refresh
         
         loadContacts()
     }
     
-    @objc private func refreshWeatherData(_ sender: Any) {
+    @IBAction func createNewMessage(_ sender: UIBarButtonItem) {
+        
+    }
+    
+    @objc private func refreshTableData(_ sender: Any) {
         // reload Contacts
         loadContacts()
     }
@@ -78,7 +82,7 @@ class MessagesTableViewController: UITableViewController {
                         let newContact = Contact()
                         newContact.name = data["name"] as! String
                         newContact.email = doc.documentID
-                        newContact.profilePicture = data["profile_picture"] as? String
+                        newContact.profilePicture = data["profile_picture"] as! String
                         newContact.mostRecentMessage = (data["most_recent_message"] as! Timestamp).dateValue()
                         self.chats[doc.documentID] = newContact
                         self.chatsMostRecent.append(doc.documentID)
@@ -161,11 +165,6 @@ class MessagesTableViewController: UITableViewController {
     }
     
     
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
     
     //MARK: - Table View Delegate Methods
     

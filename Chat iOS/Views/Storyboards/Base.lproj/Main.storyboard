@@ -100,7 +100,7 @@
                                         </constraints>
                                         <color key="textColor" name="BrandBlue"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <textInputTraits key="textInputTraits" textContentType="email"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="X7x-sd-Vir">
                                         <rect key="frame" x="0.0" y="90" width="414" height="60"/>
@@ -174,7 +174,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="WXR-fu-7XF">
-                                <rect key="frame" x="0.0" y="111" width="414" height="408"/>
+                                <rect key="frame" x="0.0" y="111" width="414" height="498"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ohf-KG-X4S">
                                         <rect key="frame" x="87" y="0.0" width="240" height="240"/>
@@ -221,10 +221,20 @@
                                         </constraints>
                                         <color key="textColor" name="BrandBlue"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" textContentType="nickname"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Phone Number" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2BL-Y3-ZNy">
+                                        <rect key="frame" x="0.0" y="360" width="414" height="60"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="9yj-Im-RhY"/>
+                                        </constraints>
+                                        <color key="textColor" name="BrandBlue"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad" textContentType="tel"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IJZ-EG-0tj">
-                                        <rect key="frame" x="0.0" y="360" width="414" height="48"/>
+                                        <rect key="frame" x="0.0" y="450" width="414" height="48"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <state key="normal" title="Confirm">
                                             <color key="titleColor" name="BrandBlue"/>
@@ -236,9 +246,11 @@
                                     </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="2BL-Y3-ZNy" firstAttribute="leading" secondItem="WXR-fu-7XF" secondAttribute="leading" id="AAd-o4-hYU"/>
                                     <constraint firstItem="IJZ-EG-0tj" firstAttribute="leading" secondItem="WXR-fu-7XF" secondAttribute="leading" id="Rha-qk-YWL"/>
                                     <constraint firstItem="j57-zz-MEe" firstAttribute="leading" secondItem="WXR-fu-7XF" secondAttribute="leading" id="YGC-rh-CGA"/>
                                     <constraint firstAttribute="trailing" secondItem="IJZ-EG-0tj" secondAttribute="trailing" id="fi7-MB-T2C"/>
+                                    <constraint firstAttribute="trailing" secondItem="2BL-Y3-ZNy" secondAttribute="trailing" id="nTC-3A-Ejd"/>
                                     <constraint firstAttribute="trailing" secondItem="j57-zz-MEe" secondAttribute="trailing" id="yfV-3e-yd6"/>
                                 </constraints>
                             </stackView>
@@ -258,6 +270,7 @@
                         <outlet property="imageButton" destination="0q9-vU-mWx" id="zUt-he-Nw7"/>
                         <outlet property="imageView" destination="V8m-Zk-141" id="2ID-m7-iSb"/>
                         <outlet property="nameLabel" destination="j57-zz-MEe" id="aSU-yA-W0P"/>
+                        <outlet property="phoneLabel" destination="2BL-Y3-ZNy" id="1FX-1E-3ve"/>
                         <segue destination="enL-b1-kks" kind="presentation" identifier="goToMessagesVC" modalPresentationStyle="fullScreen" id="M7s-W1-sVR"/>
                     </connections>
                 </viewController>
@@ -294,7 +307,7 @@
                                         </constraints>
                                         <color key="textColor" name="BrandBlue"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <textInputTraits key="textInputTraits" textContentType="email"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="abR-gz-opL">
                                         <rect key="frame" x="0.0" y="90" width="414" height="60"/>

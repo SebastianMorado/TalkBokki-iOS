@@ -30,6 +30,7 @@ struct K {
         static let messagesCollection = "messages"
         static let usersCollection = "users"
         static let contactsCollection = "contacts"
+        static let friendRequestCollection = "friendRequests"
         static let senderField = "sender_email"
         static let textField = "text"
         static let dateField = "date"

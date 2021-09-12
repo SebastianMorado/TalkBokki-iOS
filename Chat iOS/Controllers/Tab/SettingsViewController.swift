@@ -41,10 +41,12 @@ class SettingsViewController: UIViewController {
                     if let data = document?.data()! {
                         let name = data["name"] as! String
                         let imageURL = data["profile_picture"] as! String
+                        let phone = data["phone_number"] as! String
                         
                         self.userEmail.text = Auth.auth().currentUser!.email!
                         self.userName.text = name
                         self.userImage.kf.setImage(with: URL(string: imageURL))
+                        self.userNumber.text = phone
                     }
                 }
             }

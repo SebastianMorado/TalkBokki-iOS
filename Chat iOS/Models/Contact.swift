@@ -10,7 +10,8 @@ import Foundation
 class Contact {
     var name: String = ""
     var email: String = ""
-    var profilePicture: String?
+    var number: String = ""
+    var profilePicture: String = ""
     var mostRecentMessage: Date?
     var messages: [Message]?
 }
