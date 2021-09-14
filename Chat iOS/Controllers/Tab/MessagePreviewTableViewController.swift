@@ -18,7 +18,7 @@ extension UIImageView {
     }
 }
 
-class MessagesTableViewController: UITableViewController {
+class MessagePreviewTableViewController: UITableViewController {
     
     let db = Firestore.firestore()
     
@@ -26,8 +26,6 @@ class MessagesTableViewController: UITableViewController {
     
     private var chats = [String: Contact]()
     private var chatsMostRecent = [String]()
-    var selectedContactEmail : String = ""
-    var selectedContactName : String = ""
     var refresh = UIRefreshControl()
 
     override func viewDidLoad() {
@@ -143,9 +141,13 @@ class MessagesTableViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToChat" {
-            let destinationVC = segue.destination as! ChatViewController
-            destinationVC.selectedContactEmail = selectedContactEmail
-            destinationVC.selectedContactName = selectedContactName
+            if let destinationVC = segue.destination as? MessageViewController, let contact = sender as? Contact {
+                destinationVC.selectedContactEmail = contact.email
+                destinationVC.selectedContactName = contact.name
+            } else {
+                print("whoops!")
+            }
+            
         }
     }
 
@@ -157,7 +159,7 @@ class MessagesTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier2, for: indexPath) as! ChatCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier2, for: indexPath) as! MessagePreviewCell
         let currentChatEmail = chatsMostRecent[indexPath.row]
         cell.contactName.text = chats[currentChatEmail]!.name
         cell.messageText.text = chats[currentChatEmail]!.messages![0].text
@@ -169,9 +171,11 @@ class MessagesTableViewController: UITableViewController {
     //MARK: - Table View Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedContactEmail = chatsMostRecent[indexPath.row]
-        selectedContactName = chats[selectedContactEmail]!.name
-        self.performSegue(withIdentifier: "goToChat", sender: self)
+
+        let contact = Contact()
+        contact.email = chatsMostRecent[indexPath.row]
+        contact.name = chats[contact.email]!.name
+        self.performSegue(withIdentifier: "goToChat", sender: contact)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -180,6 +184,6 @@ class MessagesTableViewController: UITableViewController {
 
 //MARK: - Search bar delegate
 
-extension MessagesTableViewController: UISearchBarDelegate {
+extension MessagePreviewTableViewController: UISearchBarDelegate {
     
 }

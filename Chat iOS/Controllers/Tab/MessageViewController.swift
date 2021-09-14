@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import Kingfisher
 
-class ChatViewController: UIViewController {
+class MessageViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTextfield: UITextField!
@@ -23,6 +23,7 @@ class ChatViewController: UIViewController {
     
     var selectedContactEmail : String = ""
     var selectedContactName : String = ""
+    //variable to store the image message that is tapped
     var selectedImage : UIImage?
     
     private var tabBarHeight: CGFloat?
@@ -214,7 +215,7 @@ class ChatViewController: UIViewController {
 
 //MARK: - UITableViewDataSource
 
-extension ChatViewController: UITableViewDataSource {
+extension MessageViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
@@ -289,7 +290,7 @@ extension ChatViewController: UITableViewDataSource {
 
 //MARK: - Image Picker Delegate
 
-extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+extension MessageViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let userImage = info[.originalImage] as? UIImage {
@@ -327,7 +328,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
 }
 
 // MARK: - UITextFieldDelegate
-extension ChatViewController: UITextFieldDelegate {
+extension MessageViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if let safeTabBarHeight = tabBarHeight {

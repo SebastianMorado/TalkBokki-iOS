@@ -11,7 +11,7 @@ struct K {
     static let cellIdentifier2 = "ReusableCell2"
     static let imageCellIdentifier = "ImageCell"
     static let cellNibName1 = "MessageCell"
-    static let cellNibName2 = "ChatCell"
+    static let cellNibName2 = "MessagePreviewCell"
     static let imageCellNibName = "ImageTableViewCell"
     static let registerSegue = "RegisterToChat"
     static let loginSegue = "LoginToChat"

@@ -25,8 +25,10 @@ class ContactsTableViewController: UITableViewController {
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
-        self.clearsSelectionOnViewWillAppear = false
+        self.clearsSelectionOnViewWillAppear = true
+        self.definesPresentationContext = true
         title = "Contacts"
+        
         
         loadContacts()
     }
@@ -167,8 +169,9 @@ class ContactsTableViewController: UITableViewController {
                         let contactName = data["name"] as! String
                         newContact.name = contactName
                         newContact.email = doc.documentID
+                        newContact.number = data["phone_number"] as! String
                         newContact.profilePicture = data["profile_picture"] as! String
-                        self.checkForUpdates(email: doc.documentID, old_profile_picture_url: newContact.profilePicture)
+                        self.checkForUpdates(contact: newContact)
                         //
                         let firstLetter = String(contactName.first!).uppercased()
                         if !self.contactLetters.contains(firstLetter) {
@@ -188,17 +191,22 @@ class ContactsTableViewController: UITableViewController {
             }
     }
     
-    private func checkForUpdates(email: String, old_profile_picture_url: String) {
+    private func checkForUpdates(contact: Contact) {
         db.collection(K.FStore.usersCollection)
-            .document(email)
+            .document(contact.email)
             .getDocument { document, error in
                 if let e = error {
                     print(e.localizedDescription)
                 } else {
                     if let data = document?.data()! {
                         let imageURL = data["profile_picture"] as! String
-                        if imageURL != old_profile_picture_url {
-                            self.updateImageURL(email: email, new_URL: imageURL)
+                        let name = data["name"] as! String
+                        let phone = data["phone_number"] as! String
+                        if imageURL != contact.profilePicture || name != contact.name || phone != contact.number {
+                            contact.profilePicture = imageURL
+                            contact.name = name
+                            contact.number = phone
+                            self.updateContact(contact: contact)
                         }
                         
                     }
@@ -206,16 +214,18 @@ class ContactsTableViewController: UITableViewController {
             }
     }
     
-    private func updateImageURL(email: String, new_URL: String) {
+    private func updateContact(contact: Contact) {
         db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.contactsCollection)
-            .document(email)
+            .document(contact.email)
             .getDocument { document, error in
                 if let e = error {
                     print(e.localizedDescription)
                 } else {
-                    document?.reference.updateData(["profile_picture" : new_URL])
+                    document?.reference.updateData(["profile_picture" : contact.profilePicture])
+                    document?.reference.updateData(["name" : contact.name])
+                    document?.reference.updateData(["phone_number" : contact.number])
                 }
             }
     }
@@ -259,7 +269,38 @@ class ContactsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let selectedContact = contactDictionary[contactLetters[indexPath.section]]![indexPath.row]
+        self.performSegue(withIdentifier: "goToContactDetail", sender: selectedContact)
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            // handle delete (by removing the data from your array and updating the tableview)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToContactDetail" {
+            if let destinationVC = segue.destination as? ContactDetailViewController, let selectedContact = sender as? Contact {
+                destinationVC.selectedContact = selectedContact
+                destinationVC.delegate = self
+            }
+
+        } else if segue.identifier == "goToChat" {
+            if let destinationVC = segue.destination as? MessageViewController, let contact = sender as? Contact {
+                destinationVC.selectedContactEmail = contact.email
+                destinationVC.selectedContactName = contact.name
+            } else {
+                print("whoops!")
+            }
+            
+        }
     }
 
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChatCell: UITableViewCell {
+class MessagePreviewCell: UITableViewCell {
     
     @IBOutlet var contactImage: UIImageView!
     @IBOutlet var contactName: UILabel!
