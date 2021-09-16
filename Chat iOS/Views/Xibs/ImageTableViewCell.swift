@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageTableViewCell: UITableViewCell {
+class ImageTableViewCell: UITableViewCell, hasLeftAndRightPictures {
 
     
     @IBOutlet weak var imageBox: UIImageView!
@@ -27,6 +27,14 @@ class ImageTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
         //print("The image size is \(imageBox.image?.size)")
+    }
+    
+    func setRoundedImage(){
+        let radius = rightImageView.frame.width / 2
+        rightImageView.layer.cornerRadius = radius
+        rightImageView.layer.masksToBounds = true
+        leftImageView.layer.cornerRadius = radius
+        leftImageView.layer.masksToBounds = true
     }
     
 }

@@ -65,7 +65,7 @@ class CreateProfileViewController: UIViewController {
     }
     
     //uploads profile picture to firebase storage server
-    func uploadImagePic(image: UIImage, name: String, phone: String) {
+    private func uploadImagePic(image: UIImage, name: String, phone: String) {
         guard let imageData: Data = image.jpegData(compressionQuality: 0.1) else {
             print("failed to process image")
             return
@@ -94,7 +94,7 @@ class CreateProfileViewController: UIViewController {
     }
     
     //creates a firestore data entry for the new user
-    func createNewUserEntry(image_url: String, name: String, phone: String){
+    private func createNewUserEntry(image_url: String, name: String, phone: String){
         if let newUserEmail = Auth.auth().currentUser?.email {
             db.collection("users")
                 .document(newUserEmail)
@@ -106,12 +106,21 @@ class CreateProfileViewController: UIViewController {
                         self.presentAlert(message: e.localizedDescription)
                     } else {
                         print("Successfully saved data!")
+                        self.saveLoginDetails(email: newUserEmail, name: name, profilePictureURL: image_url, phone: phone)
                         self.performSegue(withIdentifier: "goToMessagesVC", sender: self)
                     }
                 })
         }
         
         
+    }
+    
+    private func saveLoginDetails(email: String, name: String, profilePictureURL: String, phone: String) {
+        UserDefaults.standard.set(email, forKey: K.UDefaults.userEmail)
+        UserDefaults.standard.set(name, forKey: K.UDefaults.userName)
+        UserDefaults.standard.set(profilePictureURL, forKey: K.UDefaults.userURL)
+        UserDefaults.standard.set(phone, forKey: K.UDefaults.userPhone)
+        UserDefaults.standard.set(true, forKey: K.UDefaults.userIsLoggedIn)
     }
     
     func presentAlert(message: String, title: String = "Error") {

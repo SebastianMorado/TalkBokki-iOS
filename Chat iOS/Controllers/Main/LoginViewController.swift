@@ -15,6 +15,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextfield: UITextField!
     
     let emailPredicate = EmailPredicate()
+    
+    let db = Firestore.firestore()
 
     @IBAction func loginPressed(_ sender: UIButton) {
         if let email = emailTextfield.text,
@@ -24,7 +26,7 @@ class LoginViewController: UIViewController {
                 if let e = error {
                     self.presentAlert(message: e.localizedDescription)
                 } else {
-                    self.performSegue(withIdentifier: "goToMessagesVC", sender: self)
+                    self.saveLoginDetails(email: email)
                 }
             }
         } else if emailTextfield.text == nil || !emailPredicate.evaluate(with: emailTextfield.text!){
@@ -33,6 +35,26 @@ class LoginViewController: UIViewController {
             presentAlert(message: "Please input valid password")
         } 
         
+    }
+    
+    private func saveLoginDetails(email: String) {
+        db.collection("users")
+            .document(email)
+            .getDocument { document, error in
+                if let e = error {
+                    self.presentAlert(message: e.localizedDescription)
+                } else {
+                    if let data = document?.data()! {
+                        UserDefaults.standard.set(email, forKey: K.UDefaults.userEmail)
+                        UserDefaults.standard.set(data["name"] as! String, forKey: K.UDefaults.userName)
+                        UserDefaults.standard.set(data["profile_picture"] as! String, forKey: K.UDefaults.userURL)
+                        UserDefaults.standard.set(data["phone_number"] as! String, forKey: K.UDefaults.userPhone)
+                        UserDefaults.standard.set(true, forKey: K.UDefaults.userIsLoggedIn)
+                        
+                        self.performSegue(withIdentifier: "goToMessagesVC", sender: self)
+                    }
+                }
+            }
     }
     
     func presentAlert(message: String, title: String = "Error") {

@@ -360,7 +360,7 @@
         <!--Navigation Controller-->
         <scene sceneID="0Ac-3B-NBj">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="K1k-nX-iid" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="rootVC" automaticallyAdjustsScrollViewInsets="NO" id="K1k-nX-iid" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mHB-vo-1LF">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -375,6 +375,7 @@
                     <nil name="viewControllers"/>
                     <connections>
                         <segue destination="Tim-3B-f4n" kind="relationship" relationship="rootViewController" id="8ch-SI-mOZ"/>
+                        <segue destination="enL-b1-kks" kind="presentation" identifier="goToMessagesVC" modalPresentationStyle="fullScreen" id="osl-Wd-pah"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JRs-J8-ifN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -383,7 +384,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="M7s-W1-sVR"/>
+        <segue reference="osl-Wd-pah"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="icloud.and.arrow.up.fill" catalog="system" width="128" height="106"/>

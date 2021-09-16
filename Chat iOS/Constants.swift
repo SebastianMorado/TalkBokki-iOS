@@ -36,4 +36,12 @@ struct K {
         static let dateField = "date"
         static let imageField = "image_url"
     }
+    
+    struct UDefaults {
+        static let userEmail = "email"
+        static let userName = "name"
+        static let userURL = "imageURL"
+        static let userPhone = "phone_number"
+        static let userIsLoggedIn = "isUserLoggedIn"
+    }
 }

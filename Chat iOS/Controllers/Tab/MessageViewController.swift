@@ -21,8 +21,8 @@ class MessageViewController: UIViewController {
     
     var messages : [Message] = []
     
-    var selectedContactEmail : String = ""
-    var selectedContactName : String = ""
+    var selectedContact : Contact?
+    
     //variable to store the image message that is tapped
     var selectedImage : UIImage?
     
@@ -31,9 +31,13 @@ class MessageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if selectedContact == nil {
+            dismiss(animated: true, completion: nil)
+        }
+        
         imagePicker.delegate = self
         tableView.dataSource = self
-        title = selectedContactName
+        title = selectedContact!.name
         messageTextfield.delegate = self
         tabBarHeight = tabBarController?.tabBar.frame.size.height
         
@@ -48,7 +52,7 @@ class MessageViewController: UIViewController {
         db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.contactsCollection)
-            .document(selectedContactEmail)
+            .document(selectedContact!.email)
             .collection(K.FStore.messagesCollection)
             .order(by: "date", descending: false)
             .addSnapshotListener { querySnapshot, error in
@@ -96,7 +100,7 @@ class MessageViewController: UIViewController {
             db.collection(K.FStore.usersCollection)
                 .document(messageSender)
                 .collection(K.FStore.contactsCollection)
-                .document(selectedContactEmail)
+                .document(selectedContact!.email)
                 .collection(K.FStore.messagesCollection)
                 .addDocument(data: [
                                 K.FStore.senderField: messageSender,
@@ -113,7 +117,7 @@ class MessageViewController: UIViewController {
             db.collection(K.FStore.usersCollection)
                 .document(messageSender)
                 .collection(K.FStore.contactsCollection)
-                .document(selectedContactEmail)
+                .document(selectedContact!.email)
                 .getDocument { document, error in
                     if let e = error {
                         self.presentAlert(message: e.localizedDescription)
@@ -123,7 +127,7 @@ class MessageViewController: UIViewController {
                 }
             //save it to chatting users database
             db.collection(K.FStore.usersCollection)
-                .document(selectedContactEmail)
+                .document(selectedContact!.email)
                 .collection(K.FStore.contactsCollection)
                 .document(messageSender)
                 .collection(K.FStore.messagesCollection)
@@ -135,12 +139,12 @@ class MessageViewController: UIViewController {
                 if let e = error {
                     self.presentAlert(message: e.localizedDescription)
                 } else {
-                    print("Successfully saved data to \(self.selectedContactEmail)!")
+                    print("Successfully saved data to \(self.selectedContact!.email)!")
                 }
                     
             }
             db.collection(K.FStore.usersCollection)
-                .document(selectedContactEmail)
+                .document(selectedContact!.email)
                 .collection(K.FStore.contactsCollection)
                 .document(messageSender)
                 .getDocument { document, error in
@@ -170,7 +174,7 @@ class MessageViewController: UIViewController {
         let metaDataConfig = StorageMetadata()
         metaDataConfig.contentType = "image/jpg"
 
-        let storageRef = Storage.storage().reference(withPath: "users/\(Auth.auth().currentUser!.email!)/contacts/\(selectedContactEmail)/messages/\(dateString).jpg")
+        let storageRef = Storage.storage().reference(withPath: "users/\(Auth.auth().currentUser!.email!)/contacts/\(selectedContact!.email)/messages/\(dateString).jpg")
 
         storageRef.putData(imageData, metadata: metaDataConfig){ (metaData, error) in
             if let error = error {
@@ -235,8 +239,7 @@ extension MessageViewController: UITableViewDataSource {
                 cell.messageBubble.backgroundColor = UIColor(named: K.BrandColors.lightPurple)
                 cell.label.textColor = UIColor(named: K.BrandColors.purple)
             } else {
-                cell.leftImageView.isHidden = false
-                cell.rightImageView.isHidden = true
+                setImage(of: cell, fromSelf: false)
                 cell.messageBubble.backgroundColor = UIColor(named: K.BrandColors.purple)
                 cell.label.textColor = UIColor(named: K.BrandColors.lightPurple)
             }
@@ -271,6 +274,21 @@ extension MessageViewController: UITableViewDataSource {
             return cell
         }
         
+    }
+    
+    private func setImage(of cell: hasLeftAndRightPictures, fromSelf: Bool) {
+        if fromSelf {
+            //get url from userDefaults
+            let url = URL(string: selectedContact!.profilePicture)
+            cell.leftImageView.kf.setImage(with: url)
+        } else {
+            let url = URL(string: selectedContact!.profilePicture)
+            cell.leftImageView.kf.setImage(with: url)
+            cell.leftImageView.isHidden = false
+            cell.rightImageView.isHidden = true
+        }
+        
+        cell.setRoundedImage()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

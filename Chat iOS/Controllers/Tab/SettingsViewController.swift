@@ -24,32 +24,29 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadUserData()
+        
+        if let name = UserDefaults.standard.string(forKey: K.UDefaults.userName),
+           let image = UserDefaults.standard.string(forKey: K.UDefaults.userURL),
+           let phone = UserDefaults.standard.string(forKey: K.UDefaults.userPhone) {
+            self.userEmail.text = Auth.auth().currentUser!.email!
+            self.userName.text = name
+            self.userImage.kf.setImage(with: URL(string: image))
+            self.userNumber.text = phone
+        } else {
+            do {
+                UserDefaults.standard.set(false, forKey: K.UDefaults.userIsLoggedIn)
+                self.performSegue(withIdentifier: "unwindToWelcomeScreen", sender: self)
+                presentAlert(message: "Please log back in")
+                try Auth.auth().signOut()
+            } catch let signOutError as NSError {
+                print(signOutError.localizedDescription)
+            }
+        }
+        
         userImage.contentMode = .scaleAspectFill
         userImage.setRounded()
         imagePicker.delegate = self
         // Do any additional setup after loading the view.
-    }
-    
-    func loadUserData(){
-        db.collection(K.FStore.usersCollection)
-            .document(Auth.auth().currentUser!.email!)
-            .getDocument { document, error in
-                if let e = error {
-                    print(e.localizedDescription)
-                } else {
-                    if let data = document?.data()! {
-                        let name = data["name"] as! String
-                        let imageURL = data["profile_picture"] as! String
-                        let phone = data["phone_number"] as! String
-                        
-                        self.userEmail.text = Auth.auth().currentUser!.email!
-                        self.userName.text = name
-                        self.userImage.kf.setImage(with: URL(string: imageURL))
-                        self.userNumber.text = phone
-                    }
-                }
-            }
     }
     
     @IBAction func changeImage(_ sender: UIButton) {
@@ -106,6 +103,7 @@ class SettingsViewController: UIViewController {
                     print(e.localizedDescription)
                 } else {
                     document?.reference.updateData(["profile_picture" : imageURL])
+                    UserDefaults.standard.set(imageURL, forKey: K.UDefaults.userURL)
                 }
             }
     }
@@ -114,6 +112,7 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func changePassword(_ sender: UIButton) {
+    
     }
     
     @IBAction func logOut(_ sender: UIButton) {
@@ -121,6 +120,7 @@ class SettingsViewController: UIViewController {
 
         alert.addAction(UIAlertAction(title: "Yes", style: .default) { alert in
             do {
+                UserDefaults.standard.set(false, forKey: K.UDefaults.userIsLoggedIn)
                 self.performSegue(withIdentifier: "unwindToWelcomeScreen", sender: self)
                 try Auth.auth().signOut()
             } catch let signOutError as NSError {
@@ -130,6 +130,13 @@ class SettingsViewController: UIViewController {
 
         alert.addAction(UIAlertAction.init(title: "No", style: .cancel, handler: nil))
 
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func presentAlert(message: String, title: String = "Error") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(ok)
         self.present(alert, animated: true, completion: nil)
     }
 }

@@ -8,7 +8,13 @@
 
 import UIKit
 
-class MessageCell: UITableViewCell {
+protocol hasLeftAndRightPictures {
+    func setRoundedImage()
+    var leftImageView: UIImageView! { get }
+    var rightImageView: UIImageView! { get }
+}
+
+class MessageCell: UITableViewCell, hasLeftAndRightPictures {
     
     @IBOutlet weak var messageBubble: UIView!
     @IBOutlet weak var rightImageView: UIImageView!
@@ -25,6 +31,14 @@ class MessageCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func setRoundedImage(){
+        let radius = rightImageView.frame.width / 2
+        rightImageView.layer.cornerRadius = radius
+        rightImageView.layer.masksToBounds = true
+        leftImageView.layer.cornerRadius = radius
+        leftImageView.layer.masksToBounds = true
     }
     
 }

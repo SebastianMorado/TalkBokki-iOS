@@ -25,4 +25,10 @@ class MessagePreviewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func setRoundedImage(){
+        let radius = contactImage.frame.width / 2
+        contactImage.layer.cornerRadius = radius
+        contactImage.layer.masksToBounds = true
+    }
+    
 }

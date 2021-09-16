@@ -294,8 +294,7 @@ class ContactsTableViewController: UITableViewController {
 
         } else if segue.identifier == "goToChat" {
             if let destinationVC = segue.destination as? MessageViewController, let contact = sender as? Contact {
-                destinationVC.selectedContactEmail = contact.email
-                destinationVC.selectedContactName = contact.name
+                destinationVC.selectedContact = contact
             } else {
                 print("whoops!")
             }

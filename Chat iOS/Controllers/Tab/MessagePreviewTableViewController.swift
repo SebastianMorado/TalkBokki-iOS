@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Kingfisher
 
 extension UIImageView {
     
@@ -79,6 +80,7 @@ class MessagePreviewTableViewController: UITableViewController {
                         //create new contact object
                         let newContact = Contact()
                         newContact.name = data["name"] as! String
+                        newContact.number = data["phone_number"] as! String
                         newContact.email = doc.documentID
                         newContact.profilePicture = data["profile_picture"] as! String
                         newContact.mostRecentMessage = (data["most_recent_message"] as! Timestamp).dateValue()
@@ -142,8 +144,7 @@ class MessagePreviewTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToChat" {
             if let destinationVC = segue.destination as? MessageViewController, let contact = sender as? Contact {
-                destinationVC.selectedContactEmail = contact.email
-                destinationVC.selectedContactName = contact.name
+                destinationVC.selectedContact = contact
             } else {
                 print("whoops!")
             }
@@ -163,6 +164,16 @@ class MessagePreviewTableViewController: UITableViewController {
         let currentChatEmail = chatsMostRecent[indexPath.row]
         cell.contactName.text = chats[currentChatEmail]!.name
         cell.messageText.text = chats[currentChatEmail]!.messages![0].text
+        let url = URL(string: chats[currentChatEmail]!.profilePicture)
+        let processor = DownsamplingImageProcessor(size: cell.contactImage.bounds.size)
+        cell.contactImage.kf.setImage(
+            with: url,
+            options: [
+                .processor(processor),
+                .scaleFactor(UIScreen.main.scale),
+                .transition(.fade(1))
+            ])
+        cell.setRoundedImage()
         return cell
     }
     
@@ -172,9 +183,8 @@ class MessagePreviewTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        let contact = Contact()
-        contact.email = chatsMostRecent[indexPath.row]
-        contact.name = chats[contact.email]!.name
+        let contactEmail = chatsMostRecent[indexPath.row]
+        let contact = chats[contactEmail]
         self.performSegue(withIdentifier: "goToChat", sender: contact)
         tableView.deselectRow(at: indexPath, animated: true)
     }
