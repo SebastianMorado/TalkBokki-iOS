@@ -13,7 +13,7 @@ import Kingfisher
 extension UIImageView {
     
     func setRounded() {
-        let radius = self.frame.width / 2
+        let radius = self.frame.height / 2
         self.layer.cornerRadius = radius
         self.layer.masksToBounds = true
     }
@@ -31,6 +31,8 @@ class MessagePreviewTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("LOAD")
 
         // Uncomment the following line to preserve selection between presentations
         self.clearsSelectionOnViewWillAppear = false
@@ -50,13 +52,17 @@ class MessagePreviewTableViewController: UITableViewController {
         loadContacts()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        loadMessages()
+    }
+    
     @IBAction func createNewMessage(_ sender: UIBarButtonItem) {
         
     }
     
     @objc private func refreshTableData(_ sender: Any) {
         // reload Contacts
-        loadContacts()
+        loadMessages()
     }
     
     private func loadContacts() {
@@ -75,9 +81,8 @@ class MessagePreviewTableViewController: UITableViewController {
                 } else {
                     for doc in querySnapshot!.documents {
                         let data = doc.data()
-                        //extract fields from data
-                        
-                        //create new contact object
+
+                        //extract fields from data and create new contact object
                         let newContact = Contact()
                         newContact.name = data["name"] as! String
                         newContact.number = data["phone_number"] as! String
@@ -113,20 +118,18 @@ class MessagePreviewTableViewController: UITableViewController {
                 .order(by: "date", descending: true)
                 .getDocuments { querySnapshot, error in
                     
-                    var messages = [Message]()
                     if let e = error {
                         print(e.localizedDescription)
                     } else {
-                        for doc in querySnapshot!.documents {
-                            let data = doc.data()
-                            let newMessage = Message()
-                            newMessage.text = data["text"] as! String
-                            newMessage.imageURL = data["image_url"] as! String
-                            newMessage.senderEmail = data["sender_email"] as! String
-                            newMessage.date = (data["date"] as! Timestamp).dateValue()
-                            messages.append(newMessage)
-                        }
-                        self.chats[contactEmail]?.messages = messages
+                        let mostRecentMessage = querySnapshot!.documents[0].data()
+                        let newMessage = Message()
+                        newMessage.text = mostRecentMessage["text"] as! String
+                        newMessage.imageURL = mostRecentMessage["image_url"] as! String
+                        newMessage.senderEmail = mostRecentMessage["sender_email"] as! String
+                        newMessage.wasRead = mostRecentMessage["wasRead"] as! Bool
+                        newMessage.date = (mostRecentMessage["date"] as! Timestamp).dateValue()
+                        
+                        self.chats[contactEmail]?.messages = [newMessage]
                         
                     }
                     group.leave()
@@ -145,10 +148,7 @@ class MessagePreviewTableViewController: UITableViewController {
         if segue.identifier == "goToChat" {
             if let destinationVC = segue.destination as? MessageViewController, let contact = sender as? Contact {
                 destinationVC.selectedContact = contact
-            } else {
-                print("whoops!")
             }
-            
         }
     }
 
@@ -161,10 +161,26 @@ class MessagePreviewTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier2, for: indexPath) as! MessagePreviewCell
+        
         let currentChatEmail = chatsMostRecent[indexPath.row]
-        cell.contactName.text = chats[currentChatEmail]!.name
-        cell.messageText.text = chats[currentChatEmail]!.messages![0].text
-        let url = URL(string: chats[currentChatEmail]!.profilePicture)
+        let currentContact = chats[currentChatEmail]!
+        let mostRecentMessage = chats[currentChatEmail]!.messages![0]
+        
+        let mostRecentMessageText = mostRecentMessage.text != "" ? mostRecentMessage.text : "[Image]"
+        cell.contactName.text = currentContact.name
+        if mostRecentMessage.senderEmail == Auth.auth().currentUser!.email! {
+            cell.messageText.text = "You: " + mostRecentMessageText
+        } else {
+            cell.messageText.text = mostRecentMessageText
+        }
+        //change color of label text depending if message has been read or not
+        if mostRecentMessage.wasRead {
+            cell.messageText.textColor = .gray
+        } else {
+            cell.messageText.font = UIFont.systemFont(ofSize: cell.messageText.font!.pointSize, weight: .semibold)
+        }
+        
+        let url = URL(string: currentContact.profilePicture)
         let processor = DownsamplingImageProcessor(size: cell.contactImage.bounds.size)
         cell.contactImage.kf.setImage(
             with: url,

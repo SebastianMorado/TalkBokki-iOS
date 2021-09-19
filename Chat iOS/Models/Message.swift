@@ -11,5 +11,6 @@ class Message {
     var senderEmail: String = ""
     var text: String = ""
     var imageURL: String = ""
+    var wasRead: Bool = false
     var date: Date = Date()
 }

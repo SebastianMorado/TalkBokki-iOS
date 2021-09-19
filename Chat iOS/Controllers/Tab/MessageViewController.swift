@@ -15,6 +15,7 @@ class MessageViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTextfield: UITextField!
     @IBOutlet weak var viewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var friendImage: UIImageView!
     
     let db = Firestore.firestore()
     private var imagePicker = UIImagePickerController()
@@ -35,10 +36,23 @@ class MessageViewController: UIViewController {
             dismiss(animated: true, completion: nil)
         }
         
+        title = selectedContact!.name
+        
+        friendImage.kf.setImage(
+            with: URL(string: selectedContact!.profilePicture),
+            options: [
+                .processor(DownsamplingImageProcessor(size: friendImage.bounds.size)),
+                .loadDiskFileSynchronously,
+                .cacheOriginalImage,
+                .transition(.fade(0.25))
+            ]
+        )
+        friendImage.setRounded()
+        
         imagePicker.delegate = self
         tableView.dataSource = self
-        title = selectedContact!.name
         messageTextfield.delegate = self
+        
         tabBarHeight = tabBarController?.tabBar.frame.size.height
         
         
@@ -49,6 +63,7 @@ class MessageViewController: UIViewController {
     }
     
     func loadMessages() {
+        print("Loading messages")
         db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.contactsCollection)
@@ -56,8 +71,8 @@ class MessageViewController: UIViewController {
             .collection(K.FStore.messagesCollection)
             .order(by: "date", descending: false)
             .addSnapshotListener { querySnapshot, error in
-                self.messages = [Message]()
-                
+                self.messages = []
+                print("snapshot triggered")
                 if let e = error {
                     print(e.localizedDescription)
                 } else {
@@ -67,16 +82,40 @@ class MessageViewController: UIViewController {
                         newMessage.text = data["text"] as! String
                         newMessage.imageURL = data["image_url"] as! String
                         newMessage.senderEmail = data["sender_email"] as! String
+                        newMessage.wasRead = data["wasRead"] as! Bool
                         newMessage.date = (data["date"] as! Timestamp).dateValue()
                         self.messages.append(newMessage)
                         
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                            let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
-                            self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
-                        }
+                        
                     }
-                    
+                    DispatchQueue.main.async {
+                        print("MAKING A TABLE")
+                        self.tableView.reloadData()
+                        let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
+                        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+                    }
+                    //update all current messages as read
+                    self.readMessages()
+                }
+            }
+    }
+    
+    func readMessages() {
+        print("ENTERING")
+        db.collection(K.FStore.usersCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .collection(K.FStore.contactsCollection)
+            .document(selectedContact!.email)
+            .collection(K.FStore.messagesCollection)
+            .whereField("wasRead", isEqualTo: false)
+            .getDocuments { snapshot, error in
+                if let e = error {
+                    self.presentAlert(message: e.localizedDescription)
+                } else {
+                    for doc in snapshot!.documents {
+                        print("Reading Message!")
+                        doc.reference.updateData(["wasRead" : true])
+                    }
                 }
             }
     }
@@ -106,7 +145,8 @@ class MessageViewController: UIViewController {
                                 K.FStore.senderField: messageSender,
                                 K.FStore.textField: messageText ?? "image",
                                 K.FStore.dateField: currentTimestamp,
-                                K.FStore.imageField: imageURL ?? "" ]) { (error) in
+                                K.FStore.imageField: imageURL ?? "",
+                                K.FStore.wasReadField: true]) { (error) in
                 if let e = error {
                     self.presentAlert(message: e.localizedDescription)
                 } else {
@@ -135,7 +175,8 @@ class MessageViewController: UIViewController {
                                 K.FStore.senderField: messageSender,
                                 K.FStore.textField: messageText ?? "image",
                                 K.FStore.dateField: Timestamp.init(date: Date()),
-                                K.FStore.imageField: imageURL ?? "" ]) { (error) in
+                                K.FStore.imageField: imageURL ?? "",
+                                K.FStore.wasReadField: false]) { (error) in
                 if let e = error {
                     self.presentAlert(message: e.localizedDescription)
                 } else {
@@ -158,6 +199,9 @@ class MessageViewController: UIViewController {
         if imageURL == nil {
             messageTextfield.text = ""
         }
+    }
+    
+    @IBAction func tapFriendImage(_ sender: UITapGestureRecognizer) {
     }
     
     func uploadImagePic(image: UIImage) {
@@ -227,34 +271,31 @@ extension MessageViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
-        //text cell
+        //text message
         if message.imageURL == "" {
             let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MessageCell
             cell.label.text = message.text
             
             //Format message from current user
             if message.senderEmail == Auth.auth().currentUser?.email {
-                cell.leftImageView.isHidden = true
-                cell.rightImageView.isHidden = false
-                cell.messageBubble.backgroundColor = UIColor(named: K.BrandColors.lightPurple)
+                print("\(indexPath.row): setting right image!")
+                setSenderImage(of: cell, fromSelf: true)
                 cell.label.textColor = UIColor(named: K.BrandColors.purple)
             } else {
-                setImage(of: cell, fromSelf: false)
-                cell.messageBubble.backgroundColor = UIColor(named: K.BrandColors.purple)
+                print("\(indexPath.row): setting left image!")
+                setSenderImage(of: cell, fromSelf: false)
                 cell.label.textColor = UIColor(named: K.BrandColors.lightPurple)
             }
             
             return cell
-        //image cell
+        //image message
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: K.imageCellIdentifier, for: indexPath) as! ImageTableViewCell
-            let url = URL(string: message.imageURL)
-            let processor = RoundCornerImageProcessor(cornerRadius: 20)
             cell.imageBox.kf.indicatorType = .activity
             cell.imageBox.kf.setImage(
-                with: url,
+                with: URL(string: message.imageURL),
                 options: [
-                    .processor(processor),
+                    .processor(RoundCornerImageProcessor(cornerRadius: 20)),
                     .loadDiskFileSynchronously,
                     .cacheOriginalImage,
                     .transition(.fade(0.25))
@@ -262,11 +303,9 @@ extension MessageViewController: UITableViewDataSource {
             )
             //Format message from current user
             if message.senderEmail == Auth.auth().currentUser?.email {
-                cell.leftImageView.isHidden = true
-                cell.rightImageView.isHidden = false
+                setSenderImage(of: cell, fromSelf: true)
             } else {
-                cell.leftImageView.isHidden = false
-                cell.rightImageView.isHidden = true
+                setSenderImage(of: cell, fromSelf: false)
             }
             let imageTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(sender:)))
             cell.imageBox.addGestureRecognizer(imageTapGesture)
@@ -276,18 +315,20 @@ extension MessageViewController: UITableViewDataSource {
         
     }
     
-    private func setImage(of cell: hasLeftAndRightPictures, fromSelf: Bool) {
+    private func setSenderImage(of cell: hasLeftAndRightPictures, fromSelf: Bool) {
         if fromSelf {
-            //get url from userDefaults
-            let url = URL(string: selectedContact!.profilePicture)
-            cell.leftImageView.kf.setImage(with: url)
+            print("Setting my own image!")
+            let url = URL(string: UserDefaults.standard.string(forKey: K.UDefaults.userURL)!)
+            cell.rightImageView.kf.setImage(with: url)
+            cell.leftImageView.image = UIImage(contentsOfFile: "")
+            cell.messageBubble.backgroundColor = UIColor(named: K.BrandColors.lightPurple)
         } else {
+            print("Setting my friends' image!")
             let url = URL(string: selectedContact!.profilePicture)
             cell.leftImageView.kf.setImage(with: url)
-            cell.leftImageView.isHidden = false
-            cell.rightImageView.isHidden = true
+            cell.rightImageView.image = UIImage(contentsOfFile: "")
+            cell.messageBubble.backgroundColor = UIColor(named: K.BrandColors.purple)
         }
-        
         cell.setRoundedImage()
     }
     

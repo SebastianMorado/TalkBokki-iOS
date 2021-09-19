@@ -12,6 +12,7 @@ protocol hasLeftAndRightPictures {
     func setRoundedImage()
     var leftImageView: UIImageView! { get }
     var rightImageView: UIImageView! { get }
+    var messageBubble: UIView! { get }
 }
 
 class MessageCell: UITableViewCell, hasLeftAndRightPictures {

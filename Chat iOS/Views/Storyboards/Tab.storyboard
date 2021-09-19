@@ -18,6 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" name="BrandPurple"/>
                     </tabBar>
                     <connections>
                         <segue destination="uDf-fH-rfB" kind="relationship" relationship="viewControllers" id="Ij8-mT-kIP"/>
@@ -319,7 +320,7 @@
             <objects>
                 <tableViewController id="7C4-mU-8JN" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="dQx-U6-X2S">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <searchBar key="tableHeaderView" contentMode="redraw" id="nQ6-18-cD4">
@@ -477,8 +478,34 @@
                             <constraint firstItem="4Gf-ax-180" firstAttribute="trailing" secondItem="5zi-Mu-TUT" secondAttribute="trailing" id="qOo-DC-o25"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="AnT-jn-mNd"/>
+                    <navigationItem key="navigationItem" id="AnT-jn-mNd">
+                        <barButtonItem key="rightBarButtonItem" id="El6-jd-Ueh">
+                            <view key="customView" contentMode="scaleToFill" id="lMV-xj-onU">
+                                <rect key="frame" x="302" y="5.5" width="92" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6tH-Zk-1aD">
+                                        <rect key="frame" x="59" y="0.0" width="33" height="33"/>
+                                        <gestureRecognizers/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="6tH-Zk-1aD" secondAttribute="height" multiplier="1:1" id="guQ-BT-Ci6"/>
+                                        </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="6UO-lI-YnD" appends="YES" id="zw2-7I-adW"/>
+                                        </connections>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="6tH-Zk-1aD" secondAttribute="bottom" id="gJ1-In-6cR"/>
+                                    <constraint firstAttribute="trailing" secondItem="6tH-Zk-1aD" secondAttribute="trailing" id="hej-jk-3rb"/>
+                                    <constraint firstItem="6tH-Zk-1aD" firstAttribute="top" secondItem="lMV-xj-onU" secondAttribute="top" id="ppw-qh-laa"/>
+                                </constraints>
+                            </view>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="friendImage" destination="6tH-Zk-1aD" id="T0G-gx-nUj"/>
                         <outlet property="messageTextfield" destination="xGr-CM-F2G" id="gGV-m1-Dtc"/>
                         <outlet property="tableView" destination="4Gf-ax-180" id="Vbi-h4-12R"/>
                         <outlet property="viewBottomConstraint" destination="ouG-hW-NG1" id="bk3-fd-aS8"/>
@@ -488,6 +515,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ysk-WX-buW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="J7H-Mj-yrh" userLabel="Exit" sceneMemberID="exit"/>
+                <tapGestureRecognizer id="6UO-lI-YnD">
+                    <connections>
+                        <action selector="tapFriendImage:" destination="NhM-qf-w4i" id="jyK-DX-ghb"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2255.072463768116" y="-222.32142857142856"/>
         </scene>

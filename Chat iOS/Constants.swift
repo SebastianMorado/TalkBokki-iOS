@@ -35,6 +35,7 @@ struct K {
         static let textField = "text"
         static let dateField = "date"
         static let imageField = "image_url"
+        static let wasReadField = "wasRead"
     }
     
     struct UDefaults {
