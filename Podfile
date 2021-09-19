@@ -7,6 +7,7 @@ target 'Chat iOS' do
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
+  pod 'PaddingLabel', '1.2'
   
   post_install do |installer|
    installer.pods_project.targets.each do |target|

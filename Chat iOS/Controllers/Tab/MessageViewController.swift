@@ -51,6 +51,7 @@ class MessageViewController: UIViewController {
         
         imagePicker.delegate = self
         tableView.dataSource = self
+        tableView.delegate = self
         messageTextfield.delegate = self
         
         tabBarHeight = tabBarController?.tabBar.frame.size.height
@@ -58,12 +59,10 @@ class MessageViewController: UIViewController {
         
         tableView.register(UINib(nibName: K.cellNibName1, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
         tableView.register(UINib(nibName: K.imageCellNibName, bundle: nil), forCellReuseIdentifier: K.imageCellIdentifier)
-        
         loadMessages()
     }
     
     func loadMessages() {
-        print("Loading messages")
         db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.contactsCollection)
@@ -72,7 +71,6 @@ class MessageViewController: UIViewController {
             .order(by: "date", descending: false)
             .addSnapshotListener { querySnapshot, error in
                 self.messages = []
-                print("snapshot triggered")
                 if let e = error {
                     print(e.localizedDescription)
                 } else {
@@ -89,10 +87,9 @@ class MessageViewController: UIViewController {
                         
                     }
                     DispatchQueue.main.async {
-                        print("MAKING A TABLE")
                         self.tableView.reloadData()
                         let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
-                        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+                        self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
                     }
                     //update all current messages as read
                     self.readMessages()
@@ -101,7 +98,6 @@ class MessageViewController: UIViewController {
     }
     
     func readMessages() {
-        print("ENTERING")
         db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.contactsCollection)
@@ -263,9 +259,15 @@ class MessageViewController: UIViewController {
 
 //MARK: - UITableViewDataSource
 
-extension MessageViewController: UITableViewDataSource {
+extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier)
+        cell?.imageView?.kf.cancelDownloadTask()
     }
     
     
@@ -274,17 +276,14 @@ extension MessageViewController: UITableViewDataSource {
         //text message
         if message.imageURL == "" {
             let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MessageCell
-            cell.label.text = message.text
             
             //Format message from current user
             if message.senderEmail == Auth.auth().currentUser?.email {
-                print("\(indexPath.row): setting right image!")
+                cell.label2.text = message.text
                 setSenderImage(of: cell, fromSelf: true)
-                cell.label.textColor = UIColor(named: K.BrandColors.purple)
             } else {
-                print("\(indexPath.row): setting left image!")
+                cell.label.text = message.text
                 setSenderImage(of: cell, fromSelf: false)
-                cell.label.textColor = UIColor(named: K.BrandColors.lightPurple)
             }
             
             return cell
@@ -303,9 +302,9 @@ extension MessageViewController: UITableViewDataSource {
             )
             //Format message from current user
             if message.senderEmail == Auth.auth().currentUser?.email {
-                setSenderImage(of: cell, fromSelf: true)
+                //setSenderImage(of: cell, fromSelf: true)
             } else {
-                setSenderImage(of: cell, fromSelf: false)
+                //setSenderImage(of: cell, fromSelf: false)
             }
             let imageTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(sender:)))
             cell.imageBox.addGestureRecognizer(imageTapGesture)
@@ -317,17 +316,31 @@ extension MessageViewController: UITableViewDataSource {
     
     private func setSenderImage(of cell: hasLeftAndRightPictures, fromSelf: Bool) {
         if fromSelf {
-            print("Setting my own image!")
             let url = URL(string: UserDefaults.standard.string(forKey: K.UDefaults.userURL)!)
-            cell.rightImageView.kf.setImage(with: url)
-            cell.leftImageView.image = UIImage(contentsOfFile: "")
-            cell.messageBubble.backgroundColor = UIColor(named: K.BrandColors.lightPurple)
+            cell.rightImageView.kf.setImage(
+                with: url,
+                options: [
+                    .loadDiskFileSynchronously,
+                    .transition(.fade(0.25))
+                ]
+            )
+            cell.label.isHidden = true
+            cell.label2.layer.cornerRadius = cell.label2.frame.size.height / 5
+            cell.label2.textColor = UIColor(named: K.BrandColors.purple)
+            cell.label2.backgroundColor = UIColor(named: K.BrandColors.lightPurple)
         } else {
-            print("Setting my friends' image!")
             let url = URL(string: selectedContact!.profilePicture)
-            cell.leftImageView.kf.setImage(with: url)
-            cell.rightImageView.image = UIImage(contentsOfFile: "")
-            cell.messageBubble.backgroundColor = UIColor(named: K.BrandColors.purple)
+            cell.leftImageView.kf.setImage(
+                with: url,
+                options: [
+                    .loadDiskFileSynchronously,
+                    .transition(.fade(0.25))
+                ]
+            )
+            cell.label2.isHidden = true
+            cell.label.layer.cornerRadius = cell.label.frame.size.height / 5
+            cell.label.textColor = UIColor(named: K.BrandColors.lightPurple)
+            cell.label.backgroundColor = UIColor(named: K.BrandColors.purple)
         }
         cell.setRoundedImage()
     }

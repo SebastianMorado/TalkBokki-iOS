@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageTableViewCell: UITableViewCell, hasLeftAndRightPictures {
+class ImageTableViewCell: UITableViewCell {
 
     
     @IBOutlet weak var imageBox: UIImageView!

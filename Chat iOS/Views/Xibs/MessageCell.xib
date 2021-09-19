@@ -30,19 +30,29 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WNI-rZ-4WV">
                                 <rect key="frame" x="50" y="0.0" width="200" height="49"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zQC-Xg-V2D">
-                                        <rect key="frame" x="10" y="10" width="180" height="29"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zQC-Xg-V2D" customClass="PaddingLabel" customModule="PaddingLabel">
+                                        <rect key="frame" x="10" y="10" width="41.5" height="29"/>
+                                        <color key="backgroundColor" name="BrandPurple"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" name="BrandLightPurple"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label2" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTL-Ta-xEa" customClass="PaddingLabel" customModule="PaddingLabel">
+                                        <rect key="frame" x="138.5" y="10" width="51.5" height="29"/>
+                                        <color key="backgroundColor" name="BrandPurple"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" name="BrandLightPurple"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" name="BrandPurple"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="PTL-Ta-xEa" firstAttribute="top" secondItem="WNI-rZ-4WV" secondAttribute="top" constant="10" id="I5A-24-Kz7"/>
                                     <constraint firstAttribute="bottom" secondItem="zQC-Xg-V2D" secondAttribute="bottom" constant="10" id="ZOK-D9-HZu"/>
                                     <constraint firstItem="zQC-Xg-V2D" firstAttribute="top" secondItem="WNI-rZ-4WV" secondAttribute="top" constant="10" id="hwK-Xu-t2b"/>
                                     <constraint firstItem="zQC-Xg-V2D" firstAttribute="leading" secondItem="WNI-rZ-4WV" secondAttribute="leading" constant="10" id="jAi-sq-KTn"/>
-                                    <constraint firstAttribute="trailing" secondItem="zQC-Xg-V2D" secondAttribute="trailing" constant="10" id="qtm-fp-SCb"/>
+                                    <constraint firstAttribute="trailing" secondItem="PTL-Ta-xEa" secondAttribute="trailing" constant="10" id="jIm-In-pBq"/>
+                                    <constraint firstAttribute="bottom" secondItem="PTL-Ta-xEa" secondAttribute="bottom" constant="10" id="wOF-r6-Hzs"/>
                                 </constraints>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DrT-a7-sR8">
@@ -53,6 +63,10 @@
                                 </constraints>
                             </imageView>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="xuA-Ur-fti" firstAttribute="leading" secondItem="Xd7-Nx-3IR" secondAttribute="leading" id="0Ug-WY-ywj"/>
+                            <constraint firstAttribute="trailing" secondItem="DrT-a7-sR8" secondAttribute="trailing" id="LpV-5s-O6M"/>
+                        </constraints>
                     </stackView>
                 </subviews>
                 <constraints>
@@ -65,13 +79,21 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="label" destination="zQC-Xg-V2D" id="FC2-4u-0aM"/>
+                <outlet property="label2" destination="PTL-Ta-xEa" id="nmH-RB-Vuy"/>
                 <outlet property="leftImageView" destination="xuA-Ur-fti" id="0Ly-UM-oS7"/>
-                <outlet property="messageBubble" destination="WNI-rZ-4WV" id="Nfm-wK-MmX"/>
                 <outlet property="rightImageView" destination="DrT-a7-sR8" id="sOd-7y-Ta9"/>
             </connections>
             <point key="canvasLocation" x="131.8840579710145" y="88.058035714285708"/>
         </tableViewCell>
     </objects>
+    <designables>
+        <designable name="PTL-Ta-xEa">
+            <size key="intrinsicContentSize" width="51.5" height="20.5"/>
+        </designable>
+        <designable name="zQC-Xg-V2D">
+            <size key="intrinsicContentSize" width="41.5" height="20.5"/>
+        </designable>
+    </designables>
     <resources>
         <namedColor name="BrandLightPurple">
             <color red="0.98000001907348633" green="0.9649999737739563" blue="0.99599999189376831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
