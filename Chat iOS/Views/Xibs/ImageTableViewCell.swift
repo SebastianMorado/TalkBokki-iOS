@@ -44,7 +44,7 @@ class ImageTableViewCell: UITableViewCell {
 
         aspectConstraint = constraint
         
-        let margin = UIScreen.main.bounds.width / 4
+        let margin = UIScreen.main.bounds.width / 3
         
         if fromSelf {
             //Make constraints

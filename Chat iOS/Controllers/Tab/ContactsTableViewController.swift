@@ -18,12 +18,15 @@ class ContactsTableViewController: UITableViewController {
     
     var contactDictionary = [String: [Contact]]()
     var contactLetters = [String]()
+
+    var filteredDictionary = [String: [Contact]]()
+    var filteredLetters = [String]()
     
     private let emailPredicate = EmailPredicate()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        searchBar.delegate = self
         // Uncomment the following line to preserve selection between presentations
         self.clearsSelectionOnViewWillAppear = true
         self.definesPresentationContext = true
@@ -185,6 +188,8 @@ class ContactsTableViewController: UITableViewController {
                         
                     }
                     DispatchQueue.main.async {
+                        self.filteredLetters = self.contactLetters
+                        self.filteredDictionary = self.contactDictionary
                         self.tableView.reloadData()
                     }
                 }
@@ -240,22 +245,22 @@ class ContactsTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return contactDictionary.count
+        return filteredDictionary.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return contactLetters[section]
+        return filteredLetters[section]
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contactDictionary[contactLetters[section]]!.count
+        return filteredDictionary[filteredLetters[section]]!.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "contactsCell", for: indexPath) as! ContactsCell
-        cell.cellLabel.text = contactDictionary[contactLetters[indexPath.section]]![indexPath.row].name
-        let url = URL(string: contactDictionary[contactLetters[indexPath.section]]![indexPath.row].profilePicture)
+        cell.cellLabel.text = filteredDictionary[filteredLetters[indexPath.section]]![indexPath.row].name
+        let url = URL(string: filteredDictionary[filteredLetters[indexPath.section]]![indexPath.row].profilePicture)
         let processor = DownsamplingImageProcessor(size: cell.cellImage.bounds.size)
         cell.cellImage.kf.setImage(
             with: url,
@@ -270,7 +275,7 @@ class ContactsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let selectedContact = contactDictionary[contactLetters[indexPath.section]]![indexPath.row]
+        let selectedContact = filteredDictionary[filteredLetters[indexPath.section]]![indexPath.row]
         self.performSegue(withIdentifier: "goToContactDetail", sender: selectedContact)
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -308,4 +313,43 @@ class ContactsTableViewController: UITableViewController {
 
 extension ContactsTableViewController: UISearchBarDelegate {
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //loop through each entry in Contact Dictionary using each letter of contactLetters
+        if searchBar.text?.count ?? 0 > 0 {
+            filterContacts(searchText: searchBar.text!)
+            tableView.reloadData()
+        }
+        
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            filteredDictionary = contactDictionary
+            filteredLetters = contactLetters
+            tableView.reloadData()
+            //if there is no text, deselect the search bar and remove the keyboard
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+            
+        } else {
+            filterContacts(searchText: searchBar.text!)
+            tableView.reloadData()
+        }
+    }
+    
+    
+    func filterContacts(searchText: String) {
+        filteredDictionary = [:]
+        filteredLetters = []
+        for (letter, contactArrayForLetter) in contactDictionary {
+            let newContactArrayForLetter : [Contact] = contactArrayForLetter.filter { contact in
+                return contact.name.localizedStandardContains(searchText)
+            }
+            if newContactArrayForLetter.count > 0 {
+                filteredLetters.append(letter)
+                filteredDictionary[letter] = newContactArrayForLetter
+            }
+        }
+    }
 }
