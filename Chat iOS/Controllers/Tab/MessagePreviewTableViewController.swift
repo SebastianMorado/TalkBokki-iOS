@@ -27,12 +27,15 @@ class MessagePreviewTableViewController: UITableViewController {
     
     private var chats = [String: Contact]()
     private var chatsMostRecent = [String]()
+    private var filteredChats = [String: Contact]()
+    private var filteredChatsMostRecent = [String]()
+    
     var refresh = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("LOAD")
+        searchBar.delegate = self
 
         // Uncomment the following line to preserve selection between presentations
         self.clearsSelectionOnViewWillAppear = false
@@ -135,6 +138,10 @@ class MessagePreviewTableViewController: UITableViewController {
         group.notify(queue: DispatchQueue.global()) {
             print("reloading data now...")
             DispatchQueue.main.async {
+                
+                self.filteredChats = self.chats
+                self.filteredChatsMostRecent = self.chatsMostRecent
+                
                 self.tableView.reloadData()
                 self.refresh.endRefreshing()
             }
@@ -153,27 +160,33 @@ class MessagePreviewTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return chats.count
+        return filteredChats.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier2, for: indexPath) as! MessagePreviewCell
         
-        if chatsMostRecent.count == 0 || chats.count == 0 {
+        if filteredChatsMostRecent.count == 0 || filteredChats.count == 0 {
             return cell
         }
         
-        let currentChatEmail = chatsMostRecent[indexPath.row]
-        let currentContact = chats[currentChatEmail]!
+        //set up variables for email and contact details
+        let currentChatEmail = filteredChatsMostRecent[indexPath.row]
+        let currentContact = filteredChats[currentChatEmail]!
+        //exit if somehow messages arent loading
         guard let mostRecentMessage = currentContact.messages else { return cell }
         
+        //display placeholder image text if most recent message was image
         let mostRecentMessageText = mostRecentMessage[0].text != "" ? mostRecentMessage[0].text : "[Image]"
         cell.contactName.text = currentContact.name
+        
+        //add a "You: " to preview if current user sent the most recent message
         if mostRecentMessage[0].senderEmail == Auth.auth().currentUser!.email! {
             cell.messageText.text = "You: " + mostRecentMessageText
         } else {
             cell.messageText.text = mostRecentMessageText
         }
+        
         //change color of label text depending if message has been read or not
         if mostRecentMessage[0].wasRead {
             cell.messageText.textColor = .gray
@@ -181,6 +194,7 @@ class MessagePreviewTableViewController: UITableViewController {
             cell.messageText.font = UIFont.systemFont(ofSize: cell.messageText.font!.pointSize, weight: .semibold)
         }
         
+        //set profile pic of contact to display
         let url = URL(string: currentContact.profilePicture)
         let processor = DownsamplingImageProcessor(size: cell.contactImage.bounds.size)
         cell.contactImage.kf.setImage(
@@ -200,8 +214,8 @@ class MessagePreviewTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        let contactEmail = chatsMostRecent[indexPath.row]
-        let contact = chats[contactEmail]
+        let contactEmail = filteredChatsMostRecent[indexPath.row]
+        let contact = filteredChats[contactEmail]
         self.performSegue(withIdentifier: "goToChat", sender: contact)
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -212,5 +226,43 @@ class MessagePreviewTableViewController: UITableViewController {
 //MARK: - Search bar delegate
 
 extension MessagePreviewTableViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //loop through each entry in Contact Dictionary using each letter of contactLetters
+        if searchBar.text?.count ?? 0 > 0 {
+            filterContacts(searchText: searchBar.text!)
+            tableView.reloadData()
+        }
+        
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            filteredChats = chats
+            filteredChatsMostRecent = chatsMostRecent
+            tableView.reloadData()
+            
+            //if there is no text, deselect the search bar and remove the keyboard
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+            
+        } else {
+            filterContacts(searchText: searchBar.text!)
+            tableView.reloadData()
+        }
+    }
+    
+    
+    func filterContacts(searchText: String) {
+        filteredChats = [:]
+        filteredChatsMostRecent = []
+        filteredChats = chats.filter {
+            $0.value.name.localizedStandardContains(searchText)
+        }
+        for (email, _) in filteredChats {
+            filteredChatsMostRecent.append(email)
+        }
+    }
     
 }
