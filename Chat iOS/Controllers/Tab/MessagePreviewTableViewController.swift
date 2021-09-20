@@ -52,9 +52,6 @@ class MessagePreviewTableViewController: UITableViewController {
         loadContacts()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        loadMessages()
-    }
     
     @IBAction func createNewMessage(_ sender: UIBarButtonItem) {
         
@@ -162,19 +159,23 @@ class MessagePreviewTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier2, for: indexPath) as! MessagePreviewCell
         
+        if chatsMostRecent.count == 0 || chats.count == 0 {
+            return cell
+        }
+        
         let currentChatEmail = chatsMostRecent[indexPath.row]
         let currentContact = chats[currentChatEmail]!
-        let mostRecentMessage = chats[currentChatEmail]!.messages![0]
+        guard let mostRecentMessage = currentContact.messages else { return cell }
         
-        let mostRecentMessageText = mostRecentMessage.text != "" ? mostRecentMessage.text : "[Image]"
+        let mostRecentMessageText = mostRecentMessage[0].text != "" ? mostRecentMessage[0].text : "[Image]"
         cell.contactName.text = currentContact.name
-        if mostRecentMessage.senderEmail == Auth.auth().currentUser!.email! {
+        if mostRecentMessage[0].senderEmail == Auth.auth().currentUser!.email! {
             cell.messageText.text = "You: " + mostRecentMessageText
         } else {
             cell.messageText.text = mostRecentMessageText
         }
         //change color of label text depending if message has been read or not
-        if mostRecentMessage.wasRead {
+        if mostRecentMessage[0].wasRead {
             cell.messageText.textColor = .gray
         } else {
             cell.messageText.font = UIFont.systemFont(ofSize: cell.messageText.font!.pointSize, weight: .semibold)

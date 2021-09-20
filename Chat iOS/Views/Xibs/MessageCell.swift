@@ -9,18 +9,9 @@
 import UIKit
 import PaddingLabel
 
-protocol hasLeftAndRightPictures {
-    func setRoundedImage()
-    var leftImageView: UIImageView! { get }
-    var rightImageView: UIImageView! { get }
-    var label: PaddingLabel! { get }
-    var label2: PaddingLabel! { get }
-}
-
-class MessageCell: UITableViewCell, hasLeftAndRightPictures {
+class MessageCell: UITableViewCell {
     
-    @IBOutlet weak var rightImageView: UIImageView!
-    @IBOutlet weak var leftImageView: UIImageView!
+
     @IBOutlet weak var label: PaddingLabel!
     @IBOutlet weak var label2: PaddingLabel!
     
@@ -37,19 +28,17 @@ class MessageCell: UITableViewCell, hasLeftAndRightPictures {
         // Configure the view for the selected state
     }
     
-    func setRoundedImage(){
-        let radius = rightImageView.frame.width / 2
-        rightImageView.layer.cornerRadius = radius
-        rightImageView.layer.masksToBounds = true
-        leftImageView.layer.cornerRadius = radius
-        leftImageView.layer.masksToBounds = true
-    }
+//    func setRoundedImage(){
+//        let radius = rightImageView.frame.width / 2
+//        rightImageView.layer.cornerRadius = radius
+//        rightImageView.layer.masksToBounds = true
+//        leftImageView.layer.cornerRadius = radius
+//        leftImageView.layer.masksToBounds = true
+//    }
     
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        rightImageView.image = UIImage(contentsOfFile: "")
-        leftImageView.image = UIImage(contentsOfFile: "")
         label.isHidden = false
         label2.isHidden = false
     }

@@ -12,14 +12,51 @@ class ImageTableViewCell: UITableViewCell {
 
     
     @IBOutlet weak var imageBox: UIImageView!
-    @IBOutlet weak var leftImageView: UIImageView!
-    @IBOutlet weak var rightImageView: UIImageView!
-    @IBOutlet weak var messageBubble: UIView!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
+    
+    internal var aspectConstraint : NSLayoutConstraint? {
+        didSet {
+            if oldValue != nil {
+                imageBox.removeConstraint(oldValue!)
+            }
+            if aspectConstraint != nil {
+                imageBox.addConstraint(aspectConstraint!)
+            }
+        }
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        aspectConstraint = nil
+        leadingConstraint.constant = 10
+        trailingConstraint.constant = 10
+    }
+
+    func prepareCellDimensions(width: CGFloat, height: CGFloat, fromSelf: Bool) {
+
+        let aspect = width / height
+
+        let constraint = NSLayoutConstraint(item: imageBox!, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: imageBox!, attribute: NSLayoutConstraint.Attribute.height, multiplier: aspect, constant: 0.0)
+        constraint.priority = UILayoutPriority(rawValue: 999)
+
+        aspectConstraint = constraint
+        
+        let margin = UIScreen.main.bounds.width / 4
+        
+        if fromSelf {
+            //Make constraints
+            leadingConstraint.constant = margin
+        } else {
+            trailingConstraint.constant = margin
+        }
+
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        messageBubble.layer.cornerRadius = 20
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -29,12 +66,6 @@ class ImageTableViewCell: UITableViewCell {
         //print("The image size is \(imageBox.image?.size)")
     }
     
-    func setRoundedImage(){
-        let radius = rightImageView.frame.width / 2
-        rightImageView.layer.cornerRadius = radius
-        rightImageView.layer.masksToBounds = true
-        leftImageView.layer.cornerRadius = radius
-        leftImageView.layer.masksToBounds = true
-    }
+
     
 }
