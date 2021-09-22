@@ -108,6 +108,12 @@ class SettingsViewController: UIViewController {
             }
     }
     
+    @IBAction func changeName(_ sender: UIButton) {
+    }
+    
+    @IBAction func changePhoneNumber(_ sender: UIButton) {
+    }
+    
     @IBAction func pressNotifications(_ sender: UIButton) {
     }
     

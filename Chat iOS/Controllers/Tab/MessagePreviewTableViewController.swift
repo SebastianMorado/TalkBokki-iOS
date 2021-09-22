@@ -57,7 +57,7 @@ class MessagePreviewTableViewController: UITableViewController {
     
     
     @IBAction func createNewMessage(_ sender: UIBarButtonItem) {
-        
+        performSegue(withIdentifier: "goToNewMessage", sender: self)
     }
     
     @objc private func refreshTableData(_ sender: Any) {
@@ -152,6 +152,10 @@ class MessagePreviewTableViewController: UITableViewController {
         if segue.identifier == "goToChat" {
             if let destinationVC = segue.destination as? MessageViewController, let contact = sender as? Contact {
                 destinationVC.selectedContact = contact
+            }
+        } else if segue.identifier == "goToNewMessage" {
+            if let destinationVC = segue.destination as? NewMessageTableViewController {
+                destinationVC.delegate = self
             }
         }
     }

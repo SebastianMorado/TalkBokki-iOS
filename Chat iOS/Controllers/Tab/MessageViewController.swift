@@ -15,8 +15,8 @@ class MessageViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTextfield: UITextField!
     @IBOutlet weak var viewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var friendImage: UIImageView!
-    
+    @IBOutlet weak var nameButton: UIButton!
+    @IBOutlet weak var nameView: UIView!
     let db = Firestore.firestore()
     private var imagePicker = UIImagePickerController()
     
@@ -36,33 +36,51 @@ class MessageViewController: UIViewController {
             dismiss(animated: true, completion: nil)
         }
         
-        title = selectedContact!.name
-        
-        friendImage.kf.setImage(
-            with: URL(string: selectedContact!.profilePicture),
-            options: [
-                .processor(DownsamplingImageProcessor(size: friendImage.bounds.size)),
-                .loadDiskFileSynchronously,
-                .cacheOriginalImage,
-                .transition(.fade(0.25))
-            ]
-        )
-        friendImage.setRounded()
+        setupViewUI()
         
         imagePicker.delegate = self
         tableView.dataSource = self
         tableView.delegate = self
         messageTextfield.delegate = self
         
-        tabBarHeight = tabBarController?.tabBar.frame.size.height
-        
-        
         tableView.register(UINib(nibName: K.cellNibName1, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
         tableView.register(UINib(nibName: K.imageCellNibName, bundle: nil), forCellReuseIdentifier: K.imageCellIdentifier)
+        
         loadMessages()
     }
     
-    func loadMessages() {
+    private func setupViewUI() {
+        //Display name of contact
+        nameButton.setTitle(selectedContact!.name, for: .normal)
+        
+        // Create the image view for contact's profile picture
+        let image = UIImageView()
+        image.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        image.contentMode = UIView.ContentMode.scaleAspectFit
+        image.setRounded()
+
+        image.kf.setImage(
+            with: URL(string: selectedContact!.profilePicture),
+            options: [
+                .processor(DownsamplingImageProcessor(size: CGSize(width: 40, height: 40))),
+                .loadDiskFileSynchronously,
+                .cacheOriginalImage,
+                .transition(.fade(0.25))
+            ])
+        
+        //set navigation title to image view
+        self.navigationItem.titleView = image
+    
+        //add a bottom border to our extended navigation view
+        nameView.addBottomBorder(color: UIColor.lightGray, width: 0.5)
+        
+        //store tabBarHeight to fix height bug with IQKeyboardManager
+        tabBarHeight = tabBarController?.tabBar.frame.size.height
+    }
+    
+    //MARK: - Chat and Firebase Functionality
+    
+    private func loadMessages() {
         db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.contactsCollection)
@@ -101,7 +119,7 @@ class MessageViewController: UIViewController {
             }
     }
     
-    func readMessages() {
+    private func readMessages() {
         db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.contactsCollection)
@@ -124,7 +142,7 @@ class MessageViewController: UIViewController {
         addMessageData(imageData: nil)
     }
     
-    func addMessageData(imageData: [String: Any]?){
+    private func addMessageData(imageData: [String: Any]?){
         let currentTimestamp = Timestamp.init(date: Date())
         var messageText = messageTextfield.text
         
@@ -205,10 +223,7 @@ class MessageViewController: UIViewController {
         }
     }
     
-    @IBAction func tapFriendImage(_ sender: UITapGestureRecognizer) {
-    }
-    
-    func uploadImagePic(image: UIImage) {
+    private func uploadImagePic(image: UIImage) {
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
@@ -246,6 +261,8 @@ class MessageViewController: UIViewController {
         }
     }
     
+    //MARK: - Extra Functionality
+    
     @IBAction func pressCamera(_ sender: UIButton) {
         let alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
 
@@ -268,6 +285,16 @@ class MessageViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func callFriend(_ sender: UIBarButtonItem) {
+        let phoneURL = "tel://\(selectedContact!.number)"
+        if let url = URL(string: phoneURL), UIApplication.shared.canOpenURL(url) {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
+    }
 }
 
 //MARK: - UITableViewDataSource
@@ -378,7 +405,7 @@ extension MessageViewController: UIImagePickerControllerDelegate, UINavigationCo
         
     }
     
-    func openGallery() {
+    private func openGallery() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
             imagePicker.allowsEditing = false
             imagePicker.sourceType = .photoLibrary
@@ -390,7 +417,7 @@ extension MessageViewController: UIImagePickerControllerDelegate, UINavigationCo
         }
     }
     
-    func openCamera() {
+    private func openCamera() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
             imagePicker.sourceType = .camera
             imagePicker.allowsEditing = false
@@ -412,7 +439,7 @@ extension MessageViewController: UITextFieldDelegate {
             viewBottomConstraint.constant -= safeTabBarHeight
         }
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         if let safeTabBarHeight = tabBarHeight {
             viewBottomConstraint.constant += safeTabBarHeight

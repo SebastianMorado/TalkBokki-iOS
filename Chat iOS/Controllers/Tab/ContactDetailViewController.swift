@@ -68,5 +68,7 @@ class ContactDetailViewController: UIViewController {
         }
     }
 
+    @IBAction func deleteFriend(_ sender: UIButton) {
+    }
 }
 
