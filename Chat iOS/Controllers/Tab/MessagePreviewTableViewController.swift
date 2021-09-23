@@ -35,6 +35,8 @@ class MessagePreviewTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         searchBar.delegate = self
 
         // Uncomment the following line to preserve selection between presentations
@@ -53,6 +55,12 @@ class MessagePreviewTableViewController: UITableViewController {
         tableView.refreshControl = refresh
         
         loadContacts()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.navigationBar.barTintColor = nil
+        self.navigationController?.navigationBar.backgroundColor = nil
     }
     
     

@@ -17,6 +17,8 @@ class MessageViewController: UIViewController {
     @IBOutlet weak var viewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var nameButton: UIButton!
     @IBOutlet weak var nameView: UIView!
+    @IBOutlet weak var nameViewTopConstraint: NSLayoutConstraint!
+    
     let db = Firestore.firestore()
     private var imagePicker = UIImagePickerController()
     
@@ -32,6 +34,10 @@ class MessageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.layoutIfNeeded()
         if selectedContact == nil {
             dismiss(animated: true, completion: nil)
         }
@@ -49,9 +55,14 @@ class MessageViewController: UIViewController {
         loadMessages()
     }
     
+    
+
+    
     private func setupViewUI() {
+        self.navigationController?.navigationBar.tintColor = .white
         //Display name of contact
         nameButton.setTitle(selectedContact!.name, for: .normal)
+        nameButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         
         // Create the image view for contact's profile picture
         let image = UIImageView()
@@ -70,9 +81,6 @@ class MessageViewController: UIViewController {
         
         //set navigation title to image view
         self.navigationItem.titleView = image
-    
-        //add a bottom border to our extended navigation view
-        nameView.addBottomBorder(color: UIColor.lightGray, width: 0.5)
         
         //store tabBarHeight to fix height bug with IQKeyboardManager
         tabBarHeight = tabBarController?.tabBar.frame.size.height
@@ -295,6 +303,28 @@ class MessageViewController: UIViewController {
             }
         }
     }
+    @objc private func imageTapped(sender: UITapGestureRecognizer) {
+        let imageView = sender.view as! UIImageView
+        self.selectedImage = imageView.image
+        self.performSegue(withIdentifier: "goToImageDetail", sender: self)
+    }
+
+    
+    @IBAction func pressChatName(_ sender: UIButton) {
+        performSegue(withIdentifier: "goToChatDetail", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToImageDetail" {
+            let destinationVC = segue.destination as! ImageDetailViewController
+            destinationVC.imageToBeDisplayed = self.selectedImage
+        } else if segue.identifier == "goToChatDetail" {
+            let destinationVC = segue.destination as! ChatDetailViewController
+            destinationVC.selectedContact = self.selectedContact
+            destinationVC.navBarHeight = self.navigationController?.navigationBar.frame.height
+            destinationVC.delegate = self
+        }
+    }
 }
 
 //MARK: - UITableViewDataSource
@@ -377,19 +407,9 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
         
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToImageDetail" {
-            let destinationVC = segue.destination as! ImageDetailViewController
-            destinationVC.imageToBeDisplayed = self.selectedImage
-        }
-    }
     
-    @objc private func imageTapped(sender: UITapGestureRecognizer) {
-        let imageView = sender.view as! UIImageView
-        self.selectedImage = imageView.image
-        self.performSegue(withIdentifier: "goToImageDetail", sender: self)
-    }
-
+    
+    
 }
 
 //MARK: - Image Picker Delegate
@@ -435,15 +455,25 @@ extension MessageViewController: UIImagePickerControllerDelegate, UINavigationCo
 extension MessageViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if let safeTabBarHeight = tabBarHeight {
-            viewBottomConstraint.constant -= safeTabBarHeight
+//        if let safeTabBarHeight = tabBarHeight {
+//            viewBottomConstraint.constant -= safeTabBarHeight
+//        }
+        UIView.animate(withDuration: 0.3) {
+            self.navigationItem.titleView?.alpha = 0
+            self.navigationController?.navigationBar.isHidden = true
         }
+        
     }
 
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        if let safeTabBarHeight = tabBarHeight {
-            viewBottomConstraint.constant += safeTabBarHeight
+        UIView.animate(withDuration: 0.5) {
+            self.navigationItem.titleView?.alpha = 1
+            self.navigationController?.navigationBar.isHidden = false
         }
+        //self.navigationItem.titleView?.isHidden = false
+//        if let safeTabBarHeight = tabBarHeight {
+//            viewBottomConstraint.constant += safeTabBarHeight
+//        }
     }
     
 }

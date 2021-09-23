@@ -26,6 +26,7 @@ class ContactsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         searchBar.delegate = self
         // Uncomment the following line to preserve selection between presentations
         self.clearsSelectionOnViewWillAppear = true
@@ -34,6 +35,10 @@ class ContactsTableViewController: UITableViewController {
         
         
         loadContacts()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     @IBAction func addNewContact(_ sender: UIBarButtonItem) {

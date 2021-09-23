@@ -46,7 +46,10 @@ class SettingsViewController: UIViewController {
         userImage.contentMode = .scaleAspectFill
         userImage.setRounded()
         imagePicker.delegate = self
-        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     @IBAction func changeImage(_ sender: UIButton) {

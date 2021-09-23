@@ -24,6 +24,7 @@ class ContactDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.view.backgroundColor = UIColor.init(white: 0.4, alpha: 0.8)
         
         detailView.layer.cornerRadius = 20
