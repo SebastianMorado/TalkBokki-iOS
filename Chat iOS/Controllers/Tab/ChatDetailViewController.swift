@@ -13,6 +13,8 @@ class ChatDetailViewController: UIViewController {
     
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
     @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var phoneButton: UIButton!
+    @IBOutlet weak var emailButton: UIButton!
     
     var delegate : MessageViewController?
     var selectedContact : Contact?
@@ -21,6 +23,8 @@ class ChatDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         topConstraint.constant = navBarHeight! + 29
+        phoneButton.setTitle(selectedContact?.number, for: .normal)
+        emailButton.setTitle(selectedContact?.email, for: .normal)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
@@ -37,6 +41,18 @@ class ChatDetailViewController: UIViewController {
         }
     }
     
-
-   
+    @IBAction func pressMute(_ sender: UIButton) {
+    }
+    
+    @IBAction func pressBlock(_ sender: UIButton) {
+    }
+    
+    @IBAction func pressColor(_ sender: UIButton) {
+    }
+    
+    @IBAction func pressPhone(_ sender: UIButton) {
+    }
+    
+    @IBAction func pressEmail(_ sender: UIButton) {
+    }
 }

@@ -121,7 +121,7 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func changePassword(_ sender: UIButton) {
-    
+        performSegue(withIdentifier: "goToChangePassword", sender: self)
     }
     
     @IBAction func logOut(_ sender: UIButton) {
@@ -142,11 +142,19 @@ class SettingsViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func presentAlert(message: String, title: String = "Error") {
+    func presentAlert(message: String, title: String = "Error") {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(ok)
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToChangePassword" {
+            if let destinationVC = segue.destination as? ChangePasswordViewController {
+                destinationVC.delegate = self
+            }
+        }
     }
 }
 

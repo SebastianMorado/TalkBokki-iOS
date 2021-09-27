@@ -16,7 +16,7 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     
     let emailPredicate = EmailPredicate()
-    let passwordPredicate = LengthPredicate<String>(max: 5)
+    let passwordPredicate = LengthPredicate<String>(min: 6)
     
     @IBAction func registerPressed(_ sender: UIButton) {
         if emailTextfield.text == nil || !emailPredicate.evaluate(with: emailTextfield.text!){
@@ -25,7 +25,7 @@ class RegisterViewController: UIViewController {
             presentAlert(message: "Please input valid password")
         } else if passwordTextfield.text != confirmPasswordTextField.text {
             presentAlert(message: "Please confirm password correctly")
-        } else if passwordPredicate.evaluate(with: passwordTextfield.text!){
+        } else if !passwordPredicate.evaluate(with: passwordTextfield.text!){
             presentAlert(message: "Password must be at least 6 characters long")
         } else if let email = emailTextfield.text,
                   passwordTextfield.text != nil,

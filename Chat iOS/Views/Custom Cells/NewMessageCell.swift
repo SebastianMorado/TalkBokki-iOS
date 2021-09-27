@@ -1,5 +1,5 @@
 //
-//  NewMessage.swift
+//  NewMessageCell.swift
 //  Chat iOS
 //
 //  Created by Sebastian Morado on 9/22/21.
