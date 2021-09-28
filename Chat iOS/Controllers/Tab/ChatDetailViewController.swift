@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ChatDetailViewController: UIViewController {
     
@@ -15,6 +16,8 @@ class ChatDetailViewController: UIViewController {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var phoneButton: UIButton!
     @IBOutlet weak var emailButton: UIButton!
+    
+    let db = Firestore.firestore()
     
     var delegate : MessageViewController?
     var selectedContact : Contact?
@@ -45,14 +48,80 @@ class ChatDetailViewController: UIViewController {
     }
     
     @IBAction func pressBlock(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Block friend", message: "Are you sure you want to block \(selectedContact!.name)? You can always add them again in the future.", preferredStyle: .alert)
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        }
+        
+        let action = UIAlertAction(title: "Block", style: .default) { (action) in
+            self.deleteFriendFromMyContact()
+        }
+        
+        alert.addAction(cancel)
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func deleteFriendFromMyContact() {
+        db.collection(K.FStore.usersCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .collection(K.FStore.contactsCollection)
+            .document(selectedContact!.email)
+            .delete { error in
+                if let e = error {
+                    self.presentAlert(message: e.localizedDescription)
+                } else {
+                    self.deleteMyContactFromFriend()
+                }
+            }
+    }
+    
+    private func deleteMyContactFromFriend() {
+        db.collection(K.FStore.usersCollection)
+            .document(selectedContact!.email)
+            .collection(K.FStore.contactsCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .delete { error in
+                if let e = error {
+                    self.presentAlert(message: e.localizedDescription)
+                } else {
+                    self.dismiss(animated: false) {
+                        self.delegate!.navigationController?.popViewController(animated: true)
+                    }
+                }
+            }
     }
     
     @IBAction func pressColor(_ sender: UIButton) {
     }
     
     @IBAction func pressPhone(_ sender: UIButton) {
+        let phoneURL = "tel://\(phoneButton.titleLabel!.text!)"
+        if let url = URL(string: phoneURL), UIApplication.shared.canOpenURL(url) {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
     }
     
     @IBAction func pressEmail(_ sender: UIButton) {
+        let email = selectedContact!.email
+        if let url = URL(string: "mailto:\(email)") {
+          if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url)
+          } else {
+            UIApplication.shared.openURL(url)
+          }
+        }
+    }
+    
+    private func presentAlert(message: String, title: String = "Error") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(ok)
+        self.present(alert, animated: true, completion: nil)
     }
 }

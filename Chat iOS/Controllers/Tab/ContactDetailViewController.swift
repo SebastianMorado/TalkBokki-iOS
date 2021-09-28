@@ -18,6 +18,8 @@ class ContactDetailViewController: UIViewController {
     @IBOutlet weak var detailView: UIView!
     @IBOutlet weak var buttonStackView: UIStackView!
     
+    let db = Firestore.firestore()
+    
     weak var delegate : ContactsTableViewController?
     
     var selectedContact : Contact?
@@ -70,6 +72,56 @@ class ContactDetailViewController: UIViewController {
     }
 
     @IBAction func deleteFriend(_ sender: UIButton) {
+        
+        let alert = UIAlertController(title: "Block friend", message: "Are you sure you want to block \(selectedContact!.name)? You can always add them again in the future.", preferredStyle: .alert)
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        }
+        
+        let action = UIAlertAction(title: "Block", style: .default) { (action) in
+            self.deleteFriendFromMyContact()
+        }
+        
+        alert.addAction(cancel)
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func deleteFriendFromMyContact() {
+        db.collection(K.FStore.usersCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .collection(K.FStore.contactsCollection)
+            .document(self.selectedContact!.email)
+            .delete { error in
+                if let e = error {
+                    self.presentAlert(message: e.localizedDescription)
+                } else {
+                    self.deleteMyContactFromFriend()
+                }
+            }
+    }
+    
+    private func deleteMyContactFromFriend() {
+        db.collection(K.FStore.usersCollection)
+            .document(self.selectedContact!.email)
+            .collection(K.FStore.contactsCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .delete { error in
+                if let e = error {
+                    self.presentAlert(message: e.localizedDescription)
+                } else {
+                    self.dismiss(animated: true, completion: nil)
+                    self.delegate!.presentAlert(message: "\(self.selectedContact!.name) is now blocked", title: "Success")
+                }
+            }
+    }
+    
+    private func presentAlert(message: String, title: String = "Error") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(ok)
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

@@ -25,6 +25,18 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        updateUI()
+        
+        userImage.contentMode = .scaleAspectFill
+        userImage.setRounded()
+        imagePicker.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    private func updateUI() {
         if let name = UserDefaults.standard.string(forKey: K.UDefaults.userName),
            let image = UserDefaults.standard.string(forKey: K.UDefaults.userURL),
            let phone = UserDefaults.standard.string(forKey: K.UDefaults.userPhone) {
@@ -42,14 +54,6 @@ class SettingsViewController: UIViewController {
                 print(signOutError.localizedDescription)
             }
         }
-        
-        userImage.contentMode = .scaleAspectFill
-        userImage.setRounded()
-        imagePicker.delegate = self
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.isHidden = false
     }
     
     @IBAction func changeImage(_ sender: UIButton) {
@@ -112,9 +116,74 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func changeName(_ sender: UIButton) {
+        var textField = UITextField()
+        let userName = UserDefaults.standard.string(forKey: K.UDefaults.userName) ?? "None"
+        
+        let alert = UIAlertController(title: "Update name", message: "Current name: \(userName)", preferredStyle: .alert)
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        }
+        
+        let action = UIAlertAction(title: "Save", style: .default) { (action) in
+            self.db.collection(K.FStore.usersCollection)
+                .document(Auth.auth().currentUser!.email!)
+                .getDocument { document, error in
+                    if let e = error {
+                        print(e.localizedDescription)
+                    } else {
+                        document?.reference.updateData(["name" : textField.text ?? userName])
+                        UserDefaults.standard.set(textField.text ?? userName, forKey: K.UDefaults.userName)
+                        DispatchQueue.main.async {
+                            self.updateUI()
+                        }
+                    }
+                }
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "New name"
+            textField = alertTextField
+        }
+        alert.addAction(cancel)
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
     }
     
     @IBAction func changePhoneNumber(_ sender: UIButton) {
+        
+        var textField = UITextField()
+        let phoneNumber = UserDefaults.standard.string(forKey: K.UDefaults.userPhone) ?? "None"
+        
+        let alert = UIAlertController(title: "Update phone number", message: "Current number: \(phoneNumber)", preferredStyle: .alert)
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        }
+        
+        let action = UIAlertAction(title: "Save", style: .default) { (action) in
+            self.db.collection(K.FStore.usersCollection)
+                .document(Auth.auth().currentUser!.email!)
+                .getDocument { document, error in
+                    if let e = error {
+                        print(e.localizedDescription)
+                    } else {
+                        document?.reference.updateData(["phone_number" : textField.text ?? phoneNumber])
+                        UserDefaults.standard.set(textField.text ?? phoneNumber, forKey: K.UDefaults.userPhone)
+                        DispatchQueue.main.async {
+                            self.updateUI()
+                        }
+                    }
+                }
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "New phone number"
+            textField = alertTextField
+        }
+        alert.addAction(cancel)
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
     }
     
     @IBAction func pressNotifications(_ sender: UIButton) {
