@@ -14,6 +14,8 @@ class MessageCell: UITableViewCell {
 
     @IBOutlet weak var label: PaddingLabel!
     @IBOutlet weak var label2: PaddingLabel!
+    @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var time2: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,22 +27,16 @@ class MessageCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
     
-//    func setRoundedImage(){
-//        let radius = rightImageView.frame.width / 2
-//        rightImageView.layer.cornerRadius = radius
-//        rightImageView.layer.masksToBounds = true
-//        leftImageView.layer.cornerRadius = radius
-//        leftImageView.layer.masksToBounds = true
-//    }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-
+        
         label.isHidden = false
         label2.isHidden = false
+        time.isHidden = false
+        time2.isHidden = false
     }
     
 }

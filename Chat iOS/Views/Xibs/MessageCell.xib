@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -24,27 +26,55 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zQC-Xg-V2D" customClass="PaddingLabel" customModule="PaddingLabel">
-                                        <rect key="frame" x="10" y="5" width="41.5" height="35"/>
+                                        <rect key="frame" x="10" y="5" width="55.5" height="35"/>
                                         <color key="backgroundColor" name="BrandPurple"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="BME-O6-xjf"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" name="BrandLightPurple"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label2" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTL-Ta-xEa" customClass="PaddingLabel" customModule="PaddingLabel">
-                                        <rect key="frame" x="258.5" y="5" width="51.5" height="35"/>
+                                        <rect key="frame" x="244.5" y="5" width="65.5" height="35"/>
                                         <color key="backgroundColor" name="BrandPurple"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="c5O-Zb-4Yc"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" name="BrandLightPurple"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ej-PM-qF8">
+                                        <rect key="frame" x="75.5" y="20" width="25" height="17"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="17" id="xHI-A7-Iar"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n8f-hv-4zh" userLabel="time 2">
+                                        <rect key="frame" x="209.5" y="20" width="25" height="17"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="17" id="nix-UM-ZoJ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" systemColor="secondaryLabelColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="6Ej-PM-qF8" secondAttribute="bottom" constant="8" id="38z-K5-jFc"/>
+                                    <constraint firstItem="PTL-Ta-xEa" firstAttribute="leading" secondItem="n8f-hv-4zh" secondAttribute="trailing" constant="10" id="AFX-3f-9rO"/>
+                                    <constraint firstAttribute="bottom" secondItem="n8f-hv-4zh" secondAttribute="bottom" constant="8" id="H3i-td-kaU"/>
                                     <constraint firstItem="PTL-Ta-xEa" firstAttribute="top" secondItem="WNI-rZ-4WV" secondAttribute="top" constant="5" id="I5A-24-Kz7"/>
                                     <constraint firstAttribute="bottom" secondItem="zQC-Xg-V2D" secondAttribute="bottom" constant="5" id="ZOK-D9-HZu"/>
                                     <constraint firstItem="zQC-Xg-V2D" firstAttribute="top" secondItem="WNI-rZ-4WV" secondAttribute="top" constant="5" id="hwK-Xu-t2b"/>
                                     <constraint firstItem="zQC-Xg-V2D" firstAttribute="leading" secondItem="WNI-rZ-4WV" secondAttribute="leading" constant="10" id="jAi-sq-KTn"/>
                                     <constraint firstAttribute="trailing" secondItem="PTL-Ta-xEa" secondAttribute="trailing" constant="10" id="jIm-In-pBq"/>
+                                    <constraint firstItem="6Ej-PM-qF8" firstAttribute="leading" secondItem="zQC-Xg-V2D" secondAttribute="trailing" constant="10" id="lbz-dW-poC"/>
                                     <constraint firstAttribute="bottom" secondItem="PTL-Ta-xEa" secondAttribute="bottom" constant="5" id="wOF-r6-Hzs"/>
                                 </constraints>
                             </view>
@@ -62,16 +92,18 @@
             <connections>
                 <outlet property="label" destination="zQC-Xg-V2D" id="FC2-4u-0aM"/>
                 <outlet property="label2" destination="PTL-Ta-xEa" id="nmH-RB-Vuy"/>
+                <outlet property="time" destination="6Ej-PM-qF8" id="efm-LB-Ll5"/>
+                <outlet property="time2" destination="n8f-hv-4zh" id="hp7-JC-ROp"/>
             </connections>
             <point key="canvasLocation" x="131.8840579710145" y="83.370535714285708"/>
         </tableViewCell>
     </objects>
     <designables>
         <designable name="PTL-Ta-xEa">
-            <size key="intrinsicContentSize" width="51.5" height="20.5"/>
+            <size key="intrinsicContentSize" width="65.5" height="30.5"/>
         </designable>
         <designable name="zQC-Xg-V2D">
-            <size key="intrinsicContentSize" width="41.5" height="20.5"/>
+            <size key="intrinsicContentSize" width="55.5" height="30.5"/>
         </designable>
     </designables>
     <resources>
@@ -81,5 +113,8 @@
         <namedColor name="BrandPurple">
             <color red="0.67500001192092896" green="0.43500000238418579" blue="0.9179999828338623" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

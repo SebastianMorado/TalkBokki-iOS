@@ -185,6 +185,8 @@ class MessagePreviewTableViewController: UITableViewController {
         //set up variables for email and contact details
         let currentChatEmail = filteredChatsMostRecent[indexPath.row]
         let currentContact = filteredChats[currentChatEmail]!
+        
+        
         //exit if somehow messages arent loading
         guard let mostRecentMessage = currentContact.messages else { return cell }
         
@@ -192,11 +194,25 @@ class MessagePreviewTableViewController: UITableViewController {
         let mostRecentMessageText = mostRecentMessage[0].text != "" ? mostRecentMessage[0].text : "[Image]"
         cell.contactName.text = currentContact.name
         
+        //set up time to be displayed in preview
+        let dateFormatter = DateFormatter()
+        let timeDiff = Calendar.current.dateComponents([.hour], from: currentContact.mostRecentMessage!, to: Date()).hour!
+        if timeDiff < 24 {
+            dateFormatter.dateFormat = "h:mm a"
+        } else if timeDiff < 168 {
+            dateFormatter.dateFormat = "E"
+        } else {
+            dateFormatter.dateFormat = "MMM d"
+        }
+
+        
+        let dateString = " · " + dateFormatter.string(from: currentContact.mostRecentMessage!)
+        
         //add a "You: " to preview if current user sent the most recent message
         if mostRecentMessage[0].senderEmail == Auth.auth().currentUser!.email! {
-            cell.messageText.text = "You: " + mostRecentMessageText
+            cell.messageText.text = "You: " + mostRecentMessageText + dateString
         } else {
-            cell.messageText.text = mostRecentMessageText
+            cell.messageText.text = mostRecentMessageText + dateString
         }
         
         //change color of label text depending if message has been read or not

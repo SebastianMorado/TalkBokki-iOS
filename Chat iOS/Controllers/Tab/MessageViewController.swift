@@ -62,7 +62,7 @@ class MessageViewController: UIViewController {
         self.navigationController?.navigationBar.tintColor = .white
         //Display name of contact
         nameButton.setTitle(selectedContact!.name, for: .normal)
-        nameButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        nameButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .heavy)
         
         // Create the image view for contact's profile picture
         let image = UIImageView()
@@ -73,12 +73,12 @@ class MessageViewController: UIViewController {
         image.kf.setImage(
             with: URL(string: selectedContact!.profilePicture),
             options: [
-                .processor(DownsamplingImageProcessor(size: CGSize(width: 40, height: 40))),
+                .processor(DownsamplingImageProcessor(size: CGSize(width: 40, height: 40)) |> RoundCornerImageProcessor(cornerRadius: 20) ),
                 .loadDiskFileSynchronously,
                 .cacheOriginalImage,
                 .transition(.fade(0.25))
             ])
-        
+
         //set navigation title to image view
         self.navigationItem.titleView = image
         
@@ -303,11 +303,7 @@ class MessageViewController: UIViewController {
             }
         }
     }
-    @objc private func imageTapped(sender: UITapGestureRecognizer) {
-        let imageView = sender.view as! UIImageView
-        self.selectedImage = imageView.image
-        self.performSegue(withIdentifier: "goToImageDetail", sender: self)
-    }
+    
 
     
     @IBAction func pressChatName(_ sender: UIButton) {
@@ -348,24 +344,25 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MessageCell
             //Format message from current user
             if message.senderEmail == Auth.auth().currentUser?.email {
-                setCellDataText(of: cell, fromSelf: true, message: message.text)
+                setCellDataText(of: cell, fromSelf: true, message: message.text, time: message.date)
             } else {
                 
-                setCellDataText(of: cell, fromSelf: false, message: message.text)
+                setCellDataText(of: cell, fromSelf: false, message: message.text, time: message.date)
             }
             return cell
             
         //image message
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: K.imageCellIdentifier, for: indexPath) as! ImageTableViewCell
-            let cornerRadius : CGFloat = 0.05 * min(message.imageHeight, message.imageWidth)
+            
+            let aspect = message.imageWidth / message.imageHeight
             //Format message from current user
             if message.senderEmail == Auth.auth().currentUser?.email {
-                cell.prepareCellDimensions(width: message.imageWidth, height: message.imageHeight, fromSelf: true)
-                setCellDataImage(of: cell, imageURL: message.imageURL, cornerRadius: cornerRadius)
+                cell.prepareCellDimensions(aspect: aspect, fromSelf: true)
+                setCellDataImage(of: cell, imageURL: message.imageURL, aspect: aspect, time: message.date, fromSelf: true)
             } else {
-                cell.prepareCellDimensions(width: message.imageWidth, height: message.imageHeight, fromSelf: false)
-                setCellDataImage(of: cell, imageURL: message.imageURL, cornerRadius: cornerRadius)
+                cell.prepareCellDimensions(aspect: aspect, fromSelf: false)
+                setCellDataImage(of: cell, imageURL: message.imageURL, aspect: aspect, time: message.date, fromSelf: false)
             }
             
             return cell
@@ -373,42 +370,90 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
         
     }
     
-    private func setCellDataText(of cell: MessageCell, fromSelf: Bool, message: String) {
+    private func setCellDataText(of cell: MessageCell, fromSelf: Bool, message: String, time: Date) {
+        
+        //set up time to be displayed beside message
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        let dateString = dateFormatter.string(from: time)
+        
         if fromSelf {
             cell.label.isHidden = true
+            cell.time.isHidden = true
             cell.label2.text = message
+            cell.time2.text = dateString
             cell.label2.layer.cornerRadius = cell.label2.frame.size.height / 5
             cell.label2.textColor = UIColor(named: K.BrandColors.purple)
             cell.label2.backgroundColor = UIColor(named: K.BrandColors.lightPurple)
         } else {
 
             cell.label2.isHidden = true
+            cell.time2.isHidden = true
             cell.label.text = message
+            cell.time.text = dateString
             cell.label.layer.cornerRadius = cell.label.frame.size.height / 5
             cell.label.textColor = UIColor(named: K.BrandColors.lightPurple)
             cell.label.backgroundColor = UIColor(named: K.BrandColors.purple)
         }
     }
     
-    private func setCellDataImage(of cell: ImageTableViewCell, imageURL: String, cornerRadius: CGFloat) {
+    private func setCellDataImage(of cell: ImageTableViewCell, imageURL: String, aspect: CGFloat, time: Date, fromSelf: Bool) {
+        //set up time to be displayed beside message
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        let dateString = dateFormatter.string(from: time)
+
         let imageTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(sender:)))
         
-        cell.imageBox.kf.indicatorType = .activity
-        cell.imageBox.kf.setImage(
-            with: URL(string: imageURL),
-            options: [
-                .processor(RoundCornerImageProcessor(cornerRadius: cornerRadius)),
-                .loadDiskFileSynchronously,
-                .cacheOriginalImage,
-                .transition(.fade(0.25))
-            ]
-        )
-        cell.imageBox.addGestureRecognizer(imageTapGesture)
-        
+        if fromSelf {
+            
+            
+            //let size = CGSize(width: cell.imageBox2.bounds.width, height: cell.imageBox2.bounds.width / aspect)
+            let cornerRadius = 0.05 * min(cell.imageBox2.bounds.width, cell.imageBox2.bounds.width / aspect)
+            
+            cell.imageBox2.kf.indicatorType = .activity
+            cell.imageBox2.kf.setImage(
+                with: URL(string: imageURL),
+                options: [
+                    .processor(RoundCornerImageProcessor(cornerRadius: cornerRadius)),
+                    .loadDiskFileSynchronously,
+                    .cacheOriginalImage,
+                    .transition(.fade(0.25))
+                ]
+            )
+            cell.time.isHidden = true
+            cell.imageBox.isHidden = true
+            cell.time2.text = dateString
+            cell.imageBox2.addGestureRecognizer(imageTapGesture)
+        } else {
+            
+            
+            //let size = CGSize(width: cell.imageBox.bounds.width, height: cell.imageBox.bounds.width / aspect)
+            let cornerRadius = 0.05 * min(cell.imageBox.bounds.width, cell.imageBox.bounds.width / aspect)
+            
+            cell.imageBox.kf.indicatorType = .activity
+            cell.imageBox.kf.setImage(
+                with: URL(string: imageURL),
+                options: [
+                    .processor(RoundCornerImageProcessor(cornerRadius: cornerRadius)),
+                    .loadDiskFileSynchronously,
+                    .cacheOriginalImage,
+                    .transition(.fade(0.25))
+                ]) { result, error in
+                    cell.layoutIfNeeded()
+                }
+            cell.time2.isHidden = true
+            cell.imageBox2.isHidden = true
+            cell.time.text = dateString
+            cell.imageBox.addGestureRecognizer(imageTapGesture)
+        }
     }
     
-    
-    
+    @objc private func imageTapped(sender: UITapGestureRecognizer) {
+        let imageView = sender.view as! UIImageView
+        self.selectedImage = imageView.image
+        self.performSegue(withIdentifier: "goToImageDetail", sender: self)
+    }
     
 }
 
