@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import ChameleonFramework
 
 class ChatDetailViewController: UIViewController {
     
@@ -19,6 +20,7 @@ class ChatDetailViewController: UIViewController {
     
     let db = Firestore.firestore()
     
+    
     var delegate : MessageViewController?
     var selectedContact : Contact?
     var navBarHeight: CGFloat?
@@ -28,6 +30,12 @@ class ChatDetailViewController: UIViewController {
         topConstraint.constant = navBarHeight! + 29
         phoneButton.setTitle(selectedContact?.number, for: .normal)
         emailButton.setTitle(selectedContact?.email, for: .normal)
+        
+        setupColors(color: UIColor(hexString: selectedContact!.color)!)
+    }
+    
+    private func setupColors(color: UIColor) {
+        mainView.backgroundColor = color
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
@@ -94,6 +102,35 @@ class ChatDetailViewController: UIViewController {
     }
     
     @IBAction func pressColor(_ sender: UIButton) {
+        var newColorIndex = 0
+        
+        if let currentColorIndex = K.chatColors.firstIndex(of: selectedContact!.color) {
+            newColorIndex = currentColorIndex + 1
+            if newColorIndex >= K.chatColors.count {
+                newColorIndex = 0
+            }
+        }
+        
+        let newColor = K.chatColors[newColorIndex]
+        
+        db.collection(K.FStore.usersCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .collection(K.FStore.contactsCollection)
+            .document(selectedContact!.email)
+            .getDocument { document, error in
+                if let e = error {
+                    self.presentAlert(message: e.localizedDescription)
+                } else {
+                    document?.reference.updateData(["chat_color" : newColor])
+                    self.selectedContact?.color = newColor
+                    DispatchQueue.main.async {
+                        self.setupColors(color: UIColor(hexString: newColor)!)
+                        self.delegate?.setupViewColors(color: UIColor(hexString: newColor)!)
+                        self.delegate?.tableView.reloadData()
+                    }
+                }
+            }
+        
     }
     
     @IBAction func pressPhone(_ sender: UIButton) {
@@ -125,3 +162,4 @@ class ChatDetailViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
 }
+

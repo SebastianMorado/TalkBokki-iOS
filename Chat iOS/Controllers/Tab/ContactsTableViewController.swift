@@ -179,6 +179,7 @@ class ContactsTableViewController: UITableViewController {
                         newContact.email = doc.documentID
                         newContact.number = data["phone_number"] as! String
                         newContact.profilePicture = data["profile_picture"] as! String
+                        newContact.color = data["chat_color"] as! String
                         self.checkForUpdates(contact: newContact)
                         //
                         let firstLetter = String(contactName.first!).uppercased()

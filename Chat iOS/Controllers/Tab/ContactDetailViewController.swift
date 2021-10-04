@@ -31,7 +31,7 @@ class ContactDetailViewController: UIViewController {
         
         detailView.layer.cornerRadius = 20
         detailView.layer.masksToBounds = true
-        detailView.layer.borderWidth = 5
+        detailView.layer.borderWidth = 3
         detailView.layer.borderColor = UIColor(named: "BrandPurple")?.cgColor
         
         if let contact = selectedContact {

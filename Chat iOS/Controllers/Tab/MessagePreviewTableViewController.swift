@@ -94,6 +94,7 @@ class MessagePreviewTableViewController: UITableViewController {
                         let newContact = Contact()
                         newContact.name = data["name"] as! String
                         newContact.number = data["phone_number"] as! String
+                        newContact.color = data["chat_color"] as! String
                         newContact.email = doc.documentID
                         newContact.profilePicture = data["profile_picture"] as! String
                         newContact.mostRecentMessage = (data["most_recent_message"] as! Timestamp).dateValue()

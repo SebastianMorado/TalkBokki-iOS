@@ -147,14 +147,30 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="k8N-G1-UNU">
-                                        <rect key="frame" x="42.5" y="324" width="225" height="40"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="k8N-G1-UNU">
+                                        <rect key="frame" x="47.5" y="330" width="215" height="30"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hvj-e9-IMq">
-                                                <rect key="frame" x="0.0" y="0.0" width="45" height="40"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RmR-f7-h7g">
+                                                <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="Thd-ed-ht5"/>
-                                                    <constraint firstAttribute="width" constant="45" id="yVW-Bb-LPQ"/>
+                                                    <constraint firstAttribute="height" constant="30" id="Ksm-6E-qLW"/>
+                                                    <constraint firstAttribute="width" constant="30" id="gJY-8u-pZS"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <color key="tintColor" systemColor="systemRedColor"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal">
+                                                    <imageReference key="image" image="xmark.circle" catalog="system" symbolScale="large"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="deleteFriend:" destination="irB-NY-6jK" eventType="touchUpInside" id="TtP-Zw-2bJ"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hvj-e9-IMq">
+                                                <rect key="frame" x="90" y="0.0" width="35" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="Thd-ed-ht5"/>
+                                                    <constraint firstAttribute="width" constant="35" id="yVW-Bb-LPQ"/>
                                                 </constraints>
                                                 <color key="tintColor" name="BrandPurple"/>
                                                 <state key="normal" image="message.fill" catalog="system"/>
@@ -163,10 +179,10 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8QA-PV-dcY">
-                                                <rect key="frame" x="95" y="0.0" width="40" height="40"/>
+                                                <rect key="frame" x="185" y="0.0" width="30" height="30"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="hTI-2e-PTX"/>
-                                                    <constraint firstAttribute="width" constant="40" id="vSd-V3-pHv"/>
+                                                    <constraint firstAttribute="height" constant="30" id="hTI-2e-PTX"/>
+                                                    <constraint firstAttribute="width" constant="30" id="vSd-V3-pHv"/>
                                                 </constraints>
                                                 <color key="tintColor" name="BrandPurple"/>
                                                 <state key="normal" image="phone.fill" catalog="system"/>
@@ -174,41 +190,26 @@
                                                     <action selector="startCall:" destination="irB-NY-6jK" eventType="touchUpInside" id="ise-zF-Tis"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RmR-f7-h7g">
-                                                <rect key="frame" x="185" y="0.0" width="40" height="40"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="Ksm-6E-qLW"/>
-                                                    <constraint firstAttribute="width" constant="40" id="gJY-8u-pZS"/>
-                                                </constraints>
-                                                <color key="tintColor" systemColor="systemRedColor"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal">
-                                                    <imageReference key="image" image="xmark" catalog="system" symbolScale="large"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="deleteFriend:" destination="irB-NY-6jK" eventType="touchUpInside" id="TtP-Zw-2bJ"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                     </stackView>
                                     <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Email" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="std-hE-5hd">
-                                        <rect key="frame" x="19" y="248" width="272" height="22"/>
+                                        <rect key="frame" x="19" y="248" width="272" height="19.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="272" id="0Db-Mk-iKU"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" textContentType="email"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Phone" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="94N-yq-tqy">
-                                        <rect key="frame" x="19" y="278" width="272" height="22"/>
+                                        <rect key="frame" x="19" y="275.5" width="272" height="19.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="272" id="f0z-Jp-jea"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" textContentType="tel"/>
                                     </textField>
                                 </subviews>
@@ -219,7 +220,7 @@
                                     <constraint firstItem="94N-yq-tqy" firstAttribute="centerX" secondItem="HyM-0h-gLd" secondAttribute="centerX" id="BK3-By-ZM9"/>
                                     <constraint firstItem="gMN-2D-Dmf" firstAttribute="centerX" secondItem="HyM-0h-gLd" secondAttribute="centerX" id="Csq-Ve-klD"/>
                                     <constraint firstItem="std-hE-5hd" firstAttribute="top" secondItem="gMN-2D-Dmf" secondAttribute="bottom" constant="10" id="LXr-VX-4vW"/>
-                                    <constraint firstAttribute="bottom" secondItem="k8N-G1-UNU" secondAttribute="bottom" constant="16" id="M5l-XB-pEw"/>
+                                    <constraint firstAttribute="bottom" secondItem="k8N-G1-UNU" secondAttribute="bottom" constant="20" id="M5l-XB-pEw"/>
                                     <constraint firstItem="94N-yq-tqy" firstAttribute="top" secondItem="std-hE-5hd" secondAttribute="bottom" constant="8" symbolic="YES" id="Oud-uC-da4"/>
                                     <constraint firstItem="gMN-2D-Dmf" firstAttribute="top" secondItem="O06-qC-uFN" secondAttribute="bottom" constant="8" symbolic="YES" id="S5u-I6-1rH"/>
                                     <constraint firstItem="k8N-G1-UNU" firstAttribute="centerX" secondItem="HyM-0h-gLd" secondAttribute="centerX" id="XMJ-U9-T1g"/>
@@ -430,7 +431,7 @@
                                                             <constraint firstAttribute="width" secondItem="JwT-Pg-OPw" secondAttribute="height" multiplier="1:1" id="2qo-rC-xVm"/>
                                                             <constraint firstAttribute="height" constant="40" id="YoN-l6-rvY"/>
                                                         </constraints>
-                                                        <color key="tintColor" name="BrandLightBlue"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal">
                                                             <imageReference key="image" image="bell.circle" catalog="system" symbolScale="large"/>
@@ -465,10 +466,10 @@
                                                             <constraint firstAttribute="height" constant="40" id="Gb2-qc-igS"/>
                                                             <constraint firstAttribute="width" secondItem="F81-xj-Xoa" secondAttribute="height" multiplier="1:1" id="YRX-GR-vil"/>
                                                         </constraints>
-                                                        <color key="tintColor" name="BrandLightBlue"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal">
-                                                            <imageReference key="image" image="hand.raised.circle" catalog="system" symbolScale="large"/>
+                                                            <imageReference key="image" image="xmark.circle" catalog="system" symbolScale="large"/>
                                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                                         </state>
                                                         <connections>
@@ -500,7 +501,7 @@
                                                             <constraint firstAttribute="width" secondItem="ftH-EA-Yr9" secondAttribute="height" multiplier="1:1" id="3X3-N3-qhI"/>
                                                             <constraint firstAttribute="height" constant="40" id="d7l-tt-lsA"/>
                                                         </constraints>
-                                                        <color key="tintColor" name="BrandLightBlue"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal">
                                                             <imageReference key="image" image="pencil.tip.crop.circle" catalog="system" symbolScale="large"/>
@@ -547,7 +548,7 @@
                                                     <constraint firstAttribute="height" constant="20" id="PJP-ot-Mnb"/>
                                                     <constraint firstAttribute="width" constant="229" id="TCF-3W-tD3"/>
                                                 </constraints>
-                                                <color key="tintColor" name="BrandPurple"/>
+                                                <color key="tintColor" systemColor="linkColor"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
                                                 <connections>
@@ -555,7 +556,7 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" name="BrandLightBlue"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="46" id="HFo-En-Bcm"/>
                                             <constraint firstItem="IFy-I4-O3x" firstAttribute="top" secondItem="ljj-hq-yzZ" secondAttribute="bottom" id="LBB-be-c1X"/>
@@ -583,7 +584,7 @@
                                                     <constraint firstAttribute="height" constant="20" id="7lx-Od-GJC"/>
                                                     <constraint firstAttribute="width" constant="229" id="cnV-cr-Gkt"/>
                                                 </constraints>
-                                                <color key="tintColor" name="BrandPurple"/>
+                                                <color key="tintColor" systemColor="linkColor"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
                                                 <connections>
@@ -591,7 +592,7 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" name="BrandLightBlue"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="YXI-Bk-AUS" firstAttribute="leading" secondItem="uyN-1A-vaF" secondAttribute="leading" constant="20" symbolic="YES" id="1oe-lX-nuG"/>
                                             <constraint firstItem="BsX-qN-MuN" firstAttribute="leading" secondItem="uyN-1A-vaF" secondAttribute="leading" constant="8" id="FXX-iV-TOQ"/>
@@ -601,7 +602,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" name="BrandPurple"/>
+                                <color key="backgroundColor" red="0.85262101888656616" green="0.42218321561813354" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="nPv-oM-WGK" secondAttribute="trailing" id="1Sr-H5-kIk"/>
                                     <constraint firstItem="uyN-1A-vaF" firstAttribute="leading" secondItem="uAH-Os-bcQ" secondAttribute="leading" id="ES8-Ht-cdx"/>
@@ -836,6 +837,7 @@
                         <outlet property="nameView" destination="toK-vB-Q8B" id="BYt-tA-xEy"/>
                         <outlet property="nameViewTopConstraint" destination="xk9-yl-lL2" id="Qc2-aq-9BH"/>
                         <outlet property="tableView" destination="4Gf-ax-180" id="Vbi-h4-12R"/>
+                        <outlet property="textfieldView" destination="IKA-iQ-Vgm" id="4nP-Zx-rHK"/>
                         <outlet property="viewBottomConstraint" destination="ouG-hW-NG1" id="bk3-fd-aS8"/>
                         <segue destination="J7H-Mj-yrh" kind="unwind" identifier="unwindToWelcomeScreen" unwindAction="unwind:" id="Bsa-xx-r12"/>
                         <segue destination="CcG-i1-6vM" kind="presentation" identifier="goToImageDetail" modalPresentationStyle="overFullScreen" id="M0B-jb-SVM"/>
@@ -1382,7 +1384,6 @@
         <image name="bell.circle" catalog="system" width="128" height="121"/>
         <image name="camera.fill" catalog="system" width="128" height="94"/>
         <image name="gearshape" catalog="system" width="128" height="121"/>
-        <image name="hand.raised.circle" catalog="system" width="128" height="121"/>
         <image name="message" catalog="system" width="128" height="113"/>
         <image name="message.fill" catalog="system" width="128" height="113"/>
         <image name="paperplane.fill" catalog="system" width="128" height="118"/>
@@ -1392,6 +1393,7 @@
         <image name="phone.fill" catalog="system" width="128" height="114"/>
         <image name="square.and.arrow.down" catalog="system" width="121" height="128"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
+        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <namedColor name="BrandBlue">
             <color red="0.16500000655651093" green="0.77999997138977051" blue="0.99599999189376831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -1406,6 +1408,9 @@
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>

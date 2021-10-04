@@ -33,13 +33,13 @@
                                     <segue destination="5v2-hE-4Ub" kind="show" id="oJB-e8-cjo"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chat iOS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="y7D-jv-BlJ">
-                                <rect key="frame" x="52" y="418" width="310" height="60"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pager" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="y7D-jv-BlJ">
+                                <rect key="frame" x="52" y="398" width="310" height="100"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="ph1-wX-D3a"/>
+                                    <constraint firstAttribute="height" constant="100" id="ph1-wX-D3a"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="50"/>
-                                <color key="textColor" name="BrandBlue"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="61"/>
+                                <color key="textColor" red="0.18198148906230927" green="0.69426733255386353" blue="0.53024792671203613" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2x-tz-C9Y">
@@ -59,7 +59,7 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="w0w-hE-MVy"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.90823972225189209" green="0.92638683319091797" blue="0.9317171573638916" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="dWe-nW-2HB" firstAttribute="trailing" secondItem="w0w-hE-MVy" secondAttribute="trailing" id="7Vx-Xq-VaO"/>
                             <constraint firstItem="dWe-nW-2HB" firstAttribute="leading" secondItem="w0w-hE-MVy" secondAttribute="leading" id="Ag7-Hh-D9X"/>

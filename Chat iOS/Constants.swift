@@ -5,6 +5,9 @@
 //  Created by Sebastian Morado on 6/01/21.
 //  Copyright © 2021 Sebastian Morado. All rights reserved.
 
+import UIKit
+import ChameleonFramework
+
 struct K {
     static let appName = "Chat iOS"
     static let cellIdentifier = "ReusableCell"
@@ -17,6 +20,17 @@ struct K {
     static let loginSegue = "LoginToChat"
     static let popupSegue = "ShowPopup"
     static let maxNumberOfUsersInChat = 2
+    
+    static let chatColors : [String] = [UIColor.flatMagenta().hexValue(),
+                                        UIColor.flatGreenDark().hexValue(),
+                                        UIColor.flatWatermelon().hexValue(),
+                                        UIColor.flatOrangeDark().hexValue(),
+                                        UIColor.flatSkyBlue().hexValue(),
+                                        UIColor.flatRedDark().hexValue(),
+                                        UIColor.flatPlum().hexValue(),
+                                        UIColor.flatMaroon().hexValue(),
+                                        UIColor.flatBrown().hexValue(),
+                                        UIColor.flatMintDark().hexValue()]
     
     struct BrandColors {
         static let purple = "BrandPurple"

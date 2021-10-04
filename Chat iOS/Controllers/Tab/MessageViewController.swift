@@ -16,6 +16,7 @@ class MessageViewController: UIViewController {
     @IBOutlet weak var messageTextfield: UITextField!
     @IBOutlet weak var viewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var nameButton: UIButton!
+    @IBOutlet weak var textfieldView: UIView!
     @IBOutlet weak var nameView: UIView!
     @IBOutlet weak var nameViewTopConstraint: NSLayoutConstraint!
     
@@ -34,6 +35,8 @@ class MessageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         self.tabBarController?.tabBar.isHidden = true
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -42,7 +45,9 @@ class MessageViewController: UIViewController {
             dismiss(animated: true, completion: nil)
         }
         
+        
         setupViewUI()
+        setupViewColors(color: UIColor(hexString: selectedContact!.color)!)
         
         imagePicker.delegate = self
         tableView.dataSource = self
@@ -54,9 +59,6 @@ class MessageViewController: UIViewController {
         
         loadMessages()
     }
-    
-    
-
     
     private func setupViewUI() {
         self.navigationController?.navigationBar.tintColor = .white
@@ -84,6 +86,12 @@ class MessageViewController: UIViewController {
         
         //store tabBarHeight to fix height bug with IQKeyboardManager
         tabBarHeight = tabBarController?.tabBar.frame.size.height
+    }
+    
+    func setupViewColors(color: UIColor) {
+        view.backgroundColor = color
+        nameView.backgroundColor = color
+        textfieldView.backgroundColor = color
     }
     
     //MARK: - Chat and Firebase Functionality
@@ -383,7 +391,7 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
             cell.label2.text = message
             cell.time2.text = dateString
             cell.label2.layer.cornerRadius = cell.label2.frame.size.height / 5
-            cell.label2.textColor = UIColor(named: K.BrandColors.purple)
+            cell.label2.textColor = UIColor(hexString: selectedContact!.color)
             cell.label2.backgroundColor = UIColor(named: K.BrandColors.lightPurple)
         } else {
 
@@ -393,7 +401,7 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
             cell.time.text = dateString
             cell.label.layer.cornerRadius = cell.label.frame.size.height / 5
             cell.label.textColor = UIColor(named: K.BrandColors.lightPurple)
-            cell.label.backgroundColor = UIColor(named: K.BrandColors.purple)
+            cell.label.backgroundColor = UIColor(hexString: selectedContact!.color)
         }
     }
     

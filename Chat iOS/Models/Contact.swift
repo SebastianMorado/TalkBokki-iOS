@@ -11,6 +11,7 @@ class Contact {
     var name: String = ""
     var email: String = ""
     var number: String = ""
+    var color: String = ""
     var profilePicture: String = ""
     var mostRecentMessage: Date?
     var messages: [Message]?
