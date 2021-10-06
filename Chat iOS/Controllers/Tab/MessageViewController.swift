@@ -21,6 +21,7 @@ class MessageViewController: UIViewController {
     @IBOutlet weak var nameViewTopConstraint: NSLayoutConstraint!
     
     let db = Firestore.firestore()
+    let sender = PushNotificationSender()
     private var imagePicker = UIImagePickerController()
     
     var messages : [Message] = []
@@ -237,6 +238,17 @@ class MessageViewController: UIViewController {
         if imageData == nil {
             messageTextfield.text = ""
         }
+        
+        //send push notif
+        if selectedContact!.fcmToken != "" {
+            let myName = UserDefaults.standard.string(forKey: K.UDefaults.userName)!
+            if imageData == nil {
+                sender.sendPushNotification(to: selectedContact!.fcmToken, title: myName, body: messageText!)
+            } else {
+                sender.sendPushNotification(to: selectedContact!.fcmToken, title: myName, body: "[Image]")
+            }
+        }
+        
     }
     
     private func uploadImagePic(image: UIImage) {
@@ -391,8 +403,8 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
             cell.label2.text = message
             cell.time2.text = dateString
             cell.label2.layer.cornerRadius = cell.label2.frame.size.height / 5
-            cell.label2.textColor = UIColor(hexString: selectedContact!.color)
-            cell.label2.backgroundColor = UIColor(named: K.BrandColors.lightPurple)
+            //cell.label2.textColor = UIColor.black
+            cell.label2.backgroundColor = UIColor(named: K.BrandColors.cyan)
         } else {
 
             cell.label2.isHidden = true
@@ -400,7 +412,7 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
             cell.label.text = message
             cell.time.text = dateString
             cell.label.layer.cornerRadius = cell.label.frame.size.height / 5
-            cell.label.textColor = UIColor(named: K.BrandColors.lightPurple)
+            cell.label.textColor = UIColor(named: K.BrandColors.lavender)
             cell.label.backgroundColor = UIColor(hexString: selectedContact!.color)
         }
     }
@@ -414,8 +426,7 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
         let imageTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(sender:)))
         
         if fromSelf {
-            
-            
+            print("Well done fellow")
             //let size = CGSize(width: cell.imageBox2.bounds.width, height: cell.imageBox2.bounds.width / aspect)
             let cornerRadius = 0.05 * min(cell.imageBox2.bounds.width, cell.imageBox2.bounds.width / aspect)
             
@@ -434,8 +445,6 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
             cell.time2.text = dateString
             cell.imageBox2.addGestureRecognizer(imageTapGesture)
         } else {
-            
-            
             //let size = CGSize(width: cell.imageBox.bounds.width, height: cell.imageBox.bounds.width / aspect)
             let cornerRadius = 0.05 * min(cell.imageBox.bounds.width, cell.imageBox.bounds.width / aspect)
             

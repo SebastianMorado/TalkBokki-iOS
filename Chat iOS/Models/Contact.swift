@@ -12,6 +12,7 @@ class Contact {
     var email: String = ""
     var number: String = ""
     var color: String = ""
+    var fcmToken: String = ""
     var profilePicture: String = ""
     var mostRecentMessage: Date?
     var messages: [Message]?

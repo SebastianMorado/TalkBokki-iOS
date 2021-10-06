@@ -199,7 +199,10 @@ class SettingsViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Yes", style: .default) { alert in
             do {
                 UserDefaults.standard.set(false, forKey: K.UDefaults.userIsLoggedIn)
-                self.performSegue(withIdentifier: "unwindToWelcomeScreen", sender: self)
+                //self.performSegue(withIdentifier: "unwindToWelcomeScreen", sender: self)
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let loginNavController = storyboard.instantiateViewController(identifier: "rootVC")
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(loginNavController)
                 try Auth.auth().signOut()
             } catch let signOutError as NSError {
                 print(signOutError.localizedDescription)

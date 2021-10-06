@@ -6,6 +6,8 @@
 //  Copyright © 2021 Sebastian Morado. All rights reserved.
 
 import UIKit
+import Firebase
+import UserNotifications
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -16,21 +18,81 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        
+        resyncLogOut()
         let userLoginStatus = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
         if userLoginStatus {
             if let windowScene = scene as? UIWindowScene {
                 let window = UIWindow(windowScene: windowScene)
+                let storyboard = UIStoryboard(name: "Tab", bundle: nil)
+                let tabViewController = storyboard.instantiateViewController(withIdentifier: "TabVC") as! UITabBarController
+                window.rootViewController = tabViewController
+                
+//                if let notificationResponse = connectionOptions.notificationResponse {
+//                    //window.makeKeyAndVisible()
+//                    // do the pushing on your navigation controller
+//                    // navigationController.push()
+//                    //return
+//                }
+//                if let navigation = tabViewController.viewControllers?[0] as? UINavigationController {
+//                    let storyboard = UIStoryboard.init(name: "Tab", bundle: Bundle.main)
+//                    if let messageViewController = storyboard.instantiateViewController(withIdentifier: "MessageVC") as? MessageViewController {
+//                        let newContact = Contact()
+//                        newContact.email = "b@b.com"
+//                        newContact.name = "Wonho"
+//                        newContact.profilePicture = "https://firebasestorage.googleapis.com/v0/b/chat-ios-58521.appspot.com/o/users%2Fb@b.com%2FProfile_Picture.jpg?alt=media&token=5cf7c7c9-0b1a-44d2-82aa-251f5a5725c3"
+//                        newContact.color = "#3498DB"
+//                        newContact.number = "09178955146"
+//                        messageViewController.selectedContact = newContact
+//                        //navigation.pushViewController(messageViewController, animated: true)
+//                    }
+//                }
+                self.window = window
+                window.makeKeyAndVisible()
+            }
+        } else {
+            if let windowScene = scene as? UIWindowScene {
+                let window = UIWindow(windowScene: windowScene)
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let initialViewController = storyboard.instantiateViewController(withIdentifier: "rootVC")
+                let initialViewController = storyboard.instantiateViewController(withIdentifier: "rootVC") as! UINavigationController
                 window.rootViewController = initialViewController
                 self.window = window
                 window.makeKeyAndVisible()
-                window.rootViewController?.performSegue(withIdentifier: "goToMessagesVC", sender: self)
-                
             }
         }
         
         guard let _ = (scene as? UIWindowScene) else { return }
+    }
+    
+    func changeRootViewController(_ vc: UIViewController, animated: Bool = true) {
+        guard let window = self.window else {
+            return
+        }
+        
+        // change the root view controller to your specific view controller
+        window.rootViewController = vc
+        
+        UIView.transition(with: window,
+                              duration: 0.5,
+                              options: [.transitionFlipFromLeft],
+                              animations: nil,
+                              completion: nil)
+    }
+    
+    func resyncLogOut() {
+        let userLoginStatus = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
+        
+        if Auth.auth().currentUser != nil, !userLoginStatus {
+            do {
+                UserDefaults.standard.set(false, forKey: K.UDefaults.userIsLoggedIn)
+                try Auth.auth().signOut()
+            } catch let signOutError as NSError {
+                print(signOutError.localizedDescription)
+            }
+        } else if Auth.auth().currentUser == nil, userLoginStatus {
+            UserDefaults.standard.set(false, forKey: K.UDefaults.userIsLoggedIn)
+        }
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

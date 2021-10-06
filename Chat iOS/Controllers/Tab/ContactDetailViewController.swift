@@ -32,7 +32,7 @@ class ContactDetailViewController: UIViewController {
         detailView.layer.cornerRadius = 20
         detailView.layer.masksToBounds = true
         detailView.layer.borderWidth = 3
-        detailView.layer.borderColor = UIColor(named: "BrandPurple")?.cgColor
+        detailView.layer.borderColor = UIColor(named: K.BrandColors.red)?.cgColor
         
         if let contact = selectedContact {
             nameLabel.text = contact.name

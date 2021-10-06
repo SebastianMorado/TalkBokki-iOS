@@ -51,7 +51,10 @@ class LoginViewController: UIViewController {
                         UserDefaults.standard.set(data["phone_number"] as! String, forKey: K.UDefaults.userPhone)
                         UserDefaults.standard.set(true, forKey: K.UDefaults.userIsLoggedIn)
                         
-                        self.performSegue(withIdentifier: "goToMessagesVC", sender: self)
+                        let storyboard = UIStoryboard(name: "Tab", bundle: nil)
+                        let mainTabBarController = storyboard.instantiateViewController(identifier: "TabVC")
+                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainTabBarController)
+                        
                     }
                 }
             }

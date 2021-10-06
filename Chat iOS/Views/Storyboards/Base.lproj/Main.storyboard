@@ -20,56 +20,66 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dWe-nW-2HB">
-                                <rect key="frame" x="0.0" y="801" width="414" height="61"/>
-                                <color key="backgroundColor" systemColor="systemTealColor"/>
+                                <rect key="frame" x="60" y="794" width="294" height="48"/>
+                                <color key="backgroundColor" name="BrandGreen1"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="61" id="SnA-Gb-m65"/>
+                                    <constraint firstAttribute="height" constant="48" id="SnA-Gb-m65"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="Log In">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="5v2-hE-4Ub" kind="show" id="oJB-e8-cjo"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pager" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="y7D-jv-BlJ">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TalkBokki🥢" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="y7D-jv-BlJ" customClass="TypewriterLabel" customModule="GhostTypewriter">
                                 <rect key="frame" x="52" y="398" width="310" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="ph1-wX-D3a"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="61"/>
-                                <color key="textColor" red="0.18198148906230927" green="0.69426733255386353" blue="0.53024792671203613" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="ChalkboardSE-Regular" family="Chalkboard SE" pointSize="56"/>
+                                <color key="textColor" name="BrandGreen1"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2x-tz-C9Y">
-                                <rect key="frame" x="0.0" y="745" width="414" height="48"/>
-                                <color key="backgroundColor" name="BrandLightBlue"/>
+                                <rect key="frame" x="60" y="738" width="294" height="48"/>
+                                <color key="backgroundColor" name="BrandCyan"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="qxQ-xP-pdb"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="Register">
-                                    <color key="titleColor" name="BrandBlue"/>
+                                    <color key="titleColor" name="BrandGreen1"/>
                                     <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="BYZ-38-t0r" kind="show" id="tzN-Zs-5Kq"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="w0w-hE-MVy"/>
-                        <color key="backgroundColor" red="0.90823972225189209" green="0.92638683319091797" blue="0.9317171573638916" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="dWe-nW-2HB" firstAttribute="trailing" secondItem="w0w-hE-MVy" secondAttribute="trailing" id="7Vx-Xq-VaO"/>
-                            <constraint firstItem="dWe-nW-2HB" firstAttribute="leading" secondItem="w0w-hE-MVy" secondAttribute="leading" id="Ag7-Hh-D9X"/>
+                            <constraint firstItem="dWe-nW-2HB" firstAttribute="trailing" secondItem="w0w-hE-MVy" secondAttribute="trailing" constant="-60" id="7Vx-Xq-VaO"/>
+                            <constraint firstItem="dWe-nW-2HB" firstAttribute="leading" secondItem="w0w-hE-MVy" secondAttribute="leading" constant="60" id="Ag7-Hh-D9X"/>
                             <constraint firstItem="y7D-jv-BlJ" firstAttribute="centerY" secondItem="H86-OM-sMN" secondAttribute="centerY" id="Ipj-e5-54T"/>
-                            <constraint firstItem="dWe-nW-2HB" firstAttribute="bottom" secondItem="w0w-hE-MVy" secondAttribute="bottom" id="ZsM-5p-lNb"/>
+                            <constraint firstItem="dWe-nW-2HB" firstAttribute="bottom" secondItem="w0w-hE-MVy" secondAttribute="bottom" constant="-20" id="ZsM-5p-lNb"/>
                             <constraint firstItem="dWe-nW-2HB" firstAttribute="top" secondItem="h2x-tz-C9Y" secondAttribute="bottom" constant="8" id="cnI-Zh-aEc"/>
                             <constraint firstItem="w0w-hE-MVy" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="y7D-jv-BlJ" secondAttribute="trailing" id="eaW-iX-nU1"/>
                             <constraint firstItem="y7D-jv-BlJ" firstAttribute="leading" secondItem="w0w-hE-MVy" secondAttribute="leading" constant="52" id="jQ7-o7-bnG"/>
-                            <constraint firstItem="h2x-tz-C9Y" firstAttribute="trailing" secondItem="w0w-hE-MVy" secondAttribute="trailing" id="sNZ-Ul-l2q"/>
-                            <constraint firstItem="h2x-tz-C9Y" firstAttribute="leading" secondItem="w0w-hE-MVy" secondAttribute="leading" id="tLN-qz-xiG"/>
+                            <constraint firstItem="h2x-tz-C9Y" firstAttribute="trailing" secondItem="w0w-hE-MVy" secondAttribute="trailing" constant="-60" id="sNZ-Ul-l2q"/>
+                            <constraint firstItem="h2x-tz-C9Y" firstAttribute="leading" secondItem="w0w-hE-MVy" secondAttribute="leading" constant="60" id="tLN-qz-xiG"/>
                             <constraint firstItem="y7D-jv-BlJ" firstAttribute="centerX" secondItem="H86-OM-sMN" secondAttribute="centerX" id="vNd-pq-rnh"/>
                         </constraints>
                     </view>
@@ -127,7 +137,7 @@
                                         <rect key="frame" x="0.0" y="270" width="414" height="48"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <state key="normal" title="Register">
-                                            <color key="titleColor" name="BrandBlue"/>
+                                            <color key="titleColor" name="BrandGreen1"/>
                                         </state>
                                         <connections>
                                             <action selector="registerPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9dE-Sc-egq"/>
@@ -147,7 +157,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="stz-qy-NwU"/>
-                        <color key="backgroundColor" name="BrandLightBlue"/>
+                        <color key="backgroundColor" name="BrandCyan"/>
                         <constraints>
                             <constraint firstItem="stz-qy-NwU" firstAttribute="trailing" secondItem="K4b-9O-8Go" secondAttribute="trailing" id="4D3-4k-D2e"/>
                             <constraint firstItem="K4b-9O-8Go" firstAttribute="leading" secondItem="stz-qy-NwU" secondAttribute="leading" id="cFn-7p-kfB"/>
@@ -238,7 +248,7 @@
                                         <rect key="frame" x="0.0" y="450" width="414" height="48"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <state key="normal" title="Confirm">
-                                            <color key="titleColor" name="BrandBlue"/>
+                                            <color key="titleColor" name="BrandGreen1"/>
                                         </state>
                                         <connections>
                                             <action selector="confirmPressed:" destination="74s-oy-cYU" eventType="touchUpInside" id="XhA-nV-E6W"/>
@@ -257,7 +267,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="NLm-yO-Ay6"/>
-                        <color key="backgroundColor" name="BrandLightBlue"/>
+                        <color key="backgroundColor" name="BrandCyan"/>
                         <constraints>
                             <constraint firstItem="WXR-fu-7XF" firstAttribute="trailing" secondItem="NLm-yO-Ay6" secondAttribute="trailing" id="Fnc-dM-Ndr"/>
                             <constraint firstItem="WXR-fu-7XF" firstAttribute="leading" secondItem="NLm-yO-Ay6" secondAttribute="leading" id="N8T-tK-LAW"/>
@@ -272,22 +282,11 @@
                         <outlet property="imageView" destination="V8m-Zk-141" id="2ID-m7-iSb"/>
                         <outlet property="nameLabel" destination="j57-zz-MEe" id="aSU-yA-W0P"/>
                         <outlet property="phoneLabel" destination="2BL-Y3-ZNy" id="1FX-1E-3ve"/>
-                        <segue destination="enL-b1-kks" kind="presentation" identifier="goToMessagesVC" modalPresentationStyle="fullScreen" id="M7s-W1-sVR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CQS-Ve-IuA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2740.579710144928" y="-192.1875"/>
-        </scene>
-        <!--TabVC-->
-        <scene sceneID="W33-PO-bNk">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Tab" referencedIdentifier="TabVC" id="enL-b1-kks" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Qa2-S4-jTT"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fo1-Sj-r99" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2741" y="621"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="Hzg-jR-yiY">
@@ -324,7 +323,7 @@
                                         <rect key="frame" x="0.0" y="180" width="414" height="48"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <state key="normal" title="Log In">
-                                            <color key="titleColor" name="BrandLightBlue"/>
+                                            <color key="titleColor" name="BrandCyan"/>
                                         </state>
                                         <connections>
                                             <action selector="loginPressed:" destination="5v2-hE-4Ub" eventType="touchUpInside" id="Wlk-ga-czK"/>
@@ -340,7 +339,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ibK-5F-w36"/>
-                        <color key="backgroundColor" red="0.1647058824" green="0.78039215689999997" blue="0.99607843139999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="BrandGreen1"/>
                         <constraints>
                             <constraint firstItem="xAb-zu-Z5u" firstAttribute="leading" secondItem="ibK-5F-w36" secondAttribute="leading" id="UwO-i0-JhZ"/>
                             <constraint firstItem="xAb-zu-Z5u" firstAttribute="top" secondItem="ibK-5F-w36" secondAttribute="top" constant="43" id="c5l-Qz-BCj"/>
@@ -351,7 +350,6 @@
                     <connections>
                         <outlet property="emailTextfield" destination="F21-w0-z4z" id="YUG-Hl-Rxj"/>
                         <outlet property="passwordTextfield" destination="abR-gz-opL" id="xCU-X2-hrx"/>
-                        <segue destination="enL-b1-kks" kind="presentation" identifier="goToMessagesVC" modalPresentationStyle="fullScreen" id="vzl-A8-Afx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XcE-Gk-YZg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -376,7 +374,6 @@
                     <nil name="viewControllers"/>
                     <connections>
                         <segue destination="Tim-3B-f4n" kind="relationship" relationship="rootViewController" id="8ch-SI-mOZ"/>
-                        <segue destination="enL-b1-kks" kind="presentation" identifier="goToMessagesVC" modalPresentationStyle="fullScreen" id="osl-Wd-pah"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JRs-J8-ifN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -384,22 +381,19 @@
             <point key="canvasLocation" x="-86.956521739130437" y="134.59821428571428"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="M7s-W1-sVR"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="icloud.and.arrow.up.fill" catalog="system" width="128" height="106"/>
         <namedColor name="BrandBlue">
             <color red="0.16500000655651093" green="0.77999997138977051" blue="0.99599999189376831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="BrandLightBlue">
-            <color red="0.92199999094009399" green="0.98000001907348633" blue="0.99599999189376831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="BrandCyan">
+            <color red="0.87058823529411766" green="1" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BrandGreen1">
+            <color red="0.37299999594688416" green="0.70599997043609619" blue="0.6119999885559082" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemTealColor">
-            <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

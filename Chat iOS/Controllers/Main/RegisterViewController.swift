@@ -18,6 +18,10 @@ class RegisterViewController: UIViewController {
     let emailPredicate = EmailPredicate()
     let passwordPredicate = LengthPredicate<String>(min: 6)
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.tintColor = UIColor.link
+    }
+    
     @IBAction func registerPressed(_ sender: UIButton) {
         if emailTextfield.text == nil || !emailPredicate.evaluate(with: emailTextfield.text!){
             presentAlert(message: "Please input valid email")

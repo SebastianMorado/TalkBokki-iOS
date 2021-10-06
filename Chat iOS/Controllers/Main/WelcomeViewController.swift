@@ -6,10 +6,11 @@
 //  Copyright © 2021 Sebastian Morado. All rights reserved.
 
 import UIKit
+import GhostTypewriter
 
 class WelcomeViewController: UIViewController {
 
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel: TypewriterLabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +19,11 @@ class WelcomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        titleLabel.typingTimeInterval = 0.3
+        titleLabel.startTypewritingAnimation(completion: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

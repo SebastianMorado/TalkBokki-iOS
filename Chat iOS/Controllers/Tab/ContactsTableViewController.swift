@@ -174,12 +174,13 @@ class ContactsTableViewController: UITableViewController {
                         //create new contact object
                         let newContact = Contact()
                         //extract fields from data
-                        let contactName = data["name"] as! String
+                        let contactName = data["name"] as? String ?? ""
                         newContact.name = contactName
                         newContact.email = doc.documentID
-                        newContact.number = data["phone_number"] as! String
-                        newContact.profilePicture = data["profile_picture"] as! String
-                        newContact.color = data["chat_color"] as! String
+                        newContact.number = data["phone_number"] as? String ?? ""
+                        newContact.profilePicture = data["profile_picture"] as? String ?? ""
+                        newContact.color = data["chat_color"] as? String ?? ""
+                        newContact.fcmToken = data["fcmToken"] as? String ?? ""
                         self.checkForUpdates(contact: newContact)
                         //
                         let firstLetter = String(contactName.first!).uppercased()
@@ -210,13 +211,15 @@ class ContactsTableViewController: UITableViewController {
                     print(e.localizedDescription)
                 } else {
                     if let data = document?.data()! {
-                        let imageURL = data["profile_picture"] as! String
-                        let name = data["name"] as! String
-                        let phone = data["phone_number"] as! String
-                        if imageURL != contact.profilePicture || name != contact.name || phone != contact.number {
+                        let imageURL = data["profile_picture"] as? String ?? ""
+                        let name = data["name"] as? String ?? ""
+                        let phone = data["phone_number"] as? String ?? ""
+                        let token = data["fcmToken"] as? String ?? ""
+                        if imageURL != contact.profilePicture || name != contact.name || phone != contact.number || token != contact.fcmToken || contact.color == "" {
                             contact.profilePicture = imageURL
                             contact.name = name
                             contact.number = phone
+                            contact.fcmToken = token
                             self.updateContact(contact: contact)
                         }
                         
@@ -237,6 +240,10 @@ class ContactsTableViewController: UITableViewController {
                     document?.reference.updateData(["profile_picture" : contact.profilePicture])
                     document?.reference.updateData(["name" : contact.name])
                     document?.reference.updateData(["phone_number" : contact.number])
+                    document?.reference.updateData(["fcmToken" : contact.fcmToken])
+                    if contact.color == "" {
+                        document?.reference.updateData(["chat_color" : K.chatColors[0]])
+                    }
                 }
             }
     }

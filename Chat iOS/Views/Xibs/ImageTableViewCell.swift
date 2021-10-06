@@ -36,8 +36,8 @@ class ImageTableViewCell: UITableViewCell {
             if oldValue != nil {
                 imageBox2.removeConstraint(oldValue!)
             }
-            if aspectConstraint != nil {
-                imageBox2.addConstraint(aspectConstraint!)
+            if aspectConstraint2 != nil {
+                imageBox2.addConstraint(aspectConstraint2!)
             }
         }
     }
@@ -73,7 +73,7 @@ class ImageTableViewCell: UITableViewCell {
             let constraint = NSLayoutConstraint(item: imageBox2!, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: imageBox2!, attribute: NSLayoutConstraint.Attribute.height, multiplier: aspect, constant: 0.0)
             constraint.priority = UILayoutPriority(rawValue: 999)
             
-            aspectConstraint = constraint
+            aspectConstraint2 = constraint
             leadingConstraint.constant = margin
             
             
@@ -82,7 +82,7 @@ class ImageTableViewCell: UITableViewCell {
             let constraint = NSLayoutConstraint(item: imageBox!, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: imageBox!, attribute: NSLayoutConstraint.Attribute.height, multiplier: aspect, constant: 0.0)
             constraint.priority = UILayoutPriority(rawValue: 999)
             
-            aspectConstraint2 = constraint
+            aspectConstraint = constraint
             trailingConstraint.constant = margin
         }
 

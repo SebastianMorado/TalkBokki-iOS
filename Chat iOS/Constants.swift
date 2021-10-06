@@ -33,10 +33,13 @@ struct K {
                                         UIColor.flatMintDark().hexValue()]
     
     struct BrandColors {
-        static let purple = "BrandPurple"
-        static let lightPurple = "BrandLightPurple"
-        static let blue = "BrandBlue"
-        static let lighBlue = "BrandLightBlue"
+        static let lavender = "BrandLavender"
+        static let magenta = "BrandMagenta"
+        static let cyan = "BrandCyan"
+        static let green1 = "BrandGreen1"
+        static let green2 = "BrandGreen2"
+        static let pink = "BrandPink"
+        static let red = "BrandRed"
     }
     
     struct FStore {

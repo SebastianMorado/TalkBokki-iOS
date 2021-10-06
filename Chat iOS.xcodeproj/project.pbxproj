@@ -35,6 +35,8 @@
 		64827A5A26EC847B002C6F3D /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64827A5926EC847B002C6F3D /* FriendRequest.swift */; };
 		6484F10726FB658B00679AB6 /* CustomExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6484F10626FB658B00679AB6 /* CustomExtensions.swift */; };
 		6487EACD26FC600100D90D19 /* ChatDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6487EACC26FC600100D90D19 /* ChatDetailViewController.swift */; };
+		648ADA01270C90DA005CF533 /* PushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648ADA00270C90DA005CF533 /* PushNotificationManager.swift */; };
+		648ADA03270CAE8A005CF533 /* PushNotificationSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648ADA02270CAE89005CF533 /* PushNotificationSender.swift */; };
 		64C840A526DE24D700F46A78 /* MessagePreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C840A426DE24D700F46A78 /* MessagePreviewCell.swift */; };
 		64C840A626DE2C4200F46A78 /* MessagePreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64C840A126DE15F200F46A78 /* MessagePreviewCell.xib */; };
 		64D2180426F07D11001F23BC /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D2180326F07D11001F23BC /* ContactDetailViewController.swift */; };
@@ -76,6 +78,9 @@
 		64827A5926EC847B002C6F3D /* FriendRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		6484F10626FB658B00679AB6 /* CustomExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomExtensions.swift; sourceTree = "<group>"; };
 		6487EACC26FC600100D90D19 /* ChatDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDetailViewController.swift; sourceTree = "<group>"; };
+		648AD9FF270C3FD1005CF533 /* Chat iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Chat iOS.entitlements"; sourceTree = "<group>"; };
+		648ADA00270C90DA005CF533 /* PushNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationManager.swift; sourceTree = "<group>"; };
+		648ADA02270CAE89005CF533 /* PushNotificationSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationSender.swift; sourceTree = "<group>"; };
 		64C840A126DE15F200F46A78 /* MessagePreviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessagePreviewCell.xib; sourceTree = "<group>"; };
 		64C840A426DE24D700F46A78 /* MessagePreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagePreviewCell.swift; sourceTree = "<group>"; };
 		64D2180326F07D11001F23BC /* ContactDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
@@ -136,7 +141,10 @@
 		0B628175235DEE8100E35CAF /* Chat iOS */ = {
 			isa = PBXGroup;
 			children = (
+				648AD9FF270C3FD1005CF533 /* Chat iOS.entitlements */,
 				0B628176235DEE8100E35CAF /* AppDelegate.swift */,
+				648ADA00270C90DA005CF533 /* PushNotificationManager.swift */,
+				648ADA02270CAE89005CF533 /* PushNotificationSender.swift */,
 				0B628178235DEE8100E35CAF /* SceneDelegate.swift */,
 				0B628194235DF03A00E35CAF /* Models */,
 				0B628193235DF03400E35CAF /* Views */,
@@ -378,6 +386,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				648ADA03270CAE8A005CF533 /* PushNotificationSender.swift in Sources */,
 				64F5786B26DA428A0051DAFF /* Contact.swift in Sources */,
 				0B62818B235DF00000E35CAF /* WelcomeViewController.swift in Sources */,
 				642CC4D22701F85400684674 /* ChangePasswordViewController.swift in Sources */,
@@ -392,6 +401,7 @@
 				64D2180426F07D11001F23BC /* ContactDetailViewController.swift in Sources */,
 				0B628179235DEE8100E35CAF /* SceneDelegate.swift in Sources */,
 				6412F88326E20945002015F7 /* ImageTableViewCell.swift in Sources */,
+				648ADA01270C90DA005CF533 /* PushNotificationManager.swift in Sources */,
 				0B62818F235DF01000E35CAF /* LoginViewController.swift in Sources */,
 				64827A5A26EC847B002C6F3D /* FriendRequest.swift in Sources */,
 				6449C2CC26FB1087004C2E68 /* NewMessageTableViewController.swift in Sources */,
@@ -551,6 +561,7 @@
 			baseConfigurationReference = F8C7E623BECF155CB35EDBB7 /* Pods-Chat iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Chat iOS/Chat iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 453J5S23QT;
 				GCC_PREFIX_HEADER = "Chat iOS";
@@ -560,7 +571,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shmorado.Chat-iOS-app-2";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Chat iOS";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -571,6 +582,7 @@
 			baseConfigurationReference = 741350C5A26F3A2F5E74216A /* Pods-Chat iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Chat iOS/Chat iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 453J5S23QT;
 				GCC_PREFIX_HEADER = "Chat iOS";
@@ -580,7 +592,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shmorado.Chat-iOS-app-2";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Chat iOS";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

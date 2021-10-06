@@ -25,7 +25,7 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func closeTapped(_ sender: UIButton) {
-        dismiss(animated: false, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
 

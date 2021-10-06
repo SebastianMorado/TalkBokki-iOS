@@ -107,7 +107,10 @@ class CreateProfileViewController: UIViewController {
                     } else {
                         print("Successfully saved data!")
                         self.saveLoginDetails(email: newUserEmail, name: name, profilePictureURL: image_url, phone: phone)
-                        self.performSegue(withIdentifier: "goToMessagesVC", sender: self)
+                        
+                        let storyboard = UIStoryboard(name: "Tab", bundle: nil)
+                        let mainTabBarController = storyboard.instantiateViewController(identifier: "TabVC")
+                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainTabBarController)
                     }
                 })
         }

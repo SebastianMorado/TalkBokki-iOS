@@ -35,6 +35,14 @@ class MessagePreviewTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if Auth.auth().currentUser == nil {
+            UserDefaults.standard.set(false, forKey: K.UDefaults.userIsLoggedIn)
+            //self.performSegue(withIdentifier: "unwindToWelcomeScreen", sender: self)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let loginNavController = storyboard.instantiateViewController(identifier: "rootVC")
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(loginNavController)
+            return
+        }
         
         
         searchBar.delegate = self
@@ -92,12 +100,14 @@ class MessagePreviewTableViewController: UITableViewController {
 
                         //extract fields from data and create new contact object
                         let newContact = Contact()
-                        newContact.name = data["name"] as! String
-                        newContact.number = data["phone_number"] as! String
-                        newContact.color = data["chat_color"] as! String
+                        newContact.name = data["name"] as? String ?? ""
+                        newContact.number = data["phone_number"] as? String ?? ""
+                        newContact.color = data["chat_color"] as? String ?? ""
+                        newContact.fcmToken = data["fcmToken"] as? String ?? ""
                         newContact.email = doc.documentID
-                        newContact.profilePicture = data["profile_picture"] as! String
+                        newContact.profilePicture = data["profile_picture"] as? String ?? ""
                         newContact.mostRecentMessage = (data["most_recent_message"] as! Timestamp).dateValue()
+                        self.checkForUpdates(contact: newContact)
                         self.chats[doc.documentID] = newContact
                         self.chatsMostRecent.append(doc.documentID)
                     }
@@ -112,6 +122,51 @@ class MessagePreviewTableViewController: UITableViewController {
             }
         
         
+    }
+    
+    private func checkForUpdates(contact: Contact) {
+        db.collection(K.FStore.usersCollection)
+            .document(contact.email)
+            .getDocument { document, error in
+                if let e = error {
+                    print(e.localizedDescription)
+                } else {
+                    if let data = document?.data()! {
+                        let imageURL = data["profile_picture"] as? String ?? ""
+                        let name = data["name"] as? String ?? ""
+                        let phone = data["phone_number"] as? String ?? ""
+                        let token = data["fcmToken"] as? String ?? ""
+                        if imageURL != contact.profilePicture || name != contact.name || phone != contact.number || token != contact.fcmToken || contact.color == "" {
+                            contact.profilePicture = imageURL
+                            contact.name = name
+                            contact.number = phone
+                            contact.fcmToken = token
+                            self.updateContact(contact: contact)
+                        }
+                        
+                    }
+                }
+            }
+    }
+    
+    private func updateContact(contact: Contact) {
+        db.collection(K.FStore.usersCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .collection(K.FStore.contactsCollection)
+            .document(contact.email)
+            .getDocument { document, error in
+                if let e = error {
+                    print(e.localizedDescription)
+                } else {
+                    document?.reference.updateData(["profile_picture" : contact.profilePicture])
+                    document?.reference.updateData(["name" : contact.name])
+                    document?.reference.updateData(["phone_number" : contact.number])
+                    document?.reference.updateData(["fcmToken" : contact.fcmToken])
+                    if contact.color == "" {
+                        document?.reference.updateData(["chat_color" : K.chatColors[0]])
+                    }
+                }
+            }
     }
     
     private func loadMessages() {
@@ -219,6 +274,7 @@ class MessagePreviewTableViewController: UITableViewController {
         //change color of label text depending if message has been read or not
         if mostRecentMessage[0].wasRead {
             cell.messageText.textColor = .gray
+            cell.messageText.font = UIFont.systemFont(ofSize: cell.messageText.font!.pointSize, weight: .regular)
         } else {
             cell.messageText.font = UIFont.systemFont(ofSize: cell.messageText.font!.pointSize, weight: .semibold)
         }
