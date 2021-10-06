@@ -81,6 +81,7 @@
 		648AD9FF270C3FD1005CF533 /* Chat iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Chat iOS.entitlements"; sourceTree = "<group>"; };
 		648ADA00270C90DA005CF533 /* PushNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationManager.swift; sourceTree = "<group>"; };
 		648ADA02270CAE89005CF533 /* PushNotificationSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationSender.swift; sourceTree = "<group>"; };
+		64B9603A270D82C300BC96E3 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		64C840A126DE15F200F46A78 /* MessagePreviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessagePreviewCell.xib; sourceTree = "<group>"; };
 		64C840A426DE24D700F46A78 /* MessagePreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagePreviewCell.swift; sourceTree = "<group>"; };
 		64D2180326F07D11001F23BC /* ContactDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
@@ -153,6 +154,7 @@
 				0B628184235DEE8400E35CAF /* Info.plist */,
 				642B1B6B26E9004900977827 /* GoogleService-Info.plist */,
 				64DD09E12632FF6B00B43274 /* Constants.swift */,
+				64B9603A270D82C300BC96E3 /* Config.xcconfig */,
 			);
 			path = "Chat iOS";
 			sourceTree = "<group>";
@@ -442,6 +444,7 @@
 /* Begin XCBuildConfiguration section */
 		0B628185235DEE8400E35CAF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 64B9603A270D82C300BC96E3 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -503,6 +506,7 @@
 		};
 		0B628186235DEE8400E35CAF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 64B9603A270D82C300BC96E3 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
