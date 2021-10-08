@@ -37,6 +37,8 @@ class MessageCell: UITableViewCell {
         label2.isHidden = false
         time.isHidden = false
         time2.isHidden = false
+        label.layer.cornerRadius = 0
+        label2.layer.cornerRadius = 0
     }
     
 }

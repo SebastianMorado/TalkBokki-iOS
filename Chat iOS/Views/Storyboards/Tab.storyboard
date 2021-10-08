@@ -544,10 +544,9 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IFy-I4-O3x">
-                                                <rect key="frame" x="8" y="21" width="229" height="20"/>
+                                                <rect key="frame" x="20" y="21" width="67" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="PJP-ot-Mnb"/>
-                                                    <constraint firstAttribute="width" constant="229" id="TCF-3W-tD3"/>
                                                 </constraints>
                                                 <color key="tintColor" systemColor="linkColor"/>
                                                 <state key="normal" title="Button"/>
@@ -561,7 +560,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="46" id="HFo-En-Bcm"/>
                                             <constraint firstItem="IFy-I4-O3x" firstAttribute="top" secondItem="ljj-hq-yzZ" secondAttribute="bottom" id="LBB-be-c1X"/>
-                                            <constraint firstItem="IFy-I4-O3x" firstAttribute="leading" secondItem="nPv-oM-WGK" secondAttribute="leading" constant="8" id="XI4-zu-hPT"/>
+                                            <constraint firstItem="IFy-I4-O3x" firstAttribute="leading" secondItem="nPv-oM-WGK" secondAttribute="leading" constant="20" id="XI4-zu-hPT"/>
                                             <constraint firstItem="ljj-hq-yzZ" firstAttribute="top" secondItem="nPv-oM-WGK" secondAttribute="top" constant="4" id="ke5-Dc-fui"/>
                                             <constraint firstItem="ljj-hq-yzZ" firstAttribute="leading" secondItem="nPv-oM-WGK" secondAttribute="leading" constant="20" symbolic="YES" id="tWY-Y1-GSx"/>
                                         </constraints>
@@ -580,10 +579,9 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BsX-qN-MuN">
-                                                <rect key="frame" x="8" y="21" width="229" height="20"/>
+                                                <rect key="frame" x="20" y="21" width="67" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="7lx-Od-GJC"/>
-                                                    <constraint firstAttribute="width" constant="229" id="cnV-cr-Gkt"/>
                                                 </constraints>
                                                 <color key="tintColor" systemColor="linkColor"/>
                                                 <state key="normal" title="Button"/>
@@ -596,7 +594,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="YXI-Bk-AUS" firstAttribute="leading" secondItem="uyN-1A-vaF" secondAttribute="leading" constant="20" symbolic="YES" id="1oe-lX-nuG"/>
-                                            <constraint firstItem="BsX-qN-MuN" firstAttribute="leading" secondItem="uyN-1A-vaF" secondAttribute="leading" constant="8" id="FXX-iV-TOQ"/>
+                                            <constraint firstItem="BsX-qN-MuN" firstAttribute="leading" secondItem="uyN-1A-vaF" secondAttribute="leading" constant="20" id="FXX-iV-TOQ"/>
                                             <constraint firstAttribute="height" constant="46" id="iAE-ek-4SV"/>
                                             <constraint firstItem="BsX-qN-MuN" firstAttribute="top" secondItem="YXI-Bk-AUS" secondAttribute="bottom" id="oa7-nc-Bax"/>
                                             <constraint firstItem="YXI-Bk-AUS" firstAttribute="top" secondItem="uyN-1A-vaF" secondAttribute="top" constant="4" id="wvw-NI-KtU"/>

@@ -36,13 +36,12 @@ class MessageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         self.tabBarController?.tabBar.isHidden = true
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.layoutIfNeeded()
         if selectedContact == nil {
+            
             dismiss(animated: true, completion: nil)
         }
         
@@ -242,10 +241,11 @@ class MessageViewController: UIViewController {
         //send push notif
         if selectedContact!.fcmToken != "" {
             let myName = UserDefaults.standard.string(forKey: K.UDefaults.userName)!
+            let myEmail = Auth.auth().currentUser!.email!
             if imageData == nil {
-                sender.sendPushNotification(to: selectedContact!.fcmToken, title: myName, body: messageText!)
+                sender.sendPushNotification(to: selectedContact!.fcmToken, myEmail: myEmail, myName: myName, messageText: messageText!, receiverEmail: selectedContact!.email)
             } else {
-                sender.sendPushNotification(to: selectedContact!.fcmToken, title: myName, body: "[Image]")
+                sender.sendPushNotification(to: selectedContact!.fcmToken, myEmail: myEmail, myName: myName, messageText: "[Image]", receiverEmail: selectedContact!.email)
             }
         }
         
@@ -402,7 +402,7 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
             cell.time.isHidden = true
             cell.label2.text = message
             cell.time2.text = dateString
-            cell.label2.layer.cornerRadius = cell.label2.frame.size.height / 5
+            cell.label2.layer.cornerRadius = 10
             //cell.label2.textColor = UIColor.black
             cell.label2.backgroundColor = UIColor(named: K.BrandColors.cyan)
         } else {
@@ -411,7 +411,7 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
             cell.time2.isHidden = true
             cell.label.text = message
             cell.time.text = dateString
-            cell.label.layer.cornerRadius = cell.label.frame.size.height / 5
+            cell.label.layer.cornerRadius = 10
             cell.label.textColor = UIColor(named: K.BrandColors.lavender)
             cell.label.backgroundColor = UIColor(hexString: selectedContact!.color)
         }

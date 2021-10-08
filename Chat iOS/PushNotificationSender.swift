@@ -10,14 +10,14 @@ import UIKit
 
 class PushNotificationSender {
     
-    func sendPushNotification(to token: String, title: String, body: String) {
-        print("HEREEEEEEE")
+    func sendPushNotification(to token: String, myEmail: String, myName: String, messageText: String, receiverEmail: String) {
+        
         let urlString = "https://fcm.googleapis.com/fcm/send"
         if let apiKey = Bundle.main.infoDictionary?["CLOUD_MESSAGING_API_KEY"] as? String, apiKey != "" {
             let url = NSURL(string: urlString)!
             let paramString: [String : Any] = ["to" : token,
-                                               "notification" : ["title" : title, "body" : body],
-                                               "data" : ["user" : "test_id"]
+                                               "notification" : ["title" : myName, "body" : messageText],
+                                               "data" : ["senderEmail" : myEmail, "receiverEmail": receiverEmail]
             ]
             let request = NSMutableURLRequest(url: url as URL)
             request.httpMethod = "POST"

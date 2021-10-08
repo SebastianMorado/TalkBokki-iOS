@@ -21,44 +21,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         resyncLogOut()
         let userLoginStatus = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
-        if userLoginStatus {
-            if let windowScene = scene as? UIWindowScene {
-                let window = UIWindow(windowScene: windowScene)
-                let storyboard = UIStoryboard(name: "Tab", bundle: nil)
-                let tabViewController = storyboard.instantiateViewController(withIdentifier: "TabVC") as! UITabBarController
-                window.rootViewController = tabViewController
-                
-//                if let notificationResponse = connectionOptions.notificationResponse {
-//                    //window.makeKeyAndVisible()
-//                    // do the pushing on your navigation controller
-//                    // navigationController.push()
-//                    //return
-//                }
-//                if let navigation = tabViewController.viewControllers?[0] as? UINavigationController {
-//                    let storyboard = UIStoryboard.init(name: "Tab", bundle: Bundle.main)
-//                    if let messageViewController = storyboard.instantiateViewController(withIdentifier: "MessageVC") as? MessageViewController {
-//                        let newContact = Contact()
-//                        newContact.email = "b@b.com"
-//                        newContact.name = "Wonho"
-//                        newContact.profilePicture = "https://firebasestorage.googleapis.com/v0/b/chat-ios-58521.appspot.com/o/users%2Fb@b.com%2FProfile_Picture.jpg?alt=media&token=5cf7c7c9-0b1a-44d2-82aa-251f5a5725c3"
-//                        newContact.color = "#3498DB"
-//                        newContact.number = "09178955146"
-//                        messageViewController.selectedContact = newContact
-//                        //navigation.pushViewController(messageViewController, animated: true)
-//                    }
-//                }
-                self.window = window
-                window.makeKeyAndVisible()
-            }
-        } else {
-            if let windowScene = scene as? UIWindowScene {
-                let window = UIWindow(windowScene: windowScene)
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let initialViewController = storyboard.instantiateViewController(withIdentifier: "rootVC") as! UINavigationController
-                window.rootViewController = initialViewController
-                self.window = window
-                window.makeKeyAndVisible()
-            }
+        if userLoginStatus, let windowScene = scene as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            let storyboard = UIStoryboard(name: "Tab", bundle: nil)
+            let tabViewController = storyboard.instantiateViewController(withIdentifier: "TabVC") as! UITabBarController
+            window.rootViewController = tabViewController
+            self.window = window
+            window.makeKeyAndVisible()
+            
+        } else if let windowScene = scene as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let initialViewController = storyboard.instantiateViewController(withIdentifier: "rootVC") as! UINavigationController
+            window.rootViewController = initialViewController
+            self.window = window
+            window.makeKeyAndVisible()
         }
         
         guard let _ = (scene as? UIWindowScene) else { return }
