@@ -13,6 +13,7 @@ class Contact {
     var number: String = ""
     var color: String = ""
     var fcmToken: String = ""
+    var isMuted : Bool = false
     var profilePicture: String = ""
     var mostRecentMessage: Date?
     var messages: [Message]?

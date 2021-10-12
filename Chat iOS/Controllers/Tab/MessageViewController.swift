@@ -20,11 +20,14 @@ class MessageViewController: UIViewController {
     @IBOutlet weak var nameView: UIView!
     @IBOutlet weak var nameViewTopConstraint: NSLayoutConstraint!
     
+    var refresh = UIRefreshControl()
+    
     let db = Firestore.firestore()
     let sender = PushNotificationSender()
     private var imagePicker = UIImagePickerController()
     
     var messages : [Message] = []
+    var currentRowLimit: Int = 10
     
     var selectedContact : Contact?
     
@@ -54,10 +57,14 @@ class MessageViewController: UIViewController {
         tableView.delegate = self
         messageTextfield.delegate = self
         
-        tableView.register(UINib(nibName: K.cellNibName1, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
+        //tableView.register(UINib(nibName: K.cellNibName1, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
+        tableView.register(UINib(nibName: K.cellNibName3, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
         tableView.register(UINib(nibName: K.imageCellNibName, bundle: nil), forCellReuseIdentifier: K.imageCellIdentifier)
         
-        loadMessages()
+        refresh.addTarget(self, action: #selector(refreshTableData(_:)), for: .valueChanged)
+        tableView.refreshControl = refresh
+        
+        loadMessages(currentRowLimit: currentRowLimit)
     }
     
     private func setupViewUI() {
@@ -94,15 +101,22 @@ class MessageViewController: UIViewController {
         textfieldView.backgroundColor = color
     }
     
+    @objc private func refreshTableData(_ sender: Any) {
+        // reload Contacts
+        currentRowLimit += 10
+        loadMessages(currentRowLimit: currentRowLimit)
+    }
+    
     //MARK: - Chat and Firebase Functionality
     
-    private func loadMessages() {
+    private func loadMessages(currentRowLimit: Int) {
         db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.contactsCollection)
             .document(selectedContact!.email)
             .collection(K.FStore.messagesCollection)
-            .order(by: "date", descending: false)
+            .order(by: "date", descending: true)
+            .limit(to: currentRowLimit)
             .addSnapshotListener { querySnapshot, error in
                 self.messages = []
                 if let e = error {
@@ -118,7 +132,8 @@ class MessageViewController: UIViewController {
                         newMessage.imageWidth = data[K.FStore.imageWidth] as! CGFloat
                         newMessage.imageHeight = data[K.FStore.imageHeight] as! CGFloat
                         newMessage.date = (data["date"] as! Timestamp).dateValue()
-                        self.messages.append(newMessage)
+                        self.messages.insert(newMessage, at: 0)
+                        //self.messages.append(newMessage)
                         
                         
                     }
@@ -133,6 +148,7 @@ class MessageViewController: UIViewController {
                     self.readMessages()
                 }
             }
+        self.refresh.endRefreshing()
     }
     
     private func readMessages() {
@@ -239,7 +255,7 @@ class MessageViewController: UIViewController {
         }
         
         //send push notif
-        if selectedContact!.fcmToken != "" {
+        if selectedContact!.fcmToken != "", !selectedContact!.isMuted {
             let myName = UserDefaults.standard.string(forKey: K.UDefaults.userName)!
             let myEmail = Auth.auth().currentUser!.email!
             if imageData == nil {
@@ -361,7 +377,7 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
         let message = messages[indexPath.row]
         //text message
         if message.imageURL == "" {
-            let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MessageCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MessageCell2
             //Format message from current user
             if message.senderEmail == Auth.auth().currentUser?.email {
                 setCellDataText(of: cell, fromSelf: true, message: message.text, time: message.date)
@@ -390,17 +406,27 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
         
     }
     
-    private func setCellDataText(of cell: MessageCell, fromSelf: Bool, message: String, time: Date) {
+    private func setCellDataText(of cell: MessageCell2, fromSelf: Bool, message: String, time: Date) {
         
         //set up time to be displayed beside message
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h:mm a"
+        let timeDiff = Calendar.current.dateComponents([.hour], from: time, to: Date()).hour!
+        if timeDiff < 24 {
+            dateFormatter.dateFormat = "h:mm a"
+        } else {
+            dateFormatter.dateFormat = "MMM d, h:mm a"
+        }
         let dateString = dateFormatter.string(from: time)
         
         if fromSelf {
             cell.label.isHidden = true
             cell.time.isHidden = true
-            cell.label2.text = message
+            //cell.label2.text = message
+            if let attributedTitle = cell.label2.attributedTitle(for: .normal) {
+                let mutableAttributedTitle = NSMutableAttributedString(attributedString: attributedTitle)
+                mutableAttributedTitle.replaceCharacters(in: NSMakeRange(0, mutableAttributedTitle.length), with: message)
+                cell.label2.setAttributedTitle(mutableAttributedTitle, for: .normal)
+            }
             cell.time2.text = dateString
             cell.label2.layer.cornerRadius = 10
             //cell.label2.textColor = UIColor.black
@@ -409,10 +435,17 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
 
             cell.label2.isHidden = true
             cell.time2.isHidden = true
-            cell.label.text = message
+            //cell.label.text = message
+            if let attributedTitle = cell.label.attributedTitle(for: .normal) {
+                let mutableAttributedTitle = NSMutableAttributedString(attributedString: attributedTitle)
+                mutableAttributedTitle.replaceCharacters(in: NSMakeRange(0, mutableAttributedTitle.length), with: message)
+                cell.label.setAttributedTitle(mutableAttributedTitle, for: .normal)
+            }
+            cell.label.setTitle(message, for: .normal)
             cell.time.text = dateString
             cell.label.layer.cornerRadius = 10
-            cell.label.textColor = UIColor(named: K.BrandColors.lavender)
+            //cell.label.textColor = UIColor(named: K.BrandColors.lavender)
+            cell.label.tintColor = UIColor(named: K.BrandColors.lavender)
             cell.label.backgroundColor = UIColor(hexString: selectedContact!.color)
         }
     }
@@ -420,13 +453,17 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
     private func setCellDataImage(of cell: ImageTableViewCell, imageURL: String, aspect: CGFloat, time: Date, fromSelf: Bool) {
         //set up time to be displayed beside message
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h:mm a"
+        let timeDiff = Calendar.current.dateComponents([.hour], from: time, to: Date()).hour!
+        if timeDiff < 24 {
+            dateFormatter.dateFormat = "h:mm a"
+        } else {
+            dateFormatter.dateFormat = "MMM d, h:mm a"
+        }
         let dateString = dateFormatter.string(from: time)
 
         let imageTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(sender:)))
         
         if fromSelf {
-            print("Well done fellow")
             //let size = CGSize(width: cell.imageBox2.bounds.width, height: cell.imageBox2.bounds.width / aspect)
             let cornerRadius = 0.05 * min(cell.imageBox2.bounds.width, cell.imageBox2.bounds.width / aspect)
             
@@ -438,8 +475,9 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
                     .loadDiskFileSynchronously,
                     .cacheOriginalImage,
                     .transition(.fade(0.25))
-                ]
-            )
+                ]) { result, error in
+                    cell.layoutIfNeeded()
+                }
             cell.time.isHidden = true
             cell.imageBox.isHidden = true
             cell.time2.text = dateString

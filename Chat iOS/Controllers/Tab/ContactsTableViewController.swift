@@ -181,6 +181,7 @@ class ContactsTableViewController: UITableViewController {
                         newContact.profilePicture = data["profile_picture"] as? String ?? ""
                         newContact.color = data["chat_color"] as? String ?? ""
                         newContact.fcmToken = data["fcmToken"] as? String ?? ""
+                        newContact.isMuted = data["isMuted"] as? Bool ?? false
                         self.checkForUpdates(contact: newContact)
                         //
                         let firstLetter = String(contactName.first!).uppercased()
@@ -215,7 +216,7 @@ class ContactsTableViewController: UITableViewController {
                         let name = data["name"] as? String ?? ""
                         let phone = data["phone_number"] as? String ?? ""
                         let token = data["fcmToken"] as? String ?? ""
-                        if imageURL != contact.profilePicture || name != contact.name || phone != contact.number || token != contact.fcmToken || contact.color == "" {
+                        if imageURL != contact.profilePicture || name != contact.name || phone != contact.number || token != contact.fcmToken || contact.color == ""  {
                             contact.profilePicture = imageURL
                             contact.name = name
                             contact.number = phone

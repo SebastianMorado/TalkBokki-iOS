@@ -106,6 +106,7 @@ class MessagePreviewTableViewController: UITableViewController {
                         newContact.fcmToken = data["fcmToken"] as? String ?? ""
                         newContact.email = doc.documentID
                         newContact.profilePicture = data["profile_picture"] as? String ?? ""
+                        newContact.isMuted = data["isMuted"] as? Bool ?? false
                         newContact.mostRecentMessage = (data["most_recent_message"] as! Timestamp).dateValue()
                         self.checkForUpdates(contact: newContact)
                         self.chats[doc.documentID] = newContact
@@ -180,6 +181,7 @@ class MessagePreviewTableViewController: UITableViewController {
                 .document(contactEmail)
                 .collection(K.FStore.messagesCollection)
                 .order(by: "date", descending: true)
+                .limit(to: 1)
                 .getDocuments { querySnapshot, error in
                     
                     if let e = error {

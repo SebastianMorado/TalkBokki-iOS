@@ -109,7 +109,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="AHf-Bp-aZJ"/>
                                         </constraints>
-                                        <color key="textColor" name="BrandBlue"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
                                     </textField>
@@ -119,7 +118,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="zle-XP-eQg"/>
                                         </constraints>
-                                        <color key="textColor" name="BrandBlue"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="new-password"/>
                                     </textField>
@@ -129,7 +127,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="uFz-qv-dfx"/>
                                         </constraints>
-                                        <color key="textColor" name="BrandBlue"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="new-password"/>
                                     </textField>
@@ -230,7 +227,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="Wqv-a5-XVX"/>
                                         </constraints>
-                                        <color key="textColor" name="BrandBlue"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                         <textInputTraits key="textInputTraits" textContentType="nickname"/>
                                     </textField>
@@ -240,7 +236,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="9yj-Im-RhY"/>
                                         </constraints>
-                                        <color key="textColor" name="BrandBlue"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                         <textInputTraits key="textInputTraits" keyboardType="phonePad" returnKeyType="done" enablesReturnKeyAutomatically="YES" textContentType="tel"/>
                                     </textField>
@@ -305,7 +300,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="WHA-1V-307"/>
                                         </constraints>
-                                        <color key="textColor" name="BrandBlue"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
                                     </textField>
@@ -315,7 +309,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="80M-eM-8kH"/>
                                         </constraints>
-                                        <color key="textColor" name="BrandBlue"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                                     </textField>

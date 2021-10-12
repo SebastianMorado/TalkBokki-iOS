@@ -16,6 +16,8 @@
 		0B62818D235DF00B00E35CAF /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B62818C235DF00B00E35CAF /* RegisterViewController.swift */; };
 		0B62818F235DF01000E35CAF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B62818E235DF01000E35CAF /* LoginViewController.swift */; };
 		0B628191235DF01B00E35CAF /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B628190235DF01B00E35CAF /* MessageViewController.swift */; };
+		6407D9A12715A031006FE15F /* MessageCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6407D9A02715A031006FE15F /* MessageCell2.swift */; };
+		6407D9A22715A208006FE15F /* MessageCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407D99D27159CCE006FE15F /* MessageCell2.xib */; };
 		6412F88326E20945002015F7 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6412F88126E20945002015F7 /* ImageTableViewCell.swift */; };
 		6412F88426E20945002015F7 /* ImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6412F88226E20945002015F7 /* ImageTableViewCell.xib */; };
 		642A83AC26EB3DBB00FE8C2B /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642A83AB26EB3DBB00FE8C2B /* ContactsCell.swift */; };
@@ -62,6 +64,8 @@
 		0B62818C235DF00B00E35CAF /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		0B62818E235DF01000E35CAF /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		0B628190235DF01B00E35CAF /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+		6407D99D27159CCE006FE15F /* MessageCell2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageCell2.xib; sourceTree = "<group>"; };
+		6407D9A02715A031006FE15F /* MessageCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell2.swift; sourceTree = "<group>"; };
 		6412F88126E20945002015F7 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		6412F88226E20945002015F7 /* ImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageTableViewCell.xib; sourceTree = "<group>"; };
 		642A83AB26EB3DBB00FE8C2B /* ContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
@@ -204,8 +208,10 @@
 			children = (
 				64DD09E72633252E00B43274 /* MessageCell.swift */,
 				64DD09E82633252E00B43274 /* MessageCell.xib */,
-				64C840A126DE15F200F46A78 /* MessagePreviewCell.xib */,
+				6407D9A02715A031006FE15F /* MessageCell2.swift */,
+				6407D99D27159CCE006FE15F /* MessageCell2.xib */,
 				64C840A426DE24D700F46A78 /* MessagePreviewCell.swift */,
+				64C840A126DE15F200F46A78 /* MessagePreviewCell.xib */,
 				6412F88126E20945002015F7 /* ImageTableViewCell.swift */,
 				6412F88226E20945002015F7 /* ImageTableViewCell.xib */,
 			);
@@ -334,6 +340,7 @@
 				64DD09EA2633252E00B43274 /* MessageCell.xib in Resources */,
 				643758EE26D8F02500845166 /* Tab.storyboard in Resources */,
 				0B628180235DEE8400E35CAF /* Assets.xcassets in Resources */,
+				6407D9A22715A208006FE15F /* MessageCell2.xib in Resources */,
 				64C840A626DE2C4200F46A78 /* MessagePreviewCell.xib in Resources */,
 				0B62817E235DEE8100E35CAF /* Main.storyboard in Resources */,
 			);
@@ -390,6 +397,7 @@
 			files = (
 				648ADA03270CAE8A005CF533 /* PushNotificationSender.swift in Sources */,
 				64F5786B26DA428A0051DAFF /* Contact.swift in Sources */,
+				6407D9A12715A031006FE15F /* MessageCell2.swift in Sources */,
 				0B62818B235DF00000E35CAF /* WelcomeViewController.swift in Sources */,
 				642CC4D22701F85400684674 /* ChangePasswordViewController.swift in Sources */,
 				6449C2CE26FB1CEF004C2E68 /* NewMessageCell.swift in Sources */,

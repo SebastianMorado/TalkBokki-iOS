@@ -646,6 +646,8 @@
                     <connections>
                         <outlet property="emailButton" destination="BsX-qN-MuN" id="8Kg-e5-apV"/>
                         <outlet property="mainView" destination="uAH-Os-bcQ" id="tkt-xK-OV0"/>
+                        <outlet property="muteButton" destination="JwT-Pg-OPw" id="bDR-au-1C2"/>
+                        <outlet property="muteButtonLabel" destination="dIU-sg-w6L" id="hOy-Qz-1Kj"/>
                         <outlet property="phoneButton" destination="IFy-I4-O3x" id="5Bl-ph-1mg"/>
                         <outlet property="topConstraint" destination="Mcx-Zy-mEk" id="TAV-4k-KQ0"/>
                     </connections>
@@ -1122,7 +1124,7 @@
                                                     <constraint firstAttribute="height" constant="50" id="uNh-vO-zdx"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                <state key="normal" title="Notifications">
+                                                <state key="normal" title="Edit Notifications">
                                                     <color key="titleColor" name="BrandGreen1"/>
                                                 </state>
                                                 <connections>

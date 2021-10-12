@@ -131,6 +131,7 @@ class FriendRequestsTableViewController: UITableViewController {
                         "name": self.friendReqList[rowIndex].name,
                         "phone_number": self.friendReqList[rowIndex].number,
                         "chat_color": K.chatColors[0],
+                        "isMuted": false,
                         "profile_picture": self.friendReqList[rowIndex].profilePicture],
                      merge: true
             ){ (error) in
@@ -169,6 +170,7 @@ class FriendRequestsTableViewController: UITableViewController {
             .setData([
                         "name": name,
                         "phone_number": number,
+                        "isMuted": false,
                         "profile_picture": profilePicture],
                      merge: true
             ){ (error) in

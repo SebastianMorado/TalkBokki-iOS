@@ -187,6 +187,12 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func pressNotifications(_ sender: UIButton) {
+        if let bundle = Bundle.main.bundleIdentifier,
+            let settings = URL(string: UIApplication.openSettingsURLString + bundle) {
+            if UIApplication.shared.canOpenURL(settings) {
+                UIApplication.shared.open(settings)
+            }
+        }
     }
     
     @IBAction func changePassword(_ sender: UIButton) {

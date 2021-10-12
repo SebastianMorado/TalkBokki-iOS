@@ -17,6 +17,8 @@ class ChatDetailViewController: UIViewController {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var phoneButton: UIButton!
     @IBOutlet weak var emailButton: UIButton!
+    @IBOutlet weak var muteButton: UIButton!
+    @IBOutlet weak var muteButtonLabel: UILabel!
     
     let db = Firestore.firestore()
     
@@ -27,6 +29,13 @@ class ChatDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let isMuted = selectedContact?.isMuted, isMuted {
+            muteButton.setImage(UIImage(systemName: "bell.slash.circle"), for: .normal)
+            muteButtonLabel.text = "Unmute"
+        }
+        
+        
         topConstraint.constant = navBarHeight! + 29
         phoneButton.setTitle(selectedContact?.number, for: .normal)
         emailButton.setTitle(selectedContact?.email, for: .normal)
@@ -53,6 +62,34 @@ class ChatDetailViewController: UIViewController {
     }
     
     @IBAction func pressMute(_ sender: UIButton) {
+        db.collection(K.FStore.usersCollection)
+            .document(selectedContact!.email)
+            .collection(K.FStore.contactsCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .getDocument { document, error in
+                if let e = error {
+                    self.presentAlert(message: e.localizedDescription)
+                } else {
+                    if let data = document?.data() {
+                        if let isMuted = data["isMuted"] as? Bool {
+                            DispatchQueue.main.async {
+                                if isMuted {
+                                    self.muteButton.setImage(UIImage(systemName: "bell.slash.circle"), for: .normal)
+                                    self.muteButtonLabel.text = "Unmute"
+                                } else {
+                                    self.muteButton.setImage(UIImage(systemName: "bell.circle"), for: .normal)
+                                    self.muteButtonLabel.text = "Mute"
+                                }
+                            }
+                            self.selectedContact?.isMuted = !isMuted
+                            document?.reference.updateData(["isMuted" : !isMuted])
+                        } else {
+                            document?.reference.setData(["isMuted" : false], merge: true)
+                        }
+                        
+                    }
+                }
+            }
     }
     
     @IBAction func pressBlock(_ sender: UIButton) {
