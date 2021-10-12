@@ -26,20 +26,20 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ej-PM-qF8">
-                                        <rect key="frame" x="93.5" y="25" width="25" height="17"/>
+                                        <rect key="frame" x="93.5" y="25" width="21" height="17"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="17" id="xHI-A7-Iar"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <color key="textColor" systemColor="secondaryLabelColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n8f-hv-4zh" userLabel="time 2">
-                                        <rect key="frame" x="201.5" y="25" width="25" height="17"/>
+                                        <rect key="frame" x="205.5" y="25" width="21" height="17"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="17" id="nix-UM-ZoJ"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <color key="textColor" systemColor="secondaryLabelColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -47,39 +47,24 @@
                                         <rect key="frame" x="10" y="5" width="73.5" height="40"/>
                                         <color key="backgroundColor" name="BrandMagenta"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="8cF-Cw-nav"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="265" id="8cF-Cw-nav"/>
                                         </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain">
-                                            <attributedString key="attributedTitle">
-                                                <fragment content="Button">
-                                                    <attributes>
-                                                        <font key="NSFont" size="17" name="Helvetica"/>
-                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
-                                                    </attributes>
-                                                </fragment>
-                                            </attributedString>
+                                        <buttonConfiguration key="configuration" style="plain" title="Button" titleAlignment="leading">
+                                            <fontDescription key="titleFontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                         </buttonConfiguration>
                                     </button>
                                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="PMu-Ug-Yh5">
                                         <rect key="frame" x="236.5" y="5" width="73.5" height="40"/>
                                         <color key="backgroundColor" name="BrandCyan"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="leI-nv-3rO"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="265" id="leI-nv-3rO"/>
                                         </constraints>
-                                        <color key="tintColor" red="0.50948942549999998" green="0.50948942549999998" blue="0.50948942549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.79759933774834435" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain">
-                                            <attributedString key="attributedTitle">
-                                                <fragment content="Button">
-                                                    <attributes>
-                                                        <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="0.59799254966887416" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <font key="NSFont" size="17" name="Helvetica"/>
-                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
-                                                    </attributes>
-                                                </fragment>
-                                            </attributedString>
+                                        <buttonConfiguration key="configuration" style="plain" title="Button" titleAlignment="leading">
+                                            <fontDescription key="titleFontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                         </buttonConfiguration>
                                     </button>
                                 </subviews>

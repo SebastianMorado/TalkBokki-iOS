@@ -32,20 +32,20 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CsE-r4-YxU" userLabel="Time">
-                        <rect key="frame" x="220" y="86" width="31" height="15"/>
+                        <rect key="frame" x="224.5" y="86" width="26.5" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="quH-fL-g9Z"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <color key="textColor" systemColor="secondaryLabelColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4et-Ff-iuq" userLabel="Time">
-                        <rect key="frame" x="154" y="86" width="31" height="15"/>
+                        <rect key="frame" x="154" y="86" width="26.5" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="hq1-IN-K1x"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <color key="textColor" systemColor="secondaryLabelColor"/>
                         <nil key="highlightedColor"/>
                     </label>

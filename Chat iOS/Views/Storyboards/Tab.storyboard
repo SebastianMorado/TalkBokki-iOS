@@ -544,7 +544,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IFy-I4-O3x">
-                                                <rect key="frame" x="20" y="21" width="67" height="20"/>
+                                                <rect key="frame" x="8" y="21" width="67" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="PJP-ot-Mnb"/>
                                                 </constraints>
@@ -560,7 +560,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="46" id="HFo-En-Bcm"/>
                                             <constraint firstItem="IFy-I4-O3x" firstAttribute="top" secondItem="ljj-hq-yzZ" secondAttribute="bottom" id="LBB-be-c1X"/>
-                                            <constraint firstItem="IFy-I4-O3x" firstAttribute="leading" secondItem="nPv-oM-WGK" secondAttribute="leading" constant="20" id="XI4-zu-hPT"/>
+                                            <constraint firstItem="IFy-I4-O3x" firstAttribute="leading" secondItem="nPv-oM-WGK" secondAttribute="leading" constant="8" id="XI4-zu-hPT"/>
                                             <constraint firstItem="ljj-hq-yzZ" firstAttribute="top" secondItem="nPv-oM-WGK" secondAttribute="top" constant="4" id="ke5-Dc-fui"/>
                                             <constraint firstItem="ljj-hq-yzZ" firstAttribute="leading" secondItem="nPv-oM-WGK" secondAttribute="leading" constant="20" symbolic="YES" id="tWY-Y1-GSx"/>
                                         </constraints>
@@ -579,7 +579,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BsX-qN-MuN">
-                                                <rect key="frame" x="20" y="21" width="67" height="20"/>
+                                                <rect key="frame" x="8" y="21" width="67" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="7lx-Od-GJC"/>
                                                 </constraints>
@@ -594,7 +594,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="YXI-Bk-AUS" firstAttribute="leading" secondItem="uyN-1A-vaF" secondAttribute="leading" constant="20" symbolic="YES" id="1oe-lX-nuG"/>
-                                            <constraint firstItem="BsX-qN-MuN" firstAttribute="leading" secondItem="uyN-1A-vaF" secondAttribute="leading" constant="20" id="FXX-iV-TOQ"/>
+                                            <constraint firstItem="BsX-qN-MuN" firstAttribute="leading" secondItem="uyN-1A-vaF" secondAttribute="leading" constant="8" id="FXX-iV-TOQ"/>
                                             <constraint firstAttribute="height" constant="46" id="iAE-ek-4SV"/>
                                             <constraint firstItem="BsX-qN-MuN" firstAttribute="top" secondItem="YXI-Bk-AUS" secondAttribute="bottom" id="oa7-nc-Bax"/>
                                             <constraint firstItem="YXI-Bk-AUS" firstAttribute="top" secondItem="uyN-1A-vaF" secondAttribute="top" constant="4" id="wvw-NI-KtU"/>
@@ -746,23 +746,12 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IKA-iQ-Vgm" userLabel="Input View">
                                 <rect key="frame" x="0.0" y="806" width="414" height="80"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Write a message..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xGr-CM-F2G">
-                                        <rect key="frame" x="65" y="20" width="279" height="40"/>
-                                        <color key="tintColor" systemColor="opaqueSeparatorColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="uyZ-xx-ZvX"/>
-                                        </constraints>
-                                        <color key="textColor" white="0.0" alpha="0.65749172185430471" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rap-kO-F8Z">
                                         <rect key="frame" x="354" y="20" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="7rY-hN-tmG"/>
                                             <constraint firstAttribute="width" constant="40" id="96w-qp-igk"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="eKl-mt-hgK"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="mdD-fs-im2"/>
                                         </constraints>
                                         <color key="tintColor" name="BrandLightPurple"/>
                                         <state key="normal">
@@ -787,17 +776,26 @@
                                             <action selector="pressCamera:" destination="NhM-qf-w4i" eventType="touchUpInside" id="WRa-We-mvh"/>
                                         </connections>
                                     </button>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Test" translatesAutoresizingMaskIntoConstraints="NO" id="WWI-Wl-p4M">
+                                        <rect key="frame" x="65" y="20" width="279" height="40"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="tintColor" systemColor="opaqueSeparatorColor"/>
+                                        <color key="textColor" systemColor="labelColor"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
+                                    </textView>
                                 </subviews>
                                 <color key="backgroundColor" name="BrandGreen1"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="8DT-E0-vNo"/>
-                                    <constraint firstItem="xGr-CM-F2G" firstAttribute="leading" secondItem="vlW-ay-MCK" secondAttribute="trailing" constant="15" id="8YX-cT-Gtw"/>
+                                    <constraint firstItem="rap-kO-F8Z" firstAttribute="leading" secondItem="WWI-Wl-p4M" secondAttribute="trailing" constant="10" id="EVB-KB-sWa"/>
+                                    <constraint firstAttribute="bottom" secondItem="WWI-Wl-p4M" secondAttribute="bottom" constant="20" id="EoF-Gc-ahs"/>
                                     <constraint firstItem="vlW-ay-MCK" firstAttribute="leading" secondItem="IKA-iQ-Vgm" secondAttribute="leading" constant="10" id="HAa-fK-ODL"/>
-                                    <constraint firstItem="rap-kO-F8Z" firstAttribute="top" secondItem="IKA-iQ-Vgm" secondAttribute="top" constant="20" id="OQr-FX-dpa"/>
+                                    <constraint firstAttribute="bottom" secondItem="rap-kO-F8Z" secondAttribute="bottom" constant="20" symbolic="YES" id="HBH-RS-3K6"/>
                                     <constraint firstAttribute="trailing" secondItem="rap-kO-F8Z" secondAttribute="trailing" constant="20" id="PGS-LX-8dV"/>
-                                    <constraint firstItem="xGr-CM-F2G" firstAttribute="top" secondItem="IKA-iQ-Vgm" secondAttribute="top" constant="20" id="SpL-QE-ivS"/>
-                                    <constraint firstItem="vlW-ay-MCK" firstAttribute="top" secondItem="IKA-iQ-Vgm" secondAttribute="top" constant="20" symbolic="YES" id="TOj-Jz-aJv"/>
-                                    <constraint firstItem="rap-kO-F8Z" firstAttribute="leading" secondItem="xGr-CM-F2G" secondAttribute="trailing" constant="10" id="Wi8-15-Nh4"/>
+                                    <constraint firstAttribute="bottom" secondItem="vlW-ay-MCK" secondAttribute="bottom" constant="20" symbolic="YES" id="UF6-Nm-do9"/>
+                                    <constraint firstItem="WWI-Wl-p4M" firstAttribute="leading" secondItem="vlW-ay-MCK" secondAttribute="trailing" constant="15" id="dNH-hj-gw8"/>
+                                    <constraint firstItem="WWI-Wl-p4M" firstAttribute="top" secondItem="IKA-iQ-Vgm" secondAttribute="top" constant="20" id="yf3-Hz-fas"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -832,7 +830,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="messageTextfield" destination="xGr-CM-F2G" id="gGV-m1-Dtc"/>
+                        <outlet property="inputViewHeight" destination="8DT-E0-vNo" id="mwf-L6-50y"/>
+                        <outlet property="messageTextfield" destination="WWI-Wl-p4M" id="63V-kB-kwF"/>
                         <outlet property="nameButton" destination="n1p-8T-ll0" id="oSo-lf-XwY"/>
                         <outlet property="nameView" destination="toK-vB-Q8B" id="BYt-tA-xEy"/>
                         <outlet property="nameViewTopConstraint" destination="xk9-yl-lL2" id="Qc2-aq-9BH"/>
@@ -1378,7 +1377,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="xlA-F0-DiJ"/>
+        <segue reference="Mkl-vZ-eEV"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bell.circle" catalog="system" width="128" height="121"/>
@@ -1412,6 +1411,9 @@
         <namedColor name="BrandRed">
             <color red="0.68199998140335083" green="0.34099999070167542" blue="0.34099999070167542" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

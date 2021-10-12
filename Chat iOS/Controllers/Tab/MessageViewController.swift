@@ -1,5 +1,5 @@
 //
-//  ChatViewController.swift
+//  MessageViewController.swift
 //  Chat iOS
 //
 //  Created by Sebastian Morado on 8/28/21.
@@ -13,12 +13,13 @@ import Kingfisher
 class MessageViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var messageTextfield: UITextField!
+    @IBOutlet weak var messageTextfield: UITextView!
     @IBOutlet weak var viewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var nameButton: UIButton!
     @IBOutlet weak var textfieldView: UIView!
     @IBOutlet weak var nameView: UIView!
     @IBOutlet weak var nameViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var inputViewHeight: NSLayoutConstraint!
     
     var refresh = UIRefreshControl()
     
@@ -39,12 +40,20 @@ class MessageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if Auth.auth().currentUser == nil {
+            UserDefaults.standard.set(false, forKey: K.UDefaults.userIsLoggedIn)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let loginNavController = storyboard.instantiateViewController(identifier: "rootVC")
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(loginNavController)
+        }
+        
+        
+        
         self.tabBarController?.tabBar.isHidden = true
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.layoutIfNeeded()
         if selectedContact == nil {
-            
             dismiss(animated: true, completion: nil)
         }
         
@@ -64,7 +73,7 @@ class MessageViewController: UIViewController {
         refresh.addTarget(self, action: #selector(refreshTableData(_:)), for: .valueChanged)
         tableView.refreshControl = refresh
         
-        loadMessages(currentRowLimit: currentRowLimit)
+        configureSnapshotListener()
     }
     
     private func setupViewUI() {
@@ -91,6 +100,10 @@ class MessageViewController: UIViewController {
         //set navigation title to image view
         self.navigationItem.titleView = image
         
+        //put placeholder text into textView
+        messageTextfield.textColor = .lightGray
+        messageTextfield.text = "Write a message..."
+        
         //store tabBarHeight to fix height bug with IQKeyboardManager
         tabBarHeight = tabBarController?.tabBar.frame.size.height
     }
@@ -104,12 +117,23 @@ class MessageViewController: UIViewController {
     @objc private func refreshTableData(_ sender: Any) {
         // reload Contacts
         currentRowLimit += 10
-        loadMessages(currentRowLimit: currentRowLimit)
+        loadMessages(currentRowLimit: currentRowLimit, scrollTo: 0)
     }
     
     //MARK: - Chat and Firebase Functionality
     
-    private func loadMessages(currentRowLimit: Int) {
+    private func configureSnapshotListener() {
+        db.collection(K.FStore.usersCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .collection(K.FStore.contactsCollection)
+            .document(selectedContact!.email)
+            .collection(K.FStore.messagesCollection)
+            .addSnapshotListener { querySnapshot, error in
+                self.loadMessages(currentRowLimit: self.currentRowLimit, scrollTo: nil)
+            }
+    }
+    
+    private func loadMessages(currentRowLimit: Int, scrollTo: Int?) {
         db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.contactsCollection)
@@ -117,7 +141,7 @@ class MessageViewController: UIViewController {
             .collection(K.FStore.messagesCollection)
             .order(by: "date", descending: true)
             .limit(to: currentRowLimit)
-            .addSnapshotListener { querySnapshot, error in
+            .getDocuments { querySnapshot, error in
                 self.messages = []
                 if let e = error {
                     print(e.localizedDescription)
@@ -139,7 +163,7 @@ class MessageViewController: UIViewController {
                     }
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
-                        let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
+                        let indexPath = IndexPath(row: scrollTo ?? self.messages.count - 1, section: 0)
                         if indexPath.row >= 0 {
                             self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
                         }
@@ -418,15 +442,18 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
         }
         let dateString = dateFormatter.string(from: time)
         
+        
         if fromSelf {
             cell.label.isHidden = true
             cell.time.isHidden = true
             //cell.label2.text = message
-            if let attributedTitle = cell.label2.attributedTitle(for: .normal) {
-                let mutableAttributedTitle = NSMutableAttributedString(attributedString: attributedTitle)
-                mutableAttributedTitle.replaceCharacters(in: NSMakeRange(0, mutableAttributedTitle.length), with: message)
-                cell.label2.setAttributedTitle(mutableAttributedTitle, for: .normal)
-            }
+//            if let attributedTitle = cell.label2.attributedTitle(for: .normal) {
+//                let mutableAttributedTitle = NSMutableAttributedString(attributedString: attributedTitle)
+//                mutableAttributedTitle.replaceCharacters(in: NSMakeRange(0, mutableAttributedTitle.length), with: message)
+//                cell.label2.setAttributedTitle(mutableAttributedTitle, for: .normal)
+//            }
+            cell.label2.setTitle(message, for: .normal)
+            cell.label2.sizeToFit()
             cell.time2.text = dateString
             cell.label2.layer.cornerRadius = 10
             //cell.label2.textColor = UIColor.black
@@ -436,16 +463,17 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
             cell.label2.isHidden = true
             cell.time2.isHidden = true
             //cell.label.text = message
-            if let attributedTitle = cell.label.attributedTitle(for: .normal) {
-                let mutableAttributedTitle = NSMutableAttributedString(attributedString: attributedTitle)
-                mutableAttributedTitle.replaceCharacters(in: NSMakeRange(0, mutableAttributedTitle.length), with: message)
-                cell.label.setAttributedTitle(mutableAttributedTitle, for: .normal)
-            }
+//            if let attributedTitle = cell.label.attributedTitle(for: .normal) {
+//                let mutableAttributedTitle = NSMutableAttributedString(attributedString: attributedTitle)
+//                mutableAttributedTitle.replaceCharacters(in: NSMakeRange(0, mutableAttributedTitle.length), with: message)
+//                cell.label.setAttributedTitle(mutableAttributedTitle, for: .normal)
+//            }
             cell.label.setTitle(message, for: .normal)
+            cell.label.sizeToFit()
             cell.time.text = dateString
             cell.label.layer.cornerRadius = 10
             //cell.label.textColor = UIColor(named: K.BrandColors.lavender)
-            cell.label.tintColor = UIColor(named: K.BrandColors.lavender)
+            cell.label.tintColor = .white
             cell.label.backgroundColor = UIColor(hexString: selectedContact!.color)
         }
     }
@@ -552,28 +580,36 @@ extension MessageViewController: UIImagePickerControllerDelegate, UINavigationCo
 }
 
 // MARK: - UITextFieldDelegate
-extension MessageViewController: UITextFieldDelegate {
+extension MessageViewController: UITextViewDelegate {
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        if let safeTabBarHeight = tabBarHeight {
-//            viewBottomConstraint.constant -= safeTabBarHeight
-//        }
+    func textViewDidBeginEditing(_ textView: UITextView) {
         UIView.animate(withDuration: 0.3) {
             self.navigationItem.titleView?.alpha = 0
             self.navigationController?.navigationBar.isHidden = true
         }
-        
+        if messageTextfield.text == "Write a message..." {
+            messageTextfield.text = nil
+            messageTextfield.textColor = .black
+        }
     }
-
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
         UIView.animate(withDuration: 0.5) {
             self.navigationItem.titleView?.alpha = 1
             self.navigationController?.navigationBar.isHidden = false
         }
-        //self.navigationItem.titleView?.isHidden = false
-//        if let safeTabBarHeight = tabBarHeight {
-//            viewBottomConstraint.constant += safeTabBarHeight
-//        }
+        if messageTextfield.text.isEmpty || messageTextfield.text == "" {
+            messageTextfield.textColor = .lightGray
+            messageTextfield.text = "Write a message..."
+            inputViewHeight.constant = 80
+        }
     }
     
+//    func textViewDidChange(_ textView: UITextView) {
+//        let size = CGSize(width: view.frame.width, height: .infinity)
+//        let currentSize = messageTextfield.frame.height
+//        let estimatedSize = messageTextfield.sizeThatFits(size)
+//        let difference = estimatedSize.height - currentSize
+//        inputViewHeight.constant += difference
+//    }
 }
