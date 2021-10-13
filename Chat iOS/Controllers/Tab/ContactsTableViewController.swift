@@ -157,7 +157,7 @@ class ContactsTableViewController: UITableViewController {
     }
     
     private func loadContacts() {
-        db.collection(K.FStore.usersCollection)
+        let snapshot = db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.contactsCollection)
             .order(by: "name")
@@ -202,6 +202,7 @@ class ContactsTableViewController: UITableViewController {
                     }
                 }
             }
+        SnapshotListeners.shared.snapshotList.append(snapshot)
     }
     
     private func checkForUpdates(contact: Contact) {

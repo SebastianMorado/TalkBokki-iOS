@@ -106,6 +106,7 @@
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="u72-XV-6FN">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" name="BrandGreen1"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="AHf-Bp-aZJ"/>
                                         </constraints>
@@ -115,6 +116,7 @@
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="X7x-sd-Vir">
                                         <rect key="frame" x="0.0" y="90" width="414" height="60"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" name="BrandGreen1"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="zle-XP-eQg"/>
                                         </constraints>
@@ -124,6 +126,7 @@
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XAD-mc-Q5A">
                                         <rect key="frame" x="0.0" y="180" width="414" height="60"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" name="BrandGreen1"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="uFz-qv-dfx"/>
                                         </constraints>
@@ -224,6 +227,7 @@
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Display Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j57-zz-MEe">
                                         <rect key="frame" x="0.0" y="270" width="414" height="60"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" name="BrandGreen1"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="Wqv-a5-XVX"/>
                                         </constraints>
@@ -233,6 +237,7 @@
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Phone Number" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2BL-Y3-ZNy">
                                         <rect key="frame" x="0.0" y="360" width="414" height="60"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" name="BrandGreen1"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="9yj-Im-RhY"/>
                                         </constraints>
@@ -297,6 +302,7 @@
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="F21-w0-z4z">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" name="BrandGreen1"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="WHA-1V-307"/>
                                         </constraints>
@@ -306,6 +312,7 @@
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="abR-gz-opL">
                                         <rect key="frame" x="0.0" y="90" width="414" height="60"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" name="BrandGreen1"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="80M-eM-8kH"/>
                                         </constraints>

@@ -19,7 +19,7 @@ class RegisterViewController: UIViewController {
     let passwordPredicate = LengthPredicate<String>(min: 6)
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.tintColor = UIColor.link
+        self.navigationController?.navigationBar.tintColor = UIColor(named: K.BrandColors.red)
     }
     
     @IBAction func registerPressed(_ sender: UIButton) {

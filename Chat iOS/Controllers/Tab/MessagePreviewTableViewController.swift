@@ -84,7 +84,7 @@ class MessagePreviewTableViewController: UITableViewController {
     private func loadContacts() {
         let group = DispatchGroup()
         
-        db.collection(K.FStore.usersCollection)
+        let snapshot = db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.contactsCollection)
             .order(by: "most_recent_message", descending: true)
@@ -121,6 +121,8 @@ class MessagePreviewTableViewController: UITableViewController {
                     self.loadMessages()
                 }
             }
+        
+        SnapshotListeners.shared.snapshotList.append(snapshot)
         
         
     }

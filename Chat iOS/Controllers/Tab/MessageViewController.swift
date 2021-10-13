@@ -28,7 +28,7 @@ class MessageViewController: UIViewController {
     private var imagePicker = UIImagePickerController()
     
     var messages : [Message] = []
-    var currentRowLimit: Int = 10
+    var currentRowLimit: Int = 20
     
     var selectedContact : Contact?
     
@@ -120,10 +120,11 @@ class MessageViewController: UIViewController {
         loadMessages(currentRowLimit: currentRowLimit, scrollTo: 0)
     }
     
+    
     //MARK: - Chat and Firebase Functionality
     
     private func configureSnapshotListener() {
-        db.collection(K.FStore.usersCollection)
+        let snapShot = db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.contactsCollection)
             .document(selectedContact!.email)
@@ -131,6 +132,7 @@ class MessageViewController: UIViewController {
             .addSnapshotListener { querySnapshot, error in
                 self.loadMessages(currentRowLimit: self.currentRowLimit, scrollTo: nil)
             }
+        SnapshotListeners.shared.snapshotList.append(snapShot)
     }
     
     private func loadMessages(currentRowLimit: Int, scrollTo: Int?) {
@@ -201,6 +203,8 @@ class MessageViewController: UIViewController {
     private func addMessageData(imageData: [String: Any]?){
         let currentTimestamp = Timestamp.init(date: Date())
         var messageText = messageTextfield.text
+        
+        currentRowLimit += 1
         
         if imageData == nil && (messageText == nil || messageText == "") {
             return
@@ -587,10 +591,10 @@ extension MessageViewController: UITextViewDelegate {
             self.navigationItem.titleView?.alpha = 0
             self.navigationController?.navigationBar.isHidden = true
         }
-        if messageTextfield.text == "Write a message..." {
-            messageTextfield.text = nil
-            messageTextfield.textColor = .black
-        }
+//        if messageTextfield.text == "Write a message..." {
+//            messageTextfield.text = nil
+//            messageTextfield.textColor = .black
+//        }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -601,15 +605,51 @@ extension MessageViewController: UITextViewDelegate {
         if messageTextfield.text.isEmpty || messageTextfield.text == "" {
             messageTextfield.textColor = .lightGray
             messageTextfield.text = "Write a message..."
-            inputViewHeight.constant = 80
         }
     }
     
-//    func textViewDidChange(_ textView: UITextView) {
-//        let size = CGSize(width: view.frame.width, height: .infinity)
-//        let currentSize = messageTextfield.frame.height
-//        let estimatedSize = messageTextfield.sizeThatFits(size)
-//        let difference = estimatedSize.height - currentSize
-//        inputViewHeight.constant += difference
-//    }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        // Combine the textView text and the replacement text to
+        // create the updated text string
+        let currentText:String = textView.text
+        let updatedText = (currentText as NSString).replacingCharacters(in: range, with: text)
+
+        // If updated text view will be empty, add the placeholder
+        // and set the cursor to the beginning of the text view
+        if updatedText.isEmpty {
+
+            textView.text = "Write a message..."
+            textView.textColor = UIColor.lightGray
+
+            textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
+        }
+
+        // Else if the text view's placeholder is showing and the
+        // length of the replacement string is greater than 0, set
+        // the text color to black then set its text to the
+        // replacement string
+         else if textView.textColor == UIColor.lightGray && !text.isEmpty {
+            textView.textColor = UIColor.black
+            textView.text = text
+        }
+
+        // For every other case, the text should change with the usual
+        // behavior...
+        else {
+            return true
+        }
+
+        // ...otherwise return false since the updates have already
+        // been made
+        return false
+    }
+    
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        if self.view.window != nil {
+            if textView.textColor == UIColor.lightGray {
+                textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
+            }
+        }
+    }
+
 }

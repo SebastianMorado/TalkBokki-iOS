@@ -17,6 +17,10 @@ class LoginViewController: UIViewController {
     let emailPredicate = EmailPredicate()
     
     let db = Firestore.firestore()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.tintColor = .white
+    }
 
     @IBAction func loginPressed(_ sender: UIButton) {
         if let email = emailTextfield.text,

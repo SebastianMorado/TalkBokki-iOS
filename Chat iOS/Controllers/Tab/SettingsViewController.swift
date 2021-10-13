@@ -28,12 +28,16 @@ class SettingsViewController: UIViewController {
         updateUI()
         
         userImage.contentMode = .scaleAspectFill
-        userImage.setRounded()
         imagePicker.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     private func updateUI() {
@@ -204,11 +208,15 @@ class SettingsViewController: UIViewController {
 
         alert.addAction(UIAlertAction(title: "Yes", style: .default) { alert in
             do {
+                for snapshot in SnapshotListeners.shared.snapshotList {
+                    snapshot.remove()
+                }
                 UserDefaults.standard.set(false, forKey: K.UDefaults.userIsLoggedIn)
                 //self.performSegue(withIdentifier: "unwindToWelcomeScreen", sender: self)
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let loginNavController = storyboard.instantiateViewController(identifier: "rootVC")
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(loginNavController)
+                
                 try Auth.auth().signOut()
             } catch let signOutError as NSError {
                 print(signOutError.localizedDescription)

@@ -46,6 +46,7 @@
 		64DD09E526330EE000B43274 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD09E426330EE000B43274 /* Message.swift */; };
 		64DD09E92633252E00B43274 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DD09E72633252E00B43274 /* MessageCell.swift */; };
 		64DD09EA2633252E00B43274 /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64DD09E82633252E00B43274 /* MessageCell.xib */; };
+		64E4BF70271721680010BCB7 /* SnapshotListeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E4BF6F271721680010BCB7 /* SnapshotListeners.swift */; };
 		64F5786726DA3D5D0051DAFF /* MessagePreviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F5786626DA3D5D0051DAFF /* MessagePreviewTableViewController.swift */; };
 		64F5786926DA3D8C0051DAFF /* ContactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F5786826DA3D8C0051DAFF /* ContactsTableViewController.swift */; };
 		64F5786B26DA428A0051DAFF /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F5786A26DA428A0051DAFF /* Contact.swift */; };
@@ -93,6 +94,7 @@
 		64DD09E426330EE000B43274 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		64DD09E72633252E00B43274 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		64DD09E82633252E00B43274 /* MessageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageCell.xib; sourceTree = "<group>"; };
+		64E4BF6F271721680010BCB7 /* SnapshotListeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotListeners.swift; sourceTree = "<group>"; };
 		64F5786626DA3D5D0051DAFF /* MessagePreviewTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagePreviewTableViewController.swift; sourceTree = "<group>"; };
 		64F5786826DA3D8C0051DAFF /* ContactsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTableViewController.swift; sourceTree = "<group>"; };
 		64F5786A26DA428A0051DAFF /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				64F5786A26DA428A0051DAFF /* Contact.swift */,
 				64827A5926EC847B002C6F3D /* FriendRequest.swift */,
 				6484F10626FB658B00679AB6 /* CustomExtensions.swift */,
+				64E4BF6F271721680010BCB7 /* SnapshotListeners.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				6487EACD26FC600100D90D19 /* ChatDetailViewController.swift in Sources */,
 				64DD09E92633252E00B43274 /* MessageCell.swift in Sources */,
 				64F5786926DA3D8C0051DAFF /* ContactsTableViewController.swift in Sources */,
+				64E4BF70271721680010BCB7 /* SnapshotListeners.swift in Sources */,
 				0B628177235DEE8100E35CAF /* AppDelegate.swift in Sources */,
 				64F5786726DA3D5D0051DAFF /* MessagePreviewTableViewController.swift in Sources */,
 				642A83B126EB4E3100FE8C2B /* FriendRequestCell.swift in Sources */,

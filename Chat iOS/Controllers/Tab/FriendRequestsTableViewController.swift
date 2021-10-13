@@ -23,7 +23,7 @@ class FriendRequestsTableViewController: UITableViewController {
     }
     
     private func loadFriendRequests() {
-        db.collection(K.FStore.usersCollection)
+        let snapshot = db.collection(K.FStore.usersCollection)
             .document(Auth.auth().currentUser!.email!)
             .collection(K.FStore.friendRequestCollection)
             .order(by: "date", descending: false)
@@ -53,6 +53,7 @@ class FriendRequestsTableViewController: UITableViewController {
                 }
 
             }
+        SnapshotListeners.shared.snapshotList.append(snapshot)
     }
 
     // MARK: - Table view data source

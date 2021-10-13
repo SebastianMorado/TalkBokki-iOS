@@ -31,8 +31,8 @@ class ContactDetailViewController: UIViewController {
         
         detailView.layer.cornerRadius = 20
         detailView.layer.masksToBounds = true
-        detailView.layer.borderWidth = 3
-        detailView.layer.borderColor = UIColor(named: K.BrandColors.red)?.cgColor
+//        detailView.layer.borderWidth = 3
+//        detailView.layer.borderColor = UIColor(named: K.BrandColors.g)?.cgColor
         
         if let contact = selectedContact {
             nameLabel.text = contact.name
@@ -40,7 +40,6 @@ class ContactDetailViewController: UIViewController {
             
             phoneLabel.text = contact.number
             imageView.kf.setImage(with: URL(string: contact.profilePicture))
-            imageView.setRounded()
         }
         
         
