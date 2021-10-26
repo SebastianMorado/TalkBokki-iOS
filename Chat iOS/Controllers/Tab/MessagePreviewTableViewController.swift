@@ -69,6 +69,7 @@ class MessagePreviewTableViewController: UITableViewController {
         self.tabBarController?.tabBar.isHidden = false
         self.navigationController?.navigationBar.barTintColor = nil
         self.navigationController?.navigationBar.backgroundColor = nil
+        loadMessages()
     }
     
     
@@ -275,9 +276,10 @@ class MessagePreviewTableViewController: UITableViewController {
         //change color of label text depending if message has been read or not
         if mostRecentMessage[0].wasRead {
             cell.messageText.textColor = .gray
-            cell.messageText.font = UIFont.systemFont(ofSize: cell.messageText.font!.pointSize, weight: .regular)
+            cell.messageText.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         } else {
-            cell.messageText.font = UIFont.systemFont(ofSize: cell.messageText.font!.pointSize, weight: .semibold)
+            cell.messageText.textColor = .black
+            cell.messageText.font = UIFont.systemFont(ofSize: 13, weight: .bold)
         }
         
         //set profile pic of contact to display

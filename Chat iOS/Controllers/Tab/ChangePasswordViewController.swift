@@ -26,9 +26,9 @@ class ChangePasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         saveView.layer.borderWidth = 0.5
-        saveView.layer.borderColor = UIColor.init(named: K.BrandColors.red)?.cgColor
+        saveView.layer.borderColor = UIColor.init(named: K.BrandColors.green1)?.cgColor
         forgotPasswordView.layer.borderWidth = 0.5
-        forgotPasswordView.layer.borderColor = UIColor.init(named: K.BrandColors.red)?.cgColor
+        forgotPasswordView.layer.borderColor = UIColor.init(named: K.BrandColors.green1)?.cgColor
     
     }
     

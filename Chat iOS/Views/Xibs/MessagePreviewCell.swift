@@ -31,4 +31,10 @@ class MessagePreviewCell: UITableViewCell {
         contactImage.layer.masksToBounds = true
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        messageText.textColor = nil
+        messageText.font = nil
+    }
 }
