@@ -136,12 +136,10 @@ class MessagePreviewTableViewController: UITableViewController {
                 } else {
                     if let data = document?.data()! {
                         let imageURL = data["profile_picture"] as? String ?? ""
-                        let name = data["name"] as? String ?? ""
                         let phone = data["phone_number"] as? String ?? ""
                         let token = data["fcmToken"] as? String ?? ""
-                        if imageURL != contact.profilePicture || name != contact.name || phone != contact.number || token != contact.fcmToken || contact.color == "" {
+                        if imageURL != contact.profilePicture || phone != contact.number || token != contact.fcmToken || contact.color == "" {
                             contact.profilePicture = imageURL
-                            contact.name = name
                             contact.number = phone
                             contact.fcmToken = token
                             self.updateContact(contact: contact)
@@ -162,7 +160,6 @@ class MessagePreviewTableViewController: UITableViewController {
                     print(e.localizedDescription)
                 } else {
                     document?.reference.updateData(["profile_picture" : contact.profilePicture])
-                    document?.reference.updateData(["name" : contact.name])
                     document?.reference.updateData(["phone_number" : contact.number])
                     document?.reference.updateData(["fcmToken" : contact.fcmToken])
                     if contact.color == "" {

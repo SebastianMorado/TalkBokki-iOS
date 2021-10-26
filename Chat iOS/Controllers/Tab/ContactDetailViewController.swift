@@ -70,19 +70,84 @@ class ContactDetailViewController: UIViewController {
         }
     }
 
-    @IBAction func deleteFriend(_ sender: UIButton) {
+    @IBAction func editFriendInfo(_ sender: UIButton) {
         
-        let alert = UIAlertController(title: "Block friend", message: "Are you sure you want to block \(selectedContact!.name)? You can always add them again in the future.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Edit Friend Info", message: nil, preferredStyle: .actionSheet)
         
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
         }
         
-        let action = UIAlertAction(title: "Block", style: .default) { (action) in
-            self.deleteFriendFromMyContact()
+        let edit = UIAlertAction(title: "Edit name", style: .default) { (action) in
+            self.editFriendName()
+        }
+        
+        let block = UIAlertAction(title: "Block", style: .default) { (action) in
+            self.blockFriend()
+        }
+        
+        alert.addAction(cancel)
+        alert.addAction(edit)
+        alert.addAction(block)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func editFriendName() {
+        var textField = UITextField()
+        let alert = UIAlertController(title: "Edit name for \(selectedContact!.name)", message: "", preferredStyle: .alert)
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        
+        let action = UIAlertAction(title: "Confirm", style: .default) { (action) in
+            if let text = textField.text, text.count > 0 {
+                self.editNewNameinDatabase(newName: text)
+            } else {
+                self.presentAlert(message: "Please input valid name")
+            }
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "New Name"
+            textField = alertTextField
         }
         
         alert.addAction(cancel)
         alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func editNewNameinDatabase(newName : String) {
+        db.collection(K.FStore.usersCollection)
+            .document(Auth.auth().currentUser!.email!)
+            .collection(K.FStore.contactsCollection)
+            .document(selectedContact!.email)
+            .getDocument { document, error in
+                if let e = error {
+                    self.presentAlert(message: e.localizedDescription)
+                } else {
+                    DispatchQueue.main.async {
+                        self.nameLabel.text = newName
+                    }
+                    self.selectedContact?.name = newName
+                    document?.reference.updateData(["name" : newName])
+                }
+            }
+        
+    }
+    
+    private func blockFriend() {
+        let alert = UIAlertController(title: "Block Friend", message: "Are you sure you want to block \(selectedContact!.name)? You can always add them again in the future.", preferredStyle: .alert)
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        }
+        
+        let block = UIAlertAction(title: "Block", style: .default) { (action) in
+            self.deleteFriendFromMyContact()
+        }
+        
+        alert.addAction(cancel)
+        alert.addAction(block)
         
         present(alert, animated: true, completion: nil)
     }

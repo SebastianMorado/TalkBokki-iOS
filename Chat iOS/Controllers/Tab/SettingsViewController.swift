@@ -68,6 +68,12 @@ class SettingsViewController: UIViewController {
 
         alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
             self.openGallery() }))
+        
+        let openImageDetail = UIAlertAction(title: "View Profile Picture", style: .default) { (action) in
+            self.performSegue(withIdentifier: "goToImageDetail", sender: self)
+        }
+        
+        alert.addAction(openImageDetail)
 
         alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
 
@@ -239,6 +245,10 @@ class SettingsViewController: UIViewController {
         if segue.identifier == "goToChangePassword" {
             if let destinationVC = segue.destination as? ChangePasswordViewController {
                 destinationVC.delegate = self
+            }
+        } else if segue.identifier == "goToImageDetail" {
+            if let destinationVC = segue.destination as? ImageDetailViewController {
+                destinationVC.imageToBeDisplayed = userImage.image
             }
         }
     }
