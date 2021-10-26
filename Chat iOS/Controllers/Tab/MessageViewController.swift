@@ -50,8 +50,6 @@ class MessageViewController: UIViewController {
         
         
         self.tabBarController?.tabBar.isHidden = true
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.layoutIfNeeded()
         if selectedContact == nil {
             dismiss(animated: true, completion: nil)
@@ -103,6 +101,7 @@ class MessageViewController: UIViewController {
         //put placeholder text into textView
         messageTextfield.textColor = .lightGray
         messageTextfield.text = "Write a message..."
+        messageTextfield.selectedTextRange = messageTextfield.textRange(from: messageTextfield.beginningOfDocument, to: messageTextfield.beginningOfDocument)
         
         //store tabBarHeight to fix height bug with IQKeyboardManager
         tabBarHeight = tabBarController?.tabBar.frame.size.height
@@ -611,8 +610,10 @@ extension MessageViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         // Combine the textView text and the replacement text to
         // create the updated text string
-        let currentText:String = textView.text
+        let currentText : String = textView.text
         let updatedText = (currentText as NSString).replacingCharacters(in: range, with: text)
+        
+        
 
         // If updated text view will be empty, add the placeholder
         // and set the cursor to the beginning of the text view
@@ -638,9 +639,14 @@ extension MessageViewController: UITextViewDelegate {
         else {
             return true
         }
+        
+        let newText = textView.text
+        textView.text = nil
+        textView.text = newText
 
         // ...otherwise return false since the updates have already
         // been made
+        
         return false
     }
     
