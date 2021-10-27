@@ -18,6 +18,7 @@
 		0B628191235DF01B00E35CAF /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B628190235DF01B00E35CAF /* MessageViewController.swift */; };
 		6407D9A12715A031006FE15F /* MessageCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6407D9A02715A031006FE15F /* MessageCell2.swift */; };
 		6407D9A22715A208006FE15F /* MessageCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407D99D27159CCE006FE15F /* MessageCell2.xib */; };
+		640A96B02729638000C52099 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 640A96AF2729638000C52099 /* README.md */; };
 		6412F88326E20945002015F7 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6412F88126E20945002015F7 /* ImageTableViewCell.swift */; };
 		6412F88426E20945002015F7 /* ImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6412F88226E20945002015F7 /* ImageTableViewCell.xib */; };
 		642A83AC26EB3DBB00FE8C2B /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642A83AB26EB3DBB00FE8C2B /* ContactsCell.swift */; };
@@ -67,6 +68,7 @@
 		0B628190235DF01B00E35CAF /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		6407D99D27159CCE006FE15F /* MessageCell2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageCell2.xib; sourceTree = "<group>"; };
 		6407D9A02715A031006FE15F /* MessageCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell2.swift; sourceTree = "<group>"; };
+		640A96AF2729638000C52099 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		6412F88126E20945002015F7 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		6412F88226E20945002015F7 /* ImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageTableViewCell.xib; sourceTree = "<group>"; };
 		642A83AB26EB3DBB00FE8C2B /* ContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				0B628176235DEE8100E35CAF /* AppDelegate.swift */,
 				648ADA00270C90DA005CF533 /* PushNotificationManager.swift */,
 				648ADA02270CAE89005CF533 /* PushNotificationSender.swift */,
+				640A96AF2729638000C52099 /* README.md */,
 				0B628178235DEE8100E35CAF /* SceneDelegate.swift */,
 				0B628194235DF03A00E35CAF /* Models */,
 				0B628193235DF03400E35CAF /* Views */,
@@ -339,6 +342,7 @@
 			files = (
 				6412F88426E20945002015F7 /* ImageTableViewCell.xib in Resources */,
 				642B1B6C26E9004A00977827 /* GoogleService-Info.plist in Resources */,
+				640A96B02729638000C52099 /* README.md in Resources */,
 				0B628183235DEE8400E35CAF /* LaunchScreen.storyboard in Resources */,
 				64DD09EA2633252E00B43274 /* MessageCell.xib in Resources */,
 				643758EE26D8F02500845166 /* Tab.storyboard in Resources */,
@@ -506,7 +510,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -562,7 +566,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
