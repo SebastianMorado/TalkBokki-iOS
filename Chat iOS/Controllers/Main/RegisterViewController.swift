@@ -41,13 +41,7 @@ class RegisterViewController: UIViewController {
         }
     }
     
-    func presentAlert(message: String, title: String = "Error") {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default) { (action) in
-        }
-        alert.addAction(ok)
-        self.present(alert, animated: true, completion: nil)
-    }
+
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToCreateProfile" {

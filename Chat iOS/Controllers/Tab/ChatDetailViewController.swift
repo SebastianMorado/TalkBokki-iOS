@@ -12,7 +12,6 @@ import ChameleonFramework
 
 class ChatDetailViewController: UIViewController {
     
-    
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var phoneButton: UIButton!
@@ -20,31 +19,22 @@ class ChatDetailViewController: UIViewController {
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var muteButtonLabel: UILabel!
     
-    let db = Firestore.firestore()
-    
-    
+    var fsManager = FirestoreManagerForChatDetail()
     var delegate : MessageViewController?
+    var isMuted: Bool?
     var selectedContact : Contact?
     var navBarHeight: CGFloat?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let isMuted = selectedContact?.isMuted, isMuted {
-            muteButton.setImage(UIImage(systemName: "bell.slash.circle"), for: .normal)
-            muteButtonLabel.text = "Unmute"
-        }
-        
-        
+        fsManager.delegate = self
+        updateMuteButton(isMuted: isMuted ?? false)
         topConstraint.constant = navBarHeight! + 29
         phoneButton.setTitle(selectedContact?.number, for: .normal)
         emailButton.setTitle(selectedContact?.email, for: .normal)
         
-        setupColors(color: UIColor(hexString: selectedContact!.color)!)
-    }
-    
-    private func setupColors(color: UIColor) {
-        mainView.backgroundColor = color
+        mainView.backgroundColor = UIColor(hexString: selectedContact!.color)!
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
@@ -61,35 +51,18 @@ class ChatDetailViewController: UIViewController {
         }
     }
     
+    func updateMuteButton(isMuted: Bool) {
+        if isMuted {
+            self.muteButton.setImage(UIImage(systemName: "bell.slash.circle"), for: .normal)
+            self.muteButtonLabel.text = "Unmute"
+        } else {
+            self.muteButton.setImage(UIImage(systemName: "bell.circle"), for: .normal)
+            self.muteButtonLabel.text = "Mute"
+        }
+    }
+    
     @IBAction func pressMute(_ sender: UIButton) {
-        db.collection(K.FStore.usersCollection)
-            .document(selectedContact!.email)
-            .collection(K.FStore.contactsCollection)
-            .document(Auth.auth().currentUser!.email!)
-            .getDocument { document, error in
-                if let e = error {
-                    self.presentAlert(message: e.localizedDescription)
-                } else {
-                    if let data = document?.data() {
-                        if let isMuted = data["isMuted"] as? Bool {
-                            DispatchQueue.main.async {
-                                if isMuted {
-                                    self.muteButton.setImage(UIImage(systemName: "bell.slash.circle"), for: .normal)
-                                    self.muteButtonLabel.text = "Unmute"
-                                } else {
-                                    self.muteButton.setImage(UIImage(systemName: "bell.circle"), for: .normal)
-                                    self.muteButtonLabel.text = "Mute"
-                                }
-                            }
-                            self.selectedContact?.isMuted = !isMuted
-                            document?.reference.updateData(["isMuted" : !isMuted])
-                        } else {
-                            document?.reference.setData(["isMuted" : false], merge: true)
-                        }
-                        
-                    }
-                }
-            }
+        fsManager.pressMute()
     }
     
     @IBAction func pressBlock(_ sender: UIButton) {
@@ -99,7 +72,7 @@ class ChatDetailViewController: UIViewController {
         }
         
         let action = UIAlertAction(title: "Block", style: .default) { (action) in
-            self.deleteFriendFromMyContact()
+            self.fsManager.deleteFriendFromMyContact()
         }
         
         alert.addAction(cancel)
@@ -108,66 +81,28 @@ class ChatDetailViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    private func deleteFriendFromMyContact() {
-        db.collection(K.FStore.usersCollection)
-            .document(Auth.auth().currentUser!.email!)
-            .collection(K.FStore.contactsCollection)
-            .document(selectedContact!.email)
-            .delete { error in
-                if let e = error {
-                    self.presentAlert(message: e.localizedDescription)
-                } else {
-                    self.deleteMyContactFromFriend()
-                }
-            }
-    }
-    
-    private func deleteMyContactFromFriend() {
-        db.collection(K.FStore.usersCollection)
-            .document(selectedContact!.email)
-            .collection(K.FStore.contactsCollection)
-            .document(Auth.auth().currentUser!.email!)
-            .delete { error in
-                if let e = error {
-                    self.presentAlert(message: e.localizedDescription)
-                } else {
-                    self.dismiss(animated: false) {
-                        self.delegate!.navigationController?.popViewController(animated: true)
-                    }
-                }
-            }
+    func dismissAfterBlocking() {
+        self.dismiss(animated: false) {
+            self.delegate!.navigationController?.popViewController(animated: true)
+        }
     }
     
     @IBAction func pressColor(_ sender: UIButton) {
         var newColorIndex = 0
-        
         if let currentColorIndex = K.chatColors.firstIndex(of: selectedContact!.color) {
             newColorIndex = currentColorIndex + 1
             if newColorIndex >= K.chatColors.count {
                 newColorIndex = 0
             }
         }
-        
         let newColor = K.chatColors[newColorIndex]
-        
-        db.collection(K.FStore.usersCollection)
-            .document(Auth.auth().currentUser!.email!)
-            .collection(K.FStore.contactsCollection)
-            .document(selectedContact!.email)
-            .getDocument { document, error in
-                if let e = error {
-                    self.presentAlert(message: e.localizedDescription)
-                } else {
-                    document?.reference.updateData(["chat_color" : newColor])
-                    self.selectedContact?.color = newColor
-                    DispatchQueue.main.async {
-                        self.setupColors(color: UIColor(hexString: newColor)!)
-                        self.delegate?.setupViewColors(color: UIColor(hexString: newColor)!)
-                        self.delegate?.tableView.reloadData()
-                    }
-                }
-            }
-        
+        fsManager.updateColorDatabase(newColor: newColor)
+    }
+    
+    func updateColors(newColor: String) {
+        mainView.backgroundColor = UIColor(hexString: newColor)!
+        delegate?.setupViewColors(color: UIColor(hexString: newColor)!)
+        delegate?.tableView.reloadData()
     }
     
     @IBAction func pressPhone(_ sender: UIButton) {
@@ -192,11 +127,5 @@ class ChatDetailViewController: UIViewController {
         }
     }
     
-    private func presentAlert(message: String, title: String = "Error") {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(ok)
-        self.present(alert, animated: true, completion: nil)
-    }
 }
 

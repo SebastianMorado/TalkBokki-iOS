@@ -21,19 +21,14 @@ class MessageCell2: UITableViewCell {
         // Initialization code
         label.layer.masksToBounds = true
         label2.layer.masksToBounds = true
-        label.contentEdgeInsets = UIEdgeInsets(top: 5, left: 7, bottom: 5, right: 7)
-        label2.contentEdgeInsets = UIEdgeInsets(top: 5, left: 7, bottom: 5, right: 7)
-        label.titleLabel!.numberOfLines = 0; // Dynamic number of lines
-//        label.titleLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label2.titleLabel!.numberOfLines = 0; // Dynamic number of lines
-//        label2.titleLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.titleLabel!.numberOfLines = 0 // Dynamic number of lines
+        label2.titleLabel!.numberOfLines = 0 // Dynamic number of lines
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
     }
-    
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -45,7 +40,6 @@ class MessageCell2: UITableViewCell {
         label.layer.cornerRadius = 0
         label2.layer.cornerRadius = 0
         label.setTitle("Title", for: .normal)
-        //label2.setAttributedTitle(NSMutableAttributedString(string: "Title"), for: .normal)
         label2.setTitle("Title", for: .normal)
     }
     

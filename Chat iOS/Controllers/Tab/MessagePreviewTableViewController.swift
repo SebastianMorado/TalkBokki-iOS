@@ -10,41 +10,25 @@ import UIKit
 import Firebase
 import Kingfisher
 
-extension UIImageView {
-    
-    func setRounded() {
-        let radius = self.frame.height / 2
-        self.layer.cornerRadius = radius
-        self.layer.masksToBounds = true
-    }
-}
-
 class MessagePreviewTableViewController: UITableViewController {
-    
-    let db = Firestore.firestore()
     
     @IBOutlet weak var searchBar: UISearchBar!
     
-    private var chats = [String: Contact]()
-    private var chatsMostRecent = [String]()
-    private var filteredChats = [String: Contact]()
-    private var filteredChatsMostRecent = [String]()
-    
     var refresh = UIRefreshControl()
+    var fsManager = FirestoreManagerForMessagePreview()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if Auth.auth().currentUser == nil {
             UserDefaults.standard.set(false, forKey: K.UDefaults.userIsLoggedIn)
-            //self.performSegue(withIdentifier: "unwindToWelcomeScreen", sender: self)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let loginNavController = storyboard.instantiateViewController(identifier: "rootVC")
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(loginNavController)
             return
         }
         
-        
+        fsManager.delegate = self
         searchBar.delegate = self
 
         // Uncomment the following line to preserve selection between presentations
@@ -52,9 +36,6 @@ class MessagePreviewTableViewController: UITableViewController {
         
         title = "Messages"
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        //self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
         //register custom cell for messages
         tableView.register(UINib(nibName: K.cellNibName2, bundle: nil), forCellReuseIdentifier: K.cellIdentifier2)
         
@@ -62,156 +43,23 @@ class MessagePreviewTableViewController: UITableViewController {
         refresh.addTarget(self, action: #selector(refreshTableData(_:)), for: .valueChanged)
         tableView.refreshControl = refresh
         
-        loadContacts()
+        fsManager.loadContacts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = false
         self.navigationController?.navigationBar.barTintColor = nil
         self.navigationController?.navigationBar.backgroundColor = nil
-        loadMessages()
-    }
-    
-    
-    @IBAction func createNewMessage(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "goToNewMessage", sender: self)
+        fsManager.loadMessages()
     }
     
     @objc private func refreshTableData(_ sender: Any) {
         // reload Contacts
-        loadMessages()
+        fsManager.loadMessages()
     }
     
-    private func loadContacts() {
-        let group = DispatchGroup()
-        
-        let snapshot = db.collection(K.FStore.usersCollection)
-            .document(Auth.auth().currentUser!.email!)
-            .collection(K.FStore.contactsCollection)
-            .order(by: "most_recent_message", descending: true)
-            .addSnapshotListener { querySnapshot, error in
-                group.enter()
-                self.chats = [String: Contact]()
-                self.chatsMostRecent = [String]()
-                if let e = error {
-                    print(e.localizedDescription)
-                } else {
-                    for doc in querySnapshot!.documents {
-                        let data = doc.data()
-
-                        //extract fields from data and create new contact object
-                        let newContact = Contact()
-                        newContact.name = data["name"] as? String ?? ""
-                        newContact.number = data["phone_number"] as? String ?? ""
-                        newContact.color = data["chat_color"] as? String ?? ""
-                        newContact.fcmToken = data["fcmToken"] as? String ?? ""
-                        newContact.email = doc.documentID
-                        newContact.profilePicture = data["profile_picture"] as? String ?? ""
-                        newContact.isMuted = data["isMuted"] as? Bool ?? false
-                        newContact.mostRecentMessage = (data["most_recent_message"] as! Timestamp).dateValue()
-                        self.checkForUpdates(contact: newContact)
-                        self.chats[doc.documentID] = newContact
-                        self.chatsMostRecent.append(doc.documentID)
-                    }
-                    
-                }
-                group.leave()
-                
-                
-                group.notify(queue: DispatchQueue.global()) {
-                    self.loadMessages()
-                }
-            }
-        
-        SnapshotListeners.shared.snapshotList.append(snapshot)
-        
-        
-    }
-    
-    private func checkForUpdates(contact: Contact) {
-        db.collection(K.FStore.usersCollection)
-            .document(contact.email)
-            .getDocument { document, error in
-                if let e = error {
-                    print(e.localizedDescription)
-                } else {
-                    if let data = document?.data()! {
-                        let imageURL = data["profile_picture"] as? String ?? ""
-                        let phone = data["phone_number"] as? String ?? ""
-                        let token = data["fcmToken"] as? String ?? ""
-                        if imageURL != contact.profilePicture || phone != contact.number || token != contact.fcmToken || contact.color == "" {
-                            contact.profilePicture = imageURL
-                            contact.number = phone
-                            contact.fcmToken = token
-                            self.updateContact(contact: contact)
-                        }
-                        
-                    }
-                }
-            }
-    }
-    
-    private func updateContact(contact: Contact) {
-        db.collection(K.FStore.usersCollection)
-            .document(Auth.auth().currentUser!.email!)
-            .collection(K.FStore.contactsCollection)
-            .document(contact.email)
-            .getDocument { document, error in
-                if let e = error {
-                    print(e.localizedDescription)
-                } else {
-                    document?.reference.updateData(["profile_picture" : contact.profilePicture])
-                    document?.reference.updateData(["phone_number" : contact.number])
-                    document?.reference.updateData(["fcmToken" : contact.fcmToken])
-                    if contact.color == "" {
-                        document?.reference.updateData(["chat_color" : K.chatColors[0]])
-                    }
-                }
-            }
-    }
-    
-    private func loadMessages() {
-        let group = DispatchGroup()
-        
-        for (contactEmail, _) in chats {
-            group.enter()
-            db.collection(K.FStore.usersCollection)
-                .document(Auth.auth().currentUser!.email!)
-                .collection(K.FStore.contactsCollection)
-                .document(contactEmail)
-                .collection(K.FStore.messagesCollection)
-                .order(by: "date", descending: true)
-                .limit(to: 1)
-                .getDocuments { querySnapshot, error in
-                    
-                    if let e = error {
-                        print(e.localizedDescription)
-                    } else {
-                        let mostRecentMessage = querySnapshot!.documents[0].data()
-                        let newMessage = Message()
-                        newMessage.text = mostRecentMessage["text"] as! String
-                        newMessage.imageURL = mostRecentMessage["image_url"] as! String
-                        newMessage.senderEmail = mostRecentMessage["sender_email"] as! String
-                        newMessage.wasRead = mostRecentMessage["wasRead"] as! Bool
-                        newMessage.date = (mostRecentMessage["date"] as! Timestamp).dateValue()
-                        
-                        self.chats[contactEmail]?.messages = [newMessage]
-                        
-                    }
-                    group.leave()
-            }
-        }
-        group.notify(queue: DispatchQueue.global()) {
-            print("reloading data now...")
-            DispatchQueue.main.async {
-                
-                self.filteredChats = self.chats
-                self.filteredChatsMostRecent = self.chatsMostRecent
-                
-                self.tableView.reloadData()
-                self.refresh.endRefreshing()
-            }
-        }
+    @IBAction func createNewMessage(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "goToNewMessage", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -230,19 +78,19 @@ class MessagePreviewTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredChats.count
+        return fsManager.filteredChats.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier2, for: indexPath) as! MessagePreviewCell
         
-        if filteredChatsMostRecent.count == 0 || filteredChats.count == 0 {
+        if fsManager.filteredChatsMostRecent.count == 0 || fsManager.filteredChats.count == 0 {
             return cell
         }
         
         //set up variables for email and contact details
-        let currentChatEmail = filteredChatsMostRecent[indexPath.row]
-        let currentContact = filteredChats[currentChatEmail]!
+        let currentChatEmail = fsManager.filteredChatsMostRecent[indexPath.row]
+        let currentContact = fsManager.filteredChats[currentChatEmail]!
         
         
         //exit if somehow messages arent loading
@@ -302,8 +150,8 @@ class MessagePreviewTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        let contactEmail = filteredChatsMostRecent[indexPath.row]
-        let contact = filteredChats[contactEmail]
+        let contactEmail = fsManager.filteredChatsMostRecent[indexPath.row]
+        let contact = fsManager.filteredChats[contactEmail]
         self.performSegue(withIdentifier: "goToChat", sender: contact)
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -326,8 +174,8 @@ extension MessagePreviewTableViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
-            filteredChats = chats
-            filteredChatsMostRecent = chatsMostRecent
+            fsManager.filteredChats = fsManager.chats
+            fsManager.filteredChatsMostRecent = fsManager.chatsMostRecent
             tableView.reloadData()
             
             //if there is no text, deselect the search bar and remove the keyboard
@@ -343,13 +191,13 @@ extension MessagePreviewTableViewController: UISearchBarDelegate {
     
     
     func filterContacts(searchText: String) {
-        filteredChats = [:]
-        filteredChatsMostRecent = []
-        filteredChats = chats.filter {
+        fsManager.filteredChats = [:]
+        fsManager.filteredChatsMostRecent = []
+        fsManager.filteredChats = fsManager.chats.filter {
             $0.value.name.localizedStandardContains(searchText)
         }
-        for (email, _) in filteredChats {
-            filteredChatsMostRecent.append(email)
+        for (email, _) in fsManager.filteredChats {
+            fsManager.filteredChatsMostRecent.append(email)
         }
     }
     

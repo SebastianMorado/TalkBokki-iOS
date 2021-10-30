@@ -17,6 +17,7 @@ class LoginViewController: UIViewController {
     let emailPredicate = EmailPredicate()
     
     let db = Firestore.firestore()
+    let firestoreManager = FirestoreManagerForLogIn()
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.tintColor = .white
@@ -30,7 +31,7 @@ class LoginViewController: UIViewController {
                 if let e = error {
                     self.presentAlert(message: e.localizedDescription)
                 } else {
-                    self.saveLoginDetails(email: email)
+                    self.firestoreManager.saveLoginDetails(email: email)
                 }
             }
         } else if emailTextfield.text == nil || !emailPredicate.evaluate(with: emailTextfield.text!){
@@ -41,35 +42,6 @@ class LoginViewController: UIViewController {
         
     }
     
-    private func saveLoginDetails(email: String) {
-        db.collection("users")
-            .document(email)
-            .getDocument { document, error in
-                if let e = error {
-                    self.presentAlert(message: e.localizedDescription)
-                } else {
-                    if let data = document?.data()! {
-                        UserDefaults.standard.set(email, forKey: K.UDefaults.userEmail)
-                        UserDefaults.standard.set(data["name"] as! String, forKey: K.UDefaults.userName)
-                        UserDefaults.standard.set(data["profile_picture"] as! String, forKey: K.UDefaults.userURL)
-                        UserDefaults.standard.set(data["phone_number"] as! String, forKey: K.UDefaults.userPhone)
-                        UserDefaults.standard.set(true, forKey: K.UDefaults.userIsLoggedIn)
-                        
-                        let storyboard = UIStoryboard(name: "Tab", bundle: nil)
-                        let mainTabBarController = storyboard.instantiateViewController(identifier: "TabVC")
-                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainTabBarController)
-                        
-                    }
-                }
-            }
-    }
     
-    func presentAlert(message: String, title: String = "Error") {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default) { (action) in
-        }
-        alert.addAction(ok)
-        self.present(alert, animated: true, completion: nil)
-    }
     
 }

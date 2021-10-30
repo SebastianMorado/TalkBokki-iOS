@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -26,7 +25,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ej-PM-qF8">
-                                        <rect key="frame" x="93.5" y="25" width="21" height="17"/>
+                                        <rect key="frame" x="87.5" y="25" width="21" height="17"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="17" id="xHI-A7-Iar"/>
                                         </constraints>
@@ -35,7 +34,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n8f-hv-4zh" userLabel="time 2">
-                                        <rect key="frame" x="205.5" y="25" width="21" height="17"/>
+                                        <rect key="frame" x="211.5" y="25" width="21" height="17"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="17" id="nix-UM-ZoJ"/>
                                         </constraints>
@@ -44,27 +43,27 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="39R-tf-0mO">
-                                        <rect key="frame" x="10" y="5" width="73.5" height="40"/>
+                                        <rect key="frame" x="10" y="5" width="67.5" height="40"/>
                                         <color key="backgroundColor" name="BrandMagenta"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="8cF-Cw-nav"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="8cF-Cw-nav"/>
                                         </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Button" titleAlignment="leading">
-                                            <fontDescription key="titleFontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
+                                            <fontDescription key="titleFontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
                                         </buttonConfiguration>
                                     </button>
                                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="PMu-Ug-Yh5">
-                                        <rect key="frame" x="236.5" y="5" width="73.5" height="40"/>
+                                        <rect key="frame" x="242.5" y="5" width="67.5" height="40"/>
                                         <color key="backgroundColor" name="BrandCyan"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="leI-nv-3rO"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="leI-nv-3rO"/>
                                         </constraints>
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.79759933774834435" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Button" titleAlignment="leading">
-                                            <fontDescription key="titleFontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
+                                            <fontDescription key="titleFontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
                                         </buttonConfiguration>
                                     </button>
                                 </subviews>

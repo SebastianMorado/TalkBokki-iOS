@@ -11,70 +11,34 @@ import Firebase
 import Kingfisher
 
 class NewMessageTableViewController: UITableViewController {
-
-    let db = Firestore.firestore()
     
     @IBOutlet weak var searchBar: UISearchBar!
     
     var delegate : MessagePreviewTableViewController?
-    
-    var contactList = [Contact]()
-    var filteredContactList = [Contact]()
+    var fsManager = FirestoreManagerForCreateNewMessage()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fsManager.delegate = self
         searchBar.delegate = self
         
-        loadContacts()
+        fsManager.loadContacts()
         
     }
-    
-    private func loadContacts() {
-        db.collection(K.FStore.usersCollection)
-            .document(Auth.auth().currentUser!.email!)
-            .collection(K.FStore.contactsCollection)
-            .order(by: "name")
-            .getDocuments { querySnapshot, error in
-                self.contactList = []
-                if let e = error {
-                    print(e.localizedDescription)
-                } else {
-                    for doc in querySnapshot!.documents {
-                        let data = doc.data()
-                        
-                        //create new contact object
-                        let newContact = Contact()
-                        //extract fields from data
-                        let contactName = data["name"] as! String
-                        newContact.name = contactName
-                        newContact.email = doc.documentID
-                        newContact.number = data["phone_number"] as! String
-                        newContact.profilePicture = data["profile_picture"] as! String
-                        self.contactList.append(newContact)
-                    }
-                    DispatchQueue.main.async {
-                        self.filteredContactList = self.contactList
-                        self.tableView.reloadData()
-                    }
-                }
-            }
-    }
-    
-    
 
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return filteredContactList.count
+    
+        return fsManager.filteredContactList.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "newMessageCell", for: indexPath) as! NewMessageCell
 
         // Configure the cell...
-        cell.cellLabel.text = filteredContactList[indexPath.row].name
-        let url = URL(string: filteredContactList[indexPath.row].profilePicture)
+        cell.cellLabel.text = fsManager.filteredContactList[indexPath.row].name
+        let url = URL(string: fsManager.filteredContactList[indexPath.row].profilePicture)
         let processor = DownsamplingImageProcessor(size: cell.cellImage.bounds.size)
         cell.cellImage.kf.setImage(
             with: url,
@@ -90,15 +54,12 @@ class NewMessageTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let selectedContact = filteredContactList[indexPath.row]
+        let selectedContact = fsManager.filteredContactList[indexPath.row]
         self.dismiss(animated: true) {
             self.delegate!.performSegue(withIdentifier: "goToChat", sender: selectedContact)
         }
     }
-
-
 }
-
 
 extension NewMessageTableViewController: UISearchBarDelegate {
     
@@ -113,7 +74,7 @@ extension NewMessageTableViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
-            filteredContactList = contactList
+            fsManager.filteredContactList = fsManager.contactList
             tableView.reloadData()
             
         } else {
@@ -124,7 +85,7 @@ extension NewMessageTableViewController: UISearchBarDelegate {
     
     
     func filterContacts(searchText: String) {
-        filteredContactList = contactList.filter {
+        fsManager.filteredContactList = fsManager.contactList.filter {
             $0.name.localizedStandardContains(searchText)
         }
     }

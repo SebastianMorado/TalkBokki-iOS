@@ -12,23 +12,22 @@ import Firebase
 import FirebaseStorage
 
 class SettingsViewController: UIViewController {
-
-    let db = Firestore.firestore()
     
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userEmail: UILabel!
     @IBOutlet weak var userNumber: UILabel!
     
+    let fsManager = FirestoreManagerForSettings()
+    
     private var imagePicker = UIImagePickerController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        updateUI()
-        
-        userImage.contentMode = .scaleAspectFill
+        fsManager.delegate = self
         imagePicker.delegate = self
+        updateUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,7 +39,7 @@ class SettingsViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    private func updateUI() {
+    func updateUI() {
         if let name = UserDefaults.standard.string(forKey: K.UDefaults.userName),
            let image = UserDefaults.standard.string(forKey: K.UDefaults.userURL),
            let phone = UserDefaults.standard.string(forKey: K.UDefaults.userPhone) {
@@ -58,6 +57,7 @@ class SettingsViewController: UIViewController {
                 print(signOutError.localizedDescription)
             }
         }
+        userImage.contentMode = .scaleAspectFill
     }
     
     @IBAction func changeImage(_ sender: UIButton) {
@@ -79,52 +79,7 @@ class SettingsViewController: UIViewController {
 
         self.present(alert, animated: true, completion: nil)
     }
-    
-    func uploadImagePic(image: UIImage) {
-        guard let imageData: Data = image.jpegData(compressionQuality: 0.1) else {
-            print("failed to process image")
-            return
-        }
-
-        let metaDataConfig = StorageMetadata()
-        metaDataConfig.contentType = "image/jpg"
-
-        let storageRef = Storage.storage().reference(withPath: "users/\(Auth.auth().currentUser!.email!)/Profile_Picture.jpg")
-
-        storageRef.putData(imageData, metadata: metaDataConfig){ (metaData, error) in
-            if let error = error {
-                print(error.localizedDescription)
-
-                return
-            }
-
-            storageRef.downloadURL(completion: { (url: URL?, error: Error?) in
-                if let error = error {
-                    print(error.localizedDescription)
-                }
-                //self.createNewUserEntry(image_url: url!.absoluteString, name: name)
-                self.updateProfilePicInfo(using: url!.absoluteString)
-                DispatchQueue.main.async {
-                    self.userImage.image = image
-                }
-                print(url!.absoluteString) // <- Download URL
-            })
-        }
-    }
-    
-    func updateProfilePicInfo(using imageURL: String) {
-        db.collection(K.FStore.usersCollection)
-            .document(Auth.auth().currentUser!.email!)
-            .getDocument { document, error in
-                if let e = error {
-                    print(e.localizedDescription)
-                } else {
-                    document?.reference.updateData(["profile_picture" : imageURL])
-                    UserDefaults.standard.set(imageURL, forKey: K.UDefaults.userURL)
-                }
-            }
-    }
-    
+  
     @IBAction func changeName(_ sender: UIButton) {
         var textField = UITextField()
         let userName = UserDefaults.standard.string(forKey: K.UDefaults.userName) ?? "None"
@@ -135,19 +90,7 @@ class SettingsViewController: UIViewController {
         }
         
         let action = UIAlertAction(title: "Save", style: .default) { (action) in
-            self.db.collection(K.FStore.usersCollection)
-                .document(Auth.auth().currentUser!.email!)
-                .getDocument { document, error in
-                    if let e = error {
-                        print(e.localizedDescription)
-                    } else {
-                        document?.reference.updateData(["name" : textField.text ?? userName])
-                        UserDefaults.standard.set(textField.text ?? userName, forKey: K.UDefaults.userName)
-                        DispatchQueue.main.async {
-                            self.updateUI()
-                        }
-                    }
-                }
+            self.fsManager.updateName(name: textField.text ?? userName)
         }
         
         alert.addTextField { (alertTextField) in
@@ -171,19 +114,7 @@ class SettingsViewController: UIViewController {
         }
         
         let action = UIAlertAction(title: "Save", style: .default) { (action) in
-            self.db.collection(K.FStore.usersCollection)
-                .document(Auth.auth().currentUser!.email!)
-                .getDocument { document, error in
-                    if let e = error {
-                        print(e.localizedDescription)
-                    } else {
-                        document?.reference.updateData(["phone_number" : textField.text ?? phoneNumber])
-                        UserDefaults.standard.set(textField.text ?? phoneNumber, forKey: K.UDefaults.userPhone)
-                        DispatchQueue.main.async {
-                            self.updateUI()
-                        }
-                    }
-                }
+            self.fsManager.updatePhoneNumber(phoneNumber: textField.text ?? phoneNumber)
         }
         
         alert.addTextField { (alertTextField) in
@@ -225,19 +156,12 @@ class SettingsViewController: UIViewController {
                 
                 try Auth.auth().signOut()
             } catch let signOutError as NSError {
-                print(signOutError.localizedDescription)
+                self.presentAlert(message: signOutError.localizedDescription)
             }
         })
 
         alert.addAction(UIAlertAction.init(title: "No", style: .cancel, handler: nil))
 
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func presentAlert(message: String, title: String = "Error") {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(ok)
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -260,7 +184,7 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let newImage = info[.editedImage] as? UIImage {
-            uploadImagePic(image: newImage)
+            fsManager.uploadImagePic(image: newImage)
         }
         picker.dismiss(animated: true, completion: nil)
         

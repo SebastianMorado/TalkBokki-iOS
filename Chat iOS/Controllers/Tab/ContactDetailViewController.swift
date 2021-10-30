@@ -18,8 +18,7 @@ class ContactDetailViewController: UIViewController {
     @IBOutlet weak var detailView: UIView!
     @IBOutlet weak var buttonStackView: UIStackView!
     
-    let db = Firestore.firestore()
-    
+    let fsManager = FirestoreManagerForContactDetail()
     weak var delegate : ContactsTableViewController?
     
     var selectedContact : Contact?
@@ -27,12 +26,11 @@ class ContactDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.init(white: 0.4, alpha: 0.8)
+        fsManager.delegate = self
         
+        self.view.backgroundColor = UIColor.init(white: 0.4, alpha: 0.8)
         detailView.layer.cornerRadius = 20
         detailView.layer.masksToBounds = true
-//        detailView.layer.borderWidth = 3
-//        detailView.layer.borderColor = UIColor(named: K.BrandColors.g)?.cgColor
         
         if let contact = selectedContact {
             nameLabel.text = contact.name
@@ -41,8 +39,6 @@ class ContactDetailViewController: UIViewController {
             phoneLabel.text = contact.number
             imageView.kf.setImage(with: URL(string: contact.profilePicture))
         }
-        
-        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
@@ -100,7 +96,7 @@ class ContactDetailViewController: UIViewController {
         
         let action = UIAlertAction(title: "Confirm", style: .default) { (action) in
             if let text = textField.text, text.count > 0 {
-                self.editNewNameinDatabase(newName: text)
+                self.fsManager.editNewNameinDatabase(newName: text)
             } else {
                 self.presentAlert(message: "Please input valid name")
             }
@@ -117,24 +113,6 @@ class ContactDetailViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    private func editNewNameinDatabase(newName : String) {
-        db.collection(K.FStore.usersCollection)
-            .document(Auth.auth().currentUser!.email!)
-            .collection(K.FStore.contactsCollection)
-            .document(selectedContact!.email)
-            .getDocument { document, error in
-                if let e = error {
-                    self.presentAlert(message: e.localizedDescription)
-                } else {
-                    DispatchQueue.main.async {
-                        self.nameLabel.text = newName
-                    }
-                    self.selectedContact?.name = newName
-                    document?.reference.updateData(["name" : newName])
-                }
-            }
-        
-    }
     
     private func blockFriend() {
         let alert = UIAlertController(title: "Block Friend", message: "Are you sure you want to block \(selectedContact!.name)? You can always add them again in the future.", preferredStyle: .alert)
@@ -143,7 +121,7 @@ class ContactDetailViewController: UIViewController {
         }
         
         let block = UIAlertAction(title: "Block", style: .default) { (action) in
-            self.deleteFriendFromMyContact()
+            self.fsManager.deleteFriendFromMyContact()
         }
         
         alert.addAction(cancel)
@@ -152,40 +130,11 @@ class ContactDetailViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    private func deleteFriendFromMyContact() {
-        db.collection(K.FStore.usersCollection)
-            .document(Auth.auth().currentUser!.email!)
-            .collection(K.FStore.contactsCollection)
-            .document(self.selectedContact!.email)
-            .delete { error in
-                if let e = error {
-                    self.presentAlert(message: e.localizedDescription)
-                } else {
-                    self.deleteMyContactFromFriend()
-                }
-            }
+    
+    func dismissAfterBlocking() {
+        dismiss(animated: true, completion: nil)
+        delegate!.presentAlert(message: "\(self.selectedContact!.name) is now blocked", title: "Success")
     }
     
-    private func deleteMyContactFromFriend() {
-        db.collection(K.FStore.usersCollection)
-            .document(self.selectedContact!.email)
-            .collection(K.FStore.contactsCollection)
-            .document(Auth.auth().currentUser!.email!)
-            .delete { error in
-                if let e = error {
-                    self.presentAlert(message: e.localizedDescription)
-                } else {
-                    self.dismiss(animated: true, completion: nil)
-                    self.delegate!.presentAlert(message: "\(self.selectedContact!.name) is now blocked", title: "Success")
-                }
-            }
-    }
-    
-    private func presentAlert(message: String, title: String = "Error") {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(ok)
-        self.present(alert, animated: true, completion: nil)
-    }
 }
 

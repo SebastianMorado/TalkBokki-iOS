@@ -21,6 +21,8 @@ class CreateProfileViewController: UIViewController {
     
     let db = Firestore.firestore()
     
+    let firestoreManager = FirestoreManagerForLogIn()
+    
     private var imagePicker = UIImagePickerController()
     var userEmail : String = ""
     var userPassword : String = ""
@@ -28,7 +30,6 @@ class CreateProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         imagePicker.delegate = self
-        // Do any additional setup after loading the view.
     }
 
     @IBAction func confirmPressed(_ sender: UIButton) {
@@ -42,7 +43,7 @@ class CreateProfileViewController: UIViewController {
                 if let e = error {
                     self.presentAlert(message: e.localizedDescription)
                 } else {
-                    self.uploadImagePic(image: userImage, name: name, phone: phone)
+                    self.firestoreManager.uploadImagePic(image: userImage, name: name, phone: phone)
                 }
             }
         } else {
@@ -64,75 +65,6 @@ class CreateProfileViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    //uploads profile picture to firebase storage server
-    private func uploadImagePic(image: UIImage, name: String, phone: String) {
-        guard let imageData: Data = image.jpegData(compressionQuality: 0.1) else {
-            print("failed to process image")
-            return
-        }
-
-        let metaDataConfig = StorageMetadata()
-        metaDataConfig.contentType = "image/jpg"
-
-        let storageRef = Storage.storage().reference(withPath: "users/\(Auth.auth().currentUser!.email!)/Profile_Picture.jpg")
-
-        storageRef.putData(imageData, metadata: metaDataConfig){ (metaData, error) in
-            if let error = error {
-                print(error.localizedDescription)
-
-                return
-            }
-
-            storageRef.downloadURL(completion: { (url: URL?, error: Error?) in
-                if let error = error {
-                    print(error.localizedDescription)
-                }
-                self.createNewUserEntry(image_url: url!.absoluteString, name: name, phone: phone)
-                print(url!.absoluteString) // <- Download URL
-            })
-        }
-    }
-    
-    //creates a firestore data entry for the new user
-    private func createNewUserEntry(image_url: String, name: String, phone: String){
-        if let newUserEmail = Auth.auth().currentUser?.email {
-            db.collection("users")
-                .document(newUserEmail)
-                .setData([
-                            "name": name,
-                            "profile_picture": image_url,
-                            "phone_number": phone], completion: { error in
-                    if let e = error {
-                        self.presentAlert(message: e.localizedDescription)
-                    } else {
-                        print("Successfully saved data!")
-                        self.saveLoginDetails(email: newUserEmail, name: name, profilePictureURL: image_url, phone: phone)
-                        
-                        let storyboard = UIStoryboard(name: "Tab", bundle: nil)
-                        let mainTabBarController = storyboard.instantiateViewController(identifier: "TabVC")
-                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainTabBarController)
-                    }
-                })
-        }
-        
-        
-    }
-    
-    private func saveLoginDetails(email: String, name: String, profilePictureURL: String, phone: String) {
-        UserDefaults.standard.set(email, forKey: K.UDefaults.userEmail)
-        UserDefaults.standard.set(name, forKey: K.UDefaults.userName)
-        UserDefaults.standard.set(profilePictureURL, forKey: K.UDefaults.userURL)
-        UserDefaults.standard.set(phone, forKey: K.UDefaults.userPhone)
-        UserDefaults.standard.set(true, forKey: K.UDefaults.userIsLoggedIn)
-    }
-    
-    func presentAlert(message: String, title: String = "Error") {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default) { (action) in
-        }
-        alert.addAction(ok)
-        self.present(alert, animated: true, completion: nil)
-    }
 }
 
 //MARK: - Image Picker Delegate
