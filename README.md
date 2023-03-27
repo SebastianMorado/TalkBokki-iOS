@@ -4,7 +4,7 @@
 
 ## What is it?
 
-TalkBokki is a fully-functional instant messaging app for iOS. As a simpler alternative to iMessage and Messenger, it provides the essential functionality of messaging apps, but adds some customization options and an intuitive layout for users. The app is built on Firebase.
+TalkBokki is a fully-functional instant messaging app for iOS. As a simpler alternative to iMessage and Messenger, it provides the essential functionality of messaging apps, but adds some customization options and an intuitive layout for users. The app is built on UIKit and Firebase.
 
 ## Features
 
